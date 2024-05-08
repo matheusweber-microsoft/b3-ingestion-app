@@ -40,9 +40,11 @@ class CreateDocument:
             )
         except ValueError as err:
             raise InvalidDocument(err)
+        
+        print(document.to_dict())
 
         if self.repository.verify_duplicity(document=document):
-            raise DocumentAlreadyExists("Document already exists")
+            raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
                 
         self.storageRepository.upload_file(document)
 
@@ -51,16 +53,15 @@ class CreateDocument:
         self.queueService.send_message(
             message_dict=self.generate_message_from_document(document)
         )
-
-        # send to queue        
-        return CreateDocumentResponse(id=id)
+        
+        return CreateDocumentResponse(id=document.id)
     
     def generate_message_from_document(self, document: Document):
         message_dict = {
             "action": "index",
-            #"fileId": str(document.id),
+            "fileId": str(document.id),
             "storageFilePath": document.storageFilePath,
-            "fileName": document.documentTitle,
+            "fileName": document.filename,
             "originalFileFormat": document.originalFileFormat,
             "theme": document.theme,
             "subtheme": document.subtheme,
