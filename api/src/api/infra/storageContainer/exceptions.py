@@ -1,0 +1,2 @@
+class FileNotUploaded(Exception):
+    pass
