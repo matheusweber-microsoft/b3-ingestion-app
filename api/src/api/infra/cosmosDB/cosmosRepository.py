@@ -34,3 +34,13 @@ class CosmosRepository:
             return True
         except Exception as e:
             return False
+    
+    def list_all(self, collectionName):
+        collection = self.db.get_collection(collectionName)
+        documents = list(collection.find())
+        return documents
+    
+    def list_all(self, collectionName, filter, fields):
+        collection = self.db.get_collection(collectionName)
+        documents = list(collection.find(filter, fields))
+        return documents
