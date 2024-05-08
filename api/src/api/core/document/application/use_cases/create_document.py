@@ -16,6 +16,7 @@ class CreateDocumentRequest:
     expiryDate: datetime
     documentFile: bytes
     uploadedBy: str
+    language: str
 
 @dataclass
 class CreateDocumentResponse:
@@ -36,13 +37,12 @@ class CreateDocument:
                 subtheme=request.subtheme,
                 expiryDate=request.expiryDate,
                 documentFile=request.documentFile,
-                uploadedBy=request.uploadedBy
+                uploadedBy=request.uploadedBy,
+                language=request.language
             )
         except ValueError as err:
             raise InvalidDocument(err)
         
-        print(document.to_dict())
-
         if self.repository.verify_duplicity(document=document):
             raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
                 

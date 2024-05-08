@@ -18,7 +18,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': "No file uploaded."}), 400
         
         try:
-            response = use_case.execute(CreateDocumentRequest(documentTitle=data["documentTitle"], theme=data["theme"], subtheme=data["subtheme"], expiryDate=data["expiryDate"], documentFile=files["documentFile"], uploadedBy=data["uploadedBy"]))
+            response = use_case.execute(CreateDocumentRequest(documentTitle=data["documentTitle"], theme=data["theme"], subtheme=data["subtheme"], expiryDate=data["expiryDate"], documentFile=files["documentFile"], uploadedBy=data["uploadedBy"], language=data["language"]))
             return jsonify({'id': str(response.id)}), 201
         except Exception as e:
             return jsonify({'error': str(e)}), 400

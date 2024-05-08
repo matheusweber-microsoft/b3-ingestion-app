@@ -13,8 +13,8 @@ class Document(Entity):
     subtheme: str
     expiryDate: datetime
     documentFile: FileStorage
+    language: str
     filename: str = ""
-    language: str = "eng"
     storageFilePath: str = ""
     indexStatus: str = "Submitted"
     uploadDate: datetime = datetime.now(timezone.utc)
@@ -55,6 +55,9 @@ class Document(Entity):
         if not self.documentFile:
             self.notification.add_error("documentFile cannot be empty")
 
+        if not self.language:
+            self.notification.add_error("language cannot be empty")
+            
         ext = self.documentFile.filename.split('.')[-1].lower()     
         if ext not in ('doc', 'docx', 'pdf'):
             self.notification.add_error("Only .doc and .pdf files are accepted")

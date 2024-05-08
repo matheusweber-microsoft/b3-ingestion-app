@@ -15,7 +15,7 @@ class DocumentRepository():
         query = {
             "theme": document.theme,
             "subtheme": document.subtheme,
-            "documentTitle": document.documentTitle
+            "fileName": document.documentFile.filename
         }
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 

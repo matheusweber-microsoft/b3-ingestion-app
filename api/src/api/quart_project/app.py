@@ -13,7 +13,7 @@ def run():
 
 def create_app():
     secrets = Secrets.getInstance()
-    cosmos_repository = CosmosRepository(connection_string=secrets.connection_string_cosmos_db, database_name="b3-gpt-db", container_name="b3-gpt-container")
+    cosmos_repository = CosmosRepository(connection_string=secrets.connection_string_cosmos_db, database_name="b3-gpt-db")
     storage_container_repository = StorageContainerRepository(connection_string=secrets.connection_string_storage_container)
     
     setup_routes(app, cosmos_repository, storage_container_repository)

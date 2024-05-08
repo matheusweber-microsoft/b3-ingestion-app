@@ -7,5 +7,4 @@ class StorageDocumentRepository():
         self.repository = repository
 
     def upload_file(self, document: Document):
-        print("Uploading start")
         self.repository.save_file_to_azure(document.documentFile, container_path=document.get_container_path())
