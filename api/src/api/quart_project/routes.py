@@ -1,4 +1,6 @@
+from api.core.theme.application.use_cases.list_themes import ListTheme
 from api.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
+from api.infra.cosmosDB.repositories.cosmosDB_theme_repository import ThemeRepository
 from api.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from quart import jsonify, request
 import json
@@ -20,5 +22,18 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         try:
             response = use_case.execute(CreateDocumentRequest(documentTitle=data["documentTitle"], theme=data["theme"], subtheme=data["subtheme"], expiryDate=data["expiryDate"], documentFile=files["documentFile"], uploadedBy=data["uploadedBy"], language=data["language"]))
             return jsonify({'id': str(response.id)}), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+        
+    @app.get("/api/v1/themes")
+    async def get_themes():
+        data = await request.form
+        use_case = ListTheme(ThemeRepository(cosmos_repository))
+
+        try:
+            response = use_case.execute()
+            themes_json = [theme.to_dict() for theme in response.data]
+            print(themes_json)
+            return themes_json, 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400
