@@ -127,7 +127,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+<<<<<<< HEAD
 .venv/
+=======
+>>>>>>> 2f3ba40 (Start)
 
 
 # Spyder project settings
@@ -164,6 +167,7 @@ cython_debug/
 
 .DS_Store
 .idea/
+
 logs
 *.log
 npm-debug.log*
