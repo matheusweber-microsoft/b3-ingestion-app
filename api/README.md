@@ -17,3 +17,14 @@ to run api
 cd api
 poetry run start
 ```
+
+```configuration
+
+Provide a .env file with the follow values:
+
+CONNECTION_STRING_AZURE_QUEUE=
+CONNECTION_STRING_COSMOS_DB=
+CONNECTION_STRING_STORAGE_CONTAINER=
+DATABASE_NAME=
+DOCUMENTS_QUEUE = 
+```
