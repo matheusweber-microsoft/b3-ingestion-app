@@ -37,3 +37,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return themes_json, 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400
+        
+    @app.get("/api/v1/hello")
+    async def hello_world():
+        return jsonify({'message': "Hello world!"}), 200
