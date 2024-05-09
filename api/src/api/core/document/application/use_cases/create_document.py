@@ -7,6 +7,7 @@ from api.core.document.application.use_cases.exceptions import DocumentAlreadyEx
 from api.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from api.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from api.infra.storageQueue.StorageQueueService import StorageQueueService
+import os
 
 @dataclass
 class CreateDocumentRequest:
@@ -27,7 +28,7 @@ class CreateDocument:
     def __init__(self, repository: DocumentRepository, storageRepository: StorageDocumentRepository):
         self.repository = repository
         self.storageRepository = storageRepository
-        self.queueService = StorageQueueService("original-docs-action-received")
+        self.queueService = StorageQueueService(os.getenv('DOCUMENTS_QUEUE'))
 
     def execute(self, request: CreateDocumentRequest) -> CreateDocumentResponse:
         try:

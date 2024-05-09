@@ -1,13 +1,11 @@
-from api.infra.secrets import Secrets
 from azure.storage.queue import QueueClient
 import json
 import base64
+import os
 
 class StorageQueueService:
     def __init__(self, queue_name):
-        secrets = Secrets.getInstance()
-
-        self.queue_client = QueueClient.from_connection_string(secrets.connection_string_azure_queue, queue_name)
+        self.queue_client = QueueClient.from_connection_string(os.getenv('CONNECTION_STRING_AZURE_QUEUE'), queue_name)
 
     def send_message(self, message_dict):
         message = json.dumps(message_dict)
