@@ -11,8 +11,8 @@ export default function UploadDocument() {
       backgroundColor: lightTheme.colors.background,
     }}>
       <Header />
-      <div className="content" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px'  }}>
-        < UploadDocumentForm />
+      <div className="content" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px', height: '100vh' }}>
+        <UploadDocumentForm />
       </div>
     </main>
   );
