@@ -127,7 +127,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+<<<<<<< HEAD
 .venv/
+=======
+>>>>>>> 2f3ba40 (Start)
 
 # Spyder project settings
 .spyderproject
@@ -163,6 +166,7 @@ cython_debug/
 
 .DS_Store
 .idea/
+<<<<<<< HEAD
 secrets.py
 
 # Logs
@@ -189,3 +193,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+=======
+<<<<<<< HEAD
+secrets.py
+=======
+>>>>>>> 2f3ba40 (Start)
+>>>>>>> f06a479 (Start)
