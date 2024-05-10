@@ -17,6 +17,7 @@ azure-storage-queue = "^12.10.0"
 azure-cosmos = "^4.6.0"
 python-dotenv = "^1.0.1"
 azure-storage-blob = "^12.20.0"
+quart-cors = "^0.7.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

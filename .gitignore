@@ -127,10 +127,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-<<<<<<< HEAD
 .venv/
-=======
->>>>>>> 2f3ba40 (Start)
+poetry.lock
+
 
 
 # Spyder project settings

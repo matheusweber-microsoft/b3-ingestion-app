@@ -5,8 +5,10 @@ from api.quart_project.routes import setup_routes
 from api.infra.cosmosDB.cosmosRepository import CosmosRepository
 from dotenv import load_dotenv
 import os
+from quart_cors import cors, route_cors
 
 app = Quart(__name__)
+app = cors(app, allow_origin="http://localhost:5173")
 
 def run():
     app = create_app()
