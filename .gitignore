@@ -127,10 +127,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-<<<<<<< HEAD
 .venv/
-=======
->>>>>>> 0068cc9 (Start)
+
 
 # Spyder project settings
 .spyderproject
