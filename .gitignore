@@ -127,14 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-<<<<<<< HEAD
 .venv/
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 2f3ba40 (Start)
-
->>>>>>> f06a479 (Start)
 # Spyder project settings
 .spyderproject
 .spyproject
