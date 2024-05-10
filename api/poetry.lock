@@ -803,6 +803,7 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 <<<<<<< HEAD
+<<<<<<< HEAD
 name = "requests"
 version = "2.31.0"
 description = "Python HTTP for Humans."
@@ -834,6 +835,8 @@ files = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 =======
+=======
+>>>>>>> e3cd819 (First version of layout done)
 name = "quart-cors"
 version = "0.7.0"
 description = "A Quart extension to provide Cross Origin Resource Sharing, access control, support"
@@ -846,6 +849,9 @@ files = [
 
 [package.dependencies]
 quart = ">=0.15"
+<<<<<<< HEAD
+>>>>>>> e3cd819 (First version of layout done)
+=======
 >>>>>>> e3cd819 (First version of layout done)
 
 [[package]]
@@ -923,7 +929,11 @@ lock-version = "2.0"
 python-versions = "^3.10"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 content-hash = "7e131a2051c2fc092d3af9dd0f207429c73e671bfc2be0846e16e66dfd584433"
+=======
+content-hash = "2fa3290dfe8b14ce0e61de8ba7f4dab465fdb32874962339bfeec50f3f2c1e53"
+>>>>>>> e3cd819 (First version of layout done)
 =======
 content-hash = "2fa3290dfe8b14ce0e61de8ba7f4dab465fdb32874962339bfeec50f3f2c1e53"
 >>>>>>> e3cd819 (First version of layout done)
