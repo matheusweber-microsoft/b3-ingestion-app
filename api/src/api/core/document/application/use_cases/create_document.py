@@ -3,7 +3,7 @@ from uuid import UUID
 import datetime
 
 from api.core.document.domain.document import Document
-from api.core.document.application.use_cases.exceptions import DocumentAlreadyExists, InvalidDocument
+from api.core.document.application.use_cases.exceptions import DocumentAlreadyExists, InvalidDocument, GenericErrorUploadFile
 from api.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from api.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from api.infra.storageQueue.StorageQueueService import StorageQueueService
@@ -47,7 +47,13 @@ class CreateDocument:
         if self.repository.verify_duplicity(document=document):
             raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
                 
-        self.storageRepository.upload_file(document)
+        try:
+            self.storageRepository.upload_file(document)
+        except Exception as e:
+            if e.error_code == "BlobAlreadyExists":
+                raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
+            else:
+                raise GenericErrorUploadFile(e) 
 
         self.repository.save(document)
 
