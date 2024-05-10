@@ -56,17 +56,6 @@ const UploadDocumentForm = (props) => {
   };
   
   return (
-<<<<<<< HEAD
-    <main>
-<<<<<<< HEAD
-      <Title title="Upload Document" />
-      <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }}>
-        <div className="flex flex-row space-x-4">
-          <div className="flex flex-col flex-grow">
-            <label htmlFor="field1" className="text-xs font-bold">Document Title:</label>
-            <input type="text" id="field2" name="field2" className="border border-gray-300 rounded-md p-1 mt-2" required/>
-          </div>
-=======
     <main class="relative">
       <div>
         <Title title="Upload Document" />
@@ -74,7 +63,6 @@ const UploadDocumentForm = (props) => {
         <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'none' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
           { showSuccessMessage && <SuccessMessage message="Success on upload document" id="successMessage" /> }
->>>>>>> a8f4cf2 (Add loading, success and error message)
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">
@@ -125,46 +113,9 @@ const UploadDocumentForm = (props) => {
             <input type="file" id="file" name="file" className="border border-gray-300 rounded-md p-2" required/>
           </div>
 
-<<<<<<< HEAD
-        <div className="flex flex-col">
-        <label htmlFor="field1" className="text-xs font-bold">File:</label>
-          <input type="file" id="file" name="file" className="border border-gray-300 rounded-md p-2" required/>
-        </div>
-
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
-      </form>
-=======
-        <Title title="Upload Document" />
-        <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }}>
-          <div className="flex flex-col">
-            <label htmlFor="field1" className="text-xs font-bold">Document Title:</label>
-            <input type="text" id="field2" name="field2" className="border border-gray-300 rounded-md p-1 mt-2" />
-          </div>
-
-          <div className="flex flex-col space-y-2">
-            <label htmlFor="field2" className="text-xl font-bold">Field 2:</label>
-            <input type="text" id="field2" name="field2" className="border border-gray-300 rounded-md p-2" />
-
-            <label htmlFor="field3" className="text-xl font-bold">Field 3:</label>
-            <input type="text" id="field3" name="field3" className="border border-gray-300 rounded-md p-2" />
-
-            <label htmlFor="field4" className="text-xl font-bold">Field 4:</label>
-            <input type="text" id="field4" name="field4" className="border border-gray-300 rounded-md p-2" />
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="file" className="text-xl font-bold">File:</label>
-            <input type="file" id="file" name="file" className="border border-gray-300 rounded-md p-2" />
-          </div>
-
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
-        </form>
->>>>>>> f06a479 (Start)
-=======
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
         </form>
       </div>
->>>>>>> a8f4cf2 (Add loading, success and error message)
     </main>
   );
 }
