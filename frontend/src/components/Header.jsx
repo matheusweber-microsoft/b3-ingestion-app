@@ -1,5 +1,5 @@
 import { useState } from "react";
-import lightTheme from '../styles/theme.js';
+import lightTheme from "../styles/theme.js";
 
 export default function Header() {
     return (
