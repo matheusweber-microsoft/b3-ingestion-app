@@ -7,3 +7,6 @@ class DocumentNotFound(Exception):
 
 class DocumentAlreadyExists(Exception):
     pass
+
+class GenericErrorUploadFile(Exception):
+    pass

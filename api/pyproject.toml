@@ -12,11 +12,14 @@ quart = "^0.19.5"
 pytest = "^8.2.0"
 hypercorn = "^0.14.0"
 
+<<<<<<< HEAD
 pymongo = "^4.7.2"
 azure-storage-queue = "^12.10.0"
 azure-cosmos = "^4.6.0"
 python-dotenv = "^1.0.1"
 azure-storage-blob = "^12.20.0"
+=======
+>>>>>>> e3cd819 (First version of layout done)
 quart-cors = "^0.7.0"
 [build-system]
 requires = ["poetry-core"]
