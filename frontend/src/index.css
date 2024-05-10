@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  html {
+    font-family: "Mulish", system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .input {
+    @apply border border-gray-300 rounded-md w-full p-2;
+  }
+}
