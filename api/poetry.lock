@@ -906,4 +906,8 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
+<<<<<<< HEAD
 content-hash = "7e131a2051c2fc092d3af9dd0f207429c73e671bfc2be0846e16e66dfd584433"
+=======
+content-hash = "2fa3290dfe8b14ce0e61de8ba7f4dab465fdb32874962339bfeec50f3f2c1e53"
+>>>>>>> e3cd819 (First version of layout done)

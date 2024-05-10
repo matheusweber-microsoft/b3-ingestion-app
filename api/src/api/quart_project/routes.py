@@ -7,10 +7,11 @@ import json
 from api.core.category.application.use_cases.create_category import CreateCategory, CreateCategoryRequest
 from api.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from api.core.document.application.use_cases.create_document import CreateDocument, CreateDocumentRequest, CreateDocumentResponse
-
+from quart_cors import cors, route_cors
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
+    @route_cors(allow_origin="http://localhost:5173")
     async def create_document():
         data = await request.form
         files = await request.files
@@ -26,6 +27,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
+    @route_cors(allow_origin="http://localhost:5173")
     async def get_themes():
         data = await request.form
         use_case = ListTheme(ThemeRepository(cosmos_repository))
