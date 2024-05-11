@@ -10,9 +10,10 @@ import CustomFileInput from '../CustomFileInput.jsx';
 const UploadDocumentForm = (props) => {
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [subthemes, setSubthemes] = useState([]);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [response, setResponse] = useState({});
 
   const { themes = [], onLoading } = props;
   const fileInputRef = useRef();
@@ -46,11 +47,12 @@ const UploadDocumentForm = (props) => {
 
     onLoading(true);
     setShowErrorMessage(false);
-    setShowSuccessMessage(false);
+    setShowSuccessMessage(true);
 
     uploadDocument(title.value, theme.value, subtheme.value, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
       document.getElementById("messages").style.display = "block";
       if (response.success) {
+        setResponse(response);
         setShowSuccessMessage(true);
         title.value = ""; // Clear the title field
         theme.value = "default"; // Reset the theme select to default
@@ -70,13 +72,13 @@ const UploadDocumentForm = (props) => {
     });
   };
   return (
-    <main class="relative">
+    <main className="relative">
       <div>
         <Title title="Registrar Documento" />
 
-        <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'none' }}>
+        <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'block' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
-          { showSuccessMessage && <SuccessMessage message="Cadastro de documento foi um sucesso!" id="successMessage" /> }
+          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`document/${response.id}`} id="successMessage" /> }
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">

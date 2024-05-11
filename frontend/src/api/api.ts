@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateDocumentResponse, Theme } from "./models";
+import { CreateDocumentResponse, Theme, ViewDocument } from "./models";
 const API_URL = 'http://localhost:5000/api/v1/';
 
 export async function fetchThemes(): Promise<[Theme] | undefined> {
@@ -37,14 +37,26 @@ export async function uploadDocument(
     formData.append('language', language);
 
     try {
-      await axios.post(API_URL + 'document', formData, {
+      const response = await axios.post(API_URL + 'document', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      return { success: true, message: 'Document uploaded successfully' };
+      const documentId = response.data['id'];
+      return { success: true, message: 'Document uploaded successfully', id: documentId };
     } catch (error) {
       const errorMessage = error.response.data['error'];
-      return { success: false, message: errorMessage || error.message };
+      return { success: false, message: errorMessage || error.message, id: "" };
     }
   }
+
+export async function getDocument(id): Promise<[ViewDocument] | undefined> {
+  try {
+      const response = await axios.get(API_URL + 'document/' + id);
+      const document = response.data;
+      return document;
+  } catch (error) {
+      console.error('Error fetching document:', error);
+  }
+  return undefined;
+}

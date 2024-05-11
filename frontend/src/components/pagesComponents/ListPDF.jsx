@@ -2,12 +2,12 @@ import React from 'react';
 import { useState } from "react";
 import './ListPDF.css';
 
-const ListPDF = () => {
-    const documents = Array.from({ length: 16 }, (_, i) => ({
-        id: i + 1,
-        citation: `Citação ${i + 1}`,
-        indexedDate: "20/04/2024",
-      }));
+const ListPDF = ({ documents }) => {
+    // const documents = Array.from({ length: 16 }, (_, i) => ({
+    //     id: i + 1,
+    //     citation: `Citação ${i + 1}`,
+    //     indexedDate: "20/04/2024",
+    //   }));
     
       const [currentPage, setCurrentPage] = useState(1);
       const documentsPerPage = 4;
@@ -53,9 +53,9 @@ const ListPDF = () => {
                 <tbody>
                     {currentDocuments.map((document) => (
                         <tr key={document.id}>
-                            <td className="border px-4 py-2">{document.citation}</td>
-                            <td className="border px-4 py-2">{document.indexedDate}</td>
-                            <td className="border px-4 py-2">Visualizar</td>
+                            <td className="border px-4 py-2">{document.filePageName}</td>
+                            <td className="border px-4 py-2">{document.indexCompletionDate}</td>
+                            <td className="border px-4 py-2"><a href={document.documentURL} target="_blank">Visualizar</a></td>
                         </tr>
                     ))}
                 </tbody>
