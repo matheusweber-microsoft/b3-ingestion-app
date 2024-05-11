@@ -1,5 +1,6 @@
 import DocumentsList from "./pages/DocumentsList";
 import UploadDocument from "./pages/UploadDocument";
+import ViewDocument from "./pages/ViewDocument";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -14,6 +15,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<DocumentsList />} />
             <Route path="/upload" element={<UploadDocument />} />
+            <Route path="/document/:id" element={<ViewDocument />} />
           </Routes>
         </div>
       </div>
