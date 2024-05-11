@@ -1,6 +1,7 @@
 from typing import List
 from uuid import UUID
-from api.core.document.domain.document import Document, DocumentOutput
+from api.core.document.application.use_cases.exceptions import DocumentNotFound
+from api.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from api.infra.cosmosDB.cosmosRepository import CosmosRepository
  
 class DocumentRepository():
@@ -20,12 +21,6 @@ class DocumentRepository():
         }
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 
-    def get_by_id(self, id: UUID) -> Document | None:
-        item = self.repository.get_by_id(id)
-        if item:
-            return Document(id=UUID(item["id"]), title=item["title"])
-        return None
-    
     def list(self, filters) -> List[DocumentOutput]:
         documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "uploadedBy": 1, "_id": 0})
         list_of_documents = []
@@ -35,5 +30,12 @@ class DocumentRepository():
                 documentToSave = DocumentOutput(UUID(document["id"]), document["fileName"], document["documentTitle"], document["theme"], document["subtheme"], document["indexStatus"], document["uploadDate"], document["expiryDate"], document["uploadedBy"])
                 list_of_documents.append(documentToSave)
 
-        print(documents)
         return list_of_documents
+    
+    def get_by_id(self, id: UUID) -> SingleDocumentOutput:
+        document = SingleDocumentOutput(self.repository.get_by_id(self.collection_name, str(id)))
+
+        if document == None:
+            raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
+            
+        return document

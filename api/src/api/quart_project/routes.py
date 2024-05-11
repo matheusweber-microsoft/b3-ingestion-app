@@ -8,6 +8,8 @@ from api.core.category.application.use_cases.create_category import CreateCatego
 from api.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from api.core.document.application.use_cases.create_document import CreateDocument, CreateDocumentRequest, CreateDocumentResponse
 from api.core.document.application.use_cases.list_documents import ListDocuments
+from api.core.document.application.use_cases.get_document import GetDocument
+
 from quart_cors import cors, route_cors
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
@@ -61,6 +63,17 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             documents_json = [document.to_dict() for document in response.data]
             print(documents_json)
             return documents_json, 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+        
+    @app.get("/api/v1/documents/<id>")
+    @route_cors(allow_origin="http://localhost:5173")
+    async def get_document(id):
+        use_case = GetDocument(DocumentRepository(cosmos_repository))
+
+        try:
+            response = use_case.execute(GetDocument.Input(id))
+            return (response.data.to_dict(), 200)
         except Exception as e:
             return jsonify({'error': str(e)}), 400
         

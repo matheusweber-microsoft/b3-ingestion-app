@@ -56,7 +56,6 @@ const UploadDocumentForm = (props) => {
         theme.value = "default"; // Reset the theme select to default
         subtheme.value = "default"; // Reset the subtheme select to default
         expiryDate.value = ""; // Clear the expiry date field
-        language.value = "eng"; // Reset the language select to English
         file.value = ""; // Clear the file input
         handleClean();
       } else {
@@ -73,25 +72,25 @@ const UploadDocumentForm = (props) => {
   return (
     <main class="relative">
       <div>
-        <Title title="Upload Document" />
+        <Title title="Registrar Documento" />
 
         <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'none' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
-          { showSuccessMessage && <SuccessMessage message="Success on upload document" id="successMessage" /> }
+          { showSuccessMessage && <SuccessMessage message="Cadastro de documento foi um sucesso!" id="successMessage" /> }
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">
             <div className="flex flex-col flex-grow" >
-              <CustomInput placeholder="Document Title" name="title"/>
+              <CustomInput placeholder="Título do Documento" name="title" disabled={false}/>
               {/* <input type="text" id="field2" name="title" className="border border-gray-300 rounded-md p-1 mt-2" required/> */}
             </div>
           </div>
 
           <div className="flex flex-row space-x-4 " style={{ marginTop: '30px' }}>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="field1" className="text-xs font-bold">Theme:</label>
+              <label htmlFor="field1" className="text-xs font-bold">Tema:</label>
               <select id="theme" name="theme" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required onChange={handleThemeChange}>
-                <option value="default">Select a theme</option>
+                <option value="default">Selecione um tema</option>
                 {themes.map((theme, index) => (
                   <option key={index} value={theme.themeId}>{theme.themeName}</option>
                 ))}
@@ -99,11 +98,11 @@ const UploadDocumentForm = (props) => {
             </div>
 
             <div className="flex flex-col  flex-grow">
-              <label htmlFor="field1" className="text-xs font-bold">Subtheme:</label>
+              <label htmlFor="field1" className="text-xs font-bold">Subtema:</label>
               <select id="subtheme" name="subtheme" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
-                <option value="default">Select a theme</option>
+                <option value="default">Selecione um subtema</option>
                 {
-                  subthemes.length === 0 ? <option value="default">Select a theme</option> : subthemes.map((subtheme, index) => (
+                  subthemes.length === 0 ? <option value="default">Selecione um tema</option> : subthemes.map((subtheme, index) => (
                     <option key={index} value={subtheme.subthemeId}>{subtheme.subthemeName}</option>
                   ))
                 }
@@ -111,25 +110,27 @@ const UploadDocumentForm = (props) => {
             </div>
 
             <div className="flex flex-col  flex-grow">
-              <label htmlFor="field1" className="text-xs font-bold">Expiry Date:</label>
+              <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
               <input type="date" id="field4" name="expiryDate" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
             </div>
-            <div className="flex flex-col  flex-grow">
-              <label htmlFor="field1" className="text-xs font-bold">Language:</label>
-              <select id="language" name="language" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
-                <option value="eng">English</option>
-                <option value="pt-br">Portuguese</option>
-              </select>
-            </div>
-          </div>
+            <input type="hidden" id="language" name="language" value="pt-BR" />
 
+            {/* <div className="flex flex-col  flex-grow">
+                  <label htmlFor="field1" className="text-xs font-bold">Language:</label>
+                  <select id="language" name="language" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
+                    <option value="eng">English</option>
+                    <option value="pt-br">Portuguese</option>
+                  </select>
+                </div>
+           */}
+          </div>
           <div className="flex flex-col">
           <label htmlFor="field1" className="text-xs font-bold" style={{ paddingBottom: '10px'  }} >File:</label>
             {/* <input type="file" id="file" name="file" className="border border-gray-300 rounded-md p-2" required/> */}
-          <CustomFileInput ref={fileInputRef} placeholder="Select a file" name="file" />
+          <CustomFileInput ref={fileInputRef} placeholder="Selecione um Arquivo" name="file" />
           </div>
           
-          <CustomButton buttonText="Submit" />
+          <CustomButton buttonText="Enviar" />
         </form>
       </div>
     </main>
