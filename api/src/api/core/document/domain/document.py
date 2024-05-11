@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from dataclasses import dataclass, field
+from typing import List
 from uuid import UUID
 import uuid
 import os
@@ -136,4 +137,60 @@ class DocumentOutput:
             "uploadDate": str(self.uploadDate),
             "expiryDate": str(self.expiryDate),
             "uploadedBy": self.uploadedBy
+        }
+
+@dataclass
+class DocumentPage:
+    filePageName: str
+    storageFilePath: str
+    indexCompletionDate: str
+
+    def __init__(self, data: dict):
+        self.filePageName = data.get("filePageName", "")
+        self.storageFilePath = data.get("storageFilePath", "")
+        self.indexCompletionDate = data.get("indexCompletionDate", "")
+
+    def to_dict(self):
+        return {
+            "filePageName": self.filePageName,
+            "storageFilePath": self.storageFilePath,
+            "indexCompletionDate": self.indexCompletionDate
+        }
+
+@dataclass
+class SingleDocumentOutput:
+    id: UUID
+    fileName: str
+    documentTitle: str
+    theme: str
+    subtheme: str
+    uploadDate: str
+    expiryDate: str
+    uploadedBy: str
+    documentPages: List[DocumentPage]
+
+    def __init__(self, data: dict):
+        self.id = UUID(data.get("id", ""))
+        self.fileName = data.get("fileName", "")
+        self.documentTitle = data.get("documentTitle", "")
+        self.theme = data.get("theme", "")
+        self.subtheme = data.get("subtheme", "")
+        self.uploadDate = data.get("uploadDate", "")
+        self.expiryDate = data.get("expiryDate", "")
+        self.uploadedBy = data.get("uploadedBy", "")
+        self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
+
+    def to_dict(self):
+        document_pages = [page.to_dict() for page in self.documentPages]
+
+        return {
+            "id": str(self.id),
+            "fileName": self.fileName,
+            "documentTitle": self.documentTitle,
+            "theme": self.theme,
+            "subtheme": self.subtheme,
+            "uploadDate": str(self.uploadDate),
+            "expiryDate": str(self.expiryDate),
+            "uploadedBy": self.uploadedBy,
+            "documentPages": document_pages
         }

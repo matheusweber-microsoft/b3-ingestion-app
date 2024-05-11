@@ -44,3 +44,8 @@ class CosmosRepository:
         collection = self.db.get_collection(collectionName)
         documents = list(collection.find(filter, fields))
         return documents
+
+    def get_by_id(self, collectionName, item_id):
+        collection = self.db.get_collection(collectionName)
+        item = collection.find_one({"id": item_id})
+        return item
