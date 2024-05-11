@@ -7,6 +7,7 @@ import json
 from api.core.category.application.use_cases.create_category import CreateCategory, CreateCategoryRequest
 from api.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from api.core.document.application.use_cases.create_document import CreateDocument, CreateDocumentRequest, CreateDocumentResponse
+from api.core.document.application.use_cases.list_documents import ListDocuments
 from quart_cors import cors, route_cors
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
@@ -35,8 +36,31 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         try:
             response = use_case.execute()
             themes_json = [theme.to_dict() for theme in response.data]
-            print(themes_json)
             return themes_json, 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+    
+    @app.get("/api/v1/documents")
+    @route_cors(allow_origin="http://localhost:5173")
+    async def get_documents():
+        data = await request.json
+
+        documentTitle = request.args.get("documentTitle")
+        fileName = request.args.get("fileName")
+        uploadDate = request.args.get("uploadDate")
+        onlyExpired = request.args.get("onlyExpired")
+        theme = request.args.get("theme")
+        subtheme = request.args.get("subtheme")
+        uploadedBy = request.args.get("uploadedBy")
+        input = ListDocuments.Input(documentTitle=documentTitle, fileName=fileName, uploadDate=uploadDate, onlyExpired=onlyExpired, theme=theme, subtheme=subtheme, uploadedBy=uploadedBy)
+
+        use_case = ListDocuments(DocumentRepository(cosmos_repository))
+
+        try:
+            response = use_case.execute(input)
+            documents_json = [document.to_dict() for document in response.data]
+            print(documents_json)
+            return documents_json, 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400
         

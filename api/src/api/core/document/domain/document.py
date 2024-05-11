@@ -12,7 +12,7 @@ class Document(Entity):
     theme: str
     subtheme: str
     expiryDate: datetime
-    documentFile: FileStorage
+    documentFile: FileStorage  
     language: str
     filename: str = ""
     storageFilePath: str = ""
@@ -21,6 +21,7 @@ class Document(Entity):
     indexCompletionDate: str = ""
     originalFileFormat: str = ""
     uploadedBy: str = ""
+
 
     def __post_init__(self):
         self.fill_fields()
@@ -110,3 +111,29 @@ class Document(Entity):
     
     def get_container_path(self):
         return f"{self.theme}/{self.subtheme}/"
+    
+
+@dataclass
+class DocumentOutput:
+    id: UUID
+    fileName: str
+    documentTitle: str
+    theme: str
+    subtheme: str
+    indexStatus: str
+    uploadDate: str
+    expiryDate: str
+    uploadedBy: str
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "fileName": self.fileName,
+            "documentTitle": self.documentTitle,
+            "theme": self.theme,
+            "subtheme": self.subtheme,
+            "indexStatus": self.indexStatus,
+            "uploadDate": str(self.uploadDate),
+            "expiryDate": str(self.expiryDate),
+            "uploadedBy": self.uploadedBy
+        }
