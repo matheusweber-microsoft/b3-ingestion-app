@@ -45,13 +45,13 @@ class CreateDocument:
             raise InvalidDocument(err)
         
         if self.repository.verify_duplicity(document=document):
-            raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
+            raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
                 
         try:
             self.storageRepository.upload_file(document)
         except Exception as e:
             if e.error_code == "BlobAlreadyExists":
-                raise DocumentAlreadyExists("Document with the same document title, theme and subtheme already exists.")
+                raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
             else:
                 raise GenericErrorUploadFile(e) 
 

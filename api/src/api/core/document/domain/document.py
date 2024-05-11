@@ -36,32 +36,32 @@ class Document(Entity):
 
     def validate(self):
         if len(self.documentTitle) > 255:
-            self.notification.add_error("documentTitle cannot be longer than 255")
+            self.notification.add_error("Titulo não pode ter mais de 255 caracteres")
 
         if not self.documentTitle: 
-            self.notification.add_error("documentTitle cannot be empty")
+            self.notification.add_error("Titulo não pode estar vazio")
 
         if not self.theme: 
-            self.notification.add_error("theme cannot be empty")
+            self.notification.add_error("Tema não pode estar vazio")
 
         if not self.subtheme:
-            self.notification.add_error("theme cannot be empty")
+            self.notification.add_error("Subtema não pode estar vazio")
 
         if not self.expiryDate:
-            self.notification.add_error("expiry date cannot be empty")
+            self.notification.add_error("Data de validade não pode estar vazia")
 
         if not self.is_valid_date(self.expiryDate):     
-            self.notification.add_error("expiryDate must be a valid date")
+            self.notification.add_error("Data de validade deve ser uma data válida")
 
         if not self.documentFile:
-            self.notification.add_error("documentFile cannot be empty")
+            self.notification.add_error("Arquivo não pode estar vazio")
 
         if not self.language:
-            self.notification.add_error("language cannot be empty")
+            self.notification.add_error("Idioma não pode estar vazio")
             
         ext = self.documentFile.filename.split('.')[-1].lower()     
         if ext not in ('doc', 'docx', 'pdf'):
-            self.notification.add_error("Only .doc and .pdf files are accepted")
+            self.notification.add_error("Apenas arquivos .doc e .pdf são aceitos")
 
         if self.notification.has_errors:
             raise ValueError(self.notification.messages)
