@@ -1,5 +1,7 @@
 import DocumentDetails from '../components/DocumentDetails.jsx';
 import Header from '../components/Header.jsx';
+import Title from '../components/Title.jsx';
+import ListPDF from '../components/pagesComponents/ListPDF.jsx';
 import lightTheme from '../styles/theme.js';
 
 export default function ViewDocument() {
@@ -15,6 +17,12 @@ export default function ViewDocument() {
         expiryDate="2024-06-31"
         uploadedBy="matheus"
       />
+      <div style={{ padding: '10px'}}>
+        <Title title="Lista de citações" />
+      </div>
+      <div style={{ padding: '10px'}}>
+        <ListPDF />
+      </div>
     </div>
   );
 }

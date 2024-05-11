@@ -1,6 +1,6 @@
 import Filters from "../components/Filters";
 import { Link } from "react-router-dom";
-import ListDocuments from "../components/ListDocuments";
+import ListDocuments from "../components/pagesComponents/ListDocuments";
 
 export default function DocumentsList() {
   return (
