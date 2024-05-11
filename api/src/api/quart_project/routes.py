@@ -66,10 +66,10 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         except Exception as e:
             return jsonify({'error': str(e)}), 400
         
-    @app.get("/api/v1/documents/<id>")
+    @app.get("/api/v1/document/<id>")
     @route_cors(allow_origin="http://localhost:5173")
     async def get_document(id):
-        use_case = GetDocument(DocumentRepository(cosmos_repository))
+        use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
 
         try:
             response = use_case.execute(GetDocument.Input(id))

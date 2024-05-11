@@ -4,10 +4,12 @@ from uuid import UUID
 
 from api.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from api.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
+from api.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 
 class GetDocument:
-    def __init__(self, repository: DocumentRepository):
+    def __init__(self, repository: DocumentRepository, storageRepository: StorageDocumentRepository):
         self.repository = repository
+        self.storageRepository = storageRepository
 
     @dataclass
     class Input:
@@ -26,5 +28,8 @@ class GetDocument:
 
     def execute(self, input: Input) -> Output:
         document = self.repository.get_by_id(UUID(input.id))
-       
+
+        for page in document.documentPages:
+            page.documentURL = self.storageRepository.get_document_url(page.storageFilePath)
+               
         return self.Output(data=document)
