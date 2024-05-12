@@ -14,4 +14,10 @@ export type Theme = {
 export type CreateDocumentResponse = {
     success: boolean;
     message: string;
+    id: string;
 };
+
+export type DocumentPage = { filePageName: string; indexCompletionDate: string; storageFilePath: string; documentURL: string; };
+
+export type ViewDocument = { documentPages: DocumentPage[]; documentTitle: string; expiryDate: string; fileName: string; id: string; subtheme: string; theme: string; uploadDate: string; uploadedBy: string; };
+

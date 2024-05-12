@@ -6,6 +6,7 @@ import uuid
 import os
 from werkzeug.datastructures import FileStorage
 from api.core._shared.domain.entity import Entity
+from datetime import datetime
 
 @dataclass(eq=False)
 class Document(Entity):
@@ -144,6 +145,7 @@ class DocumentPage:
     filePageName: str
     storageFilePath: str
     indexCompletionDate: str
+    documentURL: str = ""
 
     def __init__(self, data: dict):
         self.filePageName = data.get("filePageName", "")
@@ -154,7 +156,8 @@ class DocumentPage:
         return {
             "filePageName": self.filePageName,
             "storageFilePath": self.storageFilePath,
-            "indexCompletionDate": self.indexCompletionDate
+            "indexCompletionDate": self.indexCompletionDate.strftime("%d/%m/%Y %H:%M:%S"),
+            "documentURL": self.documentURL
         }
 
 @dataclass
@@ -183,14 +186,17 @@ class SingleDocumentOutput:
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
 
+        upload_date = self.uploadDate.strftime("%d/%m/%Y")
+        expiry_date = self.expiryDate.strftime("%d/%m/%Y")
+
         return {
             "id": str(self.id),
             "fileName": self.fileName,
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
-            "uploadDate": str(self.uploadDate),
-            "expiryDate": str(self.expiryDate),
+            "uploadDate": upload_date,
+            "expiryDate": expiry_date,
             "uploadedBy": self.uploadedBy,
             "documentPages": document_pages
         }

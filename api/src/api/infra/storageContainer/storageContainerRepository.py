@@ -36,3 +36,13 @@ class StorageContainerRepository:
         except Exception as e:
             print(f"An exception occurred: {e}")
             return False
+        
+    def get_document_url(self, container_path: str) -> str:
+        container_names = container_path.split("/")
+        container_name = container_names[0]
+        filename = container_names[-1]
+        if len(container_names) > 1:
+            container_name += "/" + "/".join(container_names[1:-1])
+        blob_client = self.blob_service_client.get_blob_client(container_path, filename)
+        blob_url = blob_client.url
+        return blob_url

@@ -8,3 +8,6 @@ class StorageDocumentRepository():
 
     def upload_file(self, document: Document):
         self.repository.save_file_to_azure(document.documentFile, container_path=document.get_container_path())
+
+    def get_document_url(self, path: str):
+        return self.repository.get_document_url(path)
