@@ -76,7 +76,7 @@ class Document(Entity):
     def to_dict(self):
         return {
             "id": str(self.id),
-            "filename": self.filename,
+            "fileName": self.filename,
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
@@ -178,8 +178,21 @@ class SingleDocumentOutput:
         self.documentTitle = data.get("documentTitle", "")
         self.theme = data.get("theme", "")
         self.subtheme = data.get("subtheme", "")
-        self.uploadDate = data.get("uploadDate", "")
-        self.expiryDate = data.get("expiryDate", "")
+        self.uploadDate = ""
+        
+        upload_date = data.get("uploadDate", "")
+        if not upload_date == "":
+            upload_date = upload_date["$date"]
+            if upload_date != None:
+                self.uploadDate = datetime.fromtimestamp(int(upload_date) / 1000)
+        
+        self.expiryDate = ""
+        expiryDate = data.get("expiryDate", "")
+        if not expiryDate == "":
+            expiryDate = expiryDate["$date"]
+            if expiryDate != None:
+                self.expiryDate = datetime.fromtimestamp(int(expiryDate) / 1000)
+
         self.uploadedBy = data.get("uploadedBy", "")
         self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
 
