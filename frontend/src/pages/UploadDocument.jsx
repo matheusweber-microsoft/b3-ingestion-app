@@ -2,7 +2,7 @@ import './UploadDocument.css';
 import '../styles/theme.js';
 import lightTheme from '../styles/theme.js';
 import Header from '../components/Header';
-import UploadDocumentForm from '../components/UploadDocumentForm';
+import UploadDocumentForm from '../components/pagesComponents/UploadDocumentForm.jsx';
 import { useEffect } from "react";
 import { fetchThemes } from '../api/api.ts';
 import { useState } from "react";

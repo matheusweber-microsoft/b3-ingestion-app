@@ -1,11 +1,11 @@
-import Title from './Title.jsx';
+import Title from '../Title.jsx';
 import React, { useState, useEffect, useRef } from 'react';
-import { uploadDocument } from '../api/api.ts';
-import ErrorMessage from './ErrorMessage.jsx';  
-import SuccessMessage from './SuccessMessage.jsx';
-import CustomInput from './CustomInput.jsx';
-import CustomButton from './CustomButton.jsx';
-import CustomFileInput from './CustomFileInput.jsx';
+import { uploadDocument } from '../../api/api.ts';
+import ErrorMessage from '../ErrorMessage.jsx';  
+import SuccessMessage from '../SuccessMessage.jsx';
+import CustomInput from '../CustomInput.jsx';
+import CustomButton from '../CustomButton.jsx';
+import CustomFileInput from '../CustomFileInput.jsx';
 
 const UploadDocumentForm = (props) => {
   const [selectedTheme, setSelectedTheme] = useState(null);
