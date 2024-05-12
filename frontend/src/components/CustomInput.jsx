@@ -25,7 +25,7 @@ const CustomInput = ({ placeholder, name, value, disabled }) => {
         disabled={disabled}
       />
       {isFocused && (
-        <label className="absolute top-0 left-4 text-gray-500 text-sm transition-all">
+        <label className="absolute top-2 left-4 text-gray-500 text-sm transition-all">
           {placeholder}
         </label>
       )}

@@ -76,7 +76,7 @@ class Document(Entity):
     def to_dict(self):
         return {
             "id": str(self.id),
-            "filename": self.filename,
+            "fileName": self.filename,
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
@@ -178,16 +178,32 @@ class SingleDocumentOutput:
         self.documentTitle = data.get("documentTitle", "")
         self.theme = data.get("theme", "")
         self.subtheme = data.get("subtheme", "")
-        self.uploadDate = data.get("uploadDate", "")
-        self.expiryDate = data.get("expiryDate", "")
+        
+        self.uploadDate = ""
+
+        upload_date = data.get("uploadDate", "")
+        if isinstance(upload_date, datetime):
+            self.uploadDate = upload_date.strftime("%d/%m/%Y")
+        else:
+            if not upload_date == "":
+                upload_date = upload_date["$date"]
+                if upload_date != None:
+                    self.uploadDate = datetime.fromtimestamp(int(upload_date) / 1000).strftime("%d/%m/%Y")
+
+        self.expiryDate = ""
+        expiry_date = data.get("expiryDate", "")
+        if isinstance(expiry_date, datetime):
+            self.expiryDate = expiry_date.strftime("%d/%m/%Y")
+        else:
+            if not expiry_date == "":
+                expiry_date = expiry_date["$date"]
+                if expiry_date != None:
+                    self.expiryDate = datetime.fromtimestamp(int(expiry_date) / 1000).strftime("%d/%m/%Y")
         self.uploadedBy = data.get("uploadedBy", "")
         self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
 
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
-
-        upload_date = self.uploadDate.strftime("%d/%m/%Y")
-        expiry_date = self.expiryDate.strftime("%d/%m/%Y")
 
         return {
             "id": str(self.id),
@@ -195,8 +211,8 @@ class SingleDocumentOutput:
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
-            "uploadDate": upload_date,
-            "expiryDate": expiry_date,
+            "uploadDate": self.uploadDate,
+            "expiryDate": self.expiryDate,
             "uploadedBy": self.uploadedBy,
             "documentPages": document_pages
         }

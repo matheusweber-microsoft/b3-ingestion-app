@@ -1,6 +1,9 @@
+import os
 from api.infra.storageContainer.exceptions import FileNotUploaded
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.storage.blob import generate_blob_sas, BlobSasPermissions, BlobClient, BlobServiceClient
+
 from werkzeug.datastructures import FileStorage
+from datetime import datetime, timedelta
 
 class StorageContainerRepository:
     container_name = "originaldocuments"
@@ -38,11 +41,18 @@ class StorageContainerRepository:
             return False
         
     def get_document_url(self, container_path: str) -> str:
-        container_names = container_path.split("/")
-        container_name = container_names[0]
-        filename = container_names[-1]
-        if len(container_names) > 1:
-            container_name += "/" + "/".join(container_names[1:-1])
-        blob_client = self.blob_service_client.get_blob_client(container_path, filename)
-        blob_url = blob_client.url
+        container_name, blob_name = os.path.split(container_path)
+        blob_client = self.blob_service_client.get_blob_client(container_name, blob_name)
+
+        # Generate SAS token
+        sas_token = generate_blob_sas(
+            account_name=blob_client.account_name,
+            container_name=blob_client.container_name,
+            blob_name=blob_client.blob_name,
+            account_key=self.blob_service_client.credential.account_key,
+            permission=BlobSasPermissions(read=True),
+            expiry=datetime.utcnow() + timedelta(hours=1)  # Token valid for 1 hour
+        )
+        # Append the SAS token to the blob URL
+        blob_url = blob_client.url + "?" + sas_token
         return blob_url

@@ -10,7 +10,7 @@ import CustomFileInput from '../CustomFileInput.jsx';
 const UploadDocumentForm = (props) => {
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [subthemes, setSubthemes] = useState([]);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [response, setResponse] = useState({});
@@ -47,7 +47,7 @@ const UploadDocumentForm = (props) => {
 
     onLoading(true);
     setShowErrorMessage(false);
-    setShowSuccessMessage(true);
+    setShowSuccessMessage(false);
 
     uploadDocument(title.value, theme.value, subtheme.value, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
       document.getElementById("messages").style.display = "block";
@@ -78,7 +78,7 @@ const UploadDocumentForm = (props) => {
 
         <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'block' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
-          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`document/${response.id}`} id="successMessage" /> }
+          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`/document/${response.id}`} id="successMessage" /> }
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">

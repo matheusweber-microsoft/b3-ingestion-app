@@ -28,8 +28,7 @@ class GetDocument:
 
     def execute(self, input: Input) -> Output:
         document = self.repository.get_by_id(UUID(input.id))
-
         for page in document.documentPages:
-            page.documentURL = self.storageRepository.get_document_url(page.storageFilePath)
+            page.documentURL = self.storageRepository.get_document_url("documentpages/"+page.storageFilePath)
                
         return self.Output(data=document)
