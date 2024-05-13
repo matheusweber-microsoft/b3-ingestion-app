@@ -24,7 +24,7 @@ class ListDocuments:
         subtheme: str = None
         uploadedBy: str = None
         page: int = 1
-        limit: int = 5
+        limit: int = 10
     
         def toQuery(self) -> dict:
             query = {}
