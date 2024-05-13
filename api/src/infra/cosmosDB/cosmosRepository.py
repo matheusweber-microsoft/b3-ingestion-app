@@ -40,7 +40,7 @@ class CosmosRepository:
         documents = list(collection.find())
         return documents
     
-    def list_all(self, collectionName, filter, fields, page, limit):
+    def list_all(self, collectionName, filter, fields, page=1, limit=999):
         collection = self.db.get_collection(collectionName)
         documents = list(collection.find(filter, fields).skip((page-1)*limit).limit(limit))
         return documents

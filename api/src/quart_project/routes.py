@@ -13,7 +13,11 @@ from quart_cors import route_cors
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
+<<<<<<< HEAD
     @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+=======
+    @route_cors(allow_origin="http://localhost:8080")
+>>>>>>> 2a7f641 (Fix themes)
     async def create_document():
         data = await request.form
         files = await request.files
@@ -29,7 +33,11 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
+<<<<<<< HEAD
     @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+=======
+    @route_cors(allow_origin="http://localhost:8080")
+>>>>>>> 2a7f641 (Fix themes)
     async def get_themes():
         data = await request.form
         use_case = ListTheme(ThemeRepository(cosmos_repository))
@@ -42,7 +50,11 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
     
     @app.get("/api/v1/documents")
+<<<<<<< HEAD
     @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+=======
+    @route_cors(allow_origin="http://localhost:8080")
+>>>>>>> 2a7f641 (Fix themes)
     async def get_documents():
         data = await request.json
 
@@ -67,7 +79,11 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/document/<id>")
+<<<<<<< HEAD
     @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+=======
+    @route_cors(allow_origin="http://localhost:8080")
+>>>>>>> 2a7f641 (Fix themes)
     async def get_document(id):
         use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
 

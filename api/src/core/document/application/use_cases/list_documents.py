@@ -2,13 +2,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-<<<<<<< HEAD:api/src/core/document/application/use_cases/list_documents.py
-from src.core.document.domain.document import Document, DocumentOutput
-from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
-=======
-from api.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
-from api.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
->>>>>>> 9a8a591 (List documents with pagination):api/src/api/core/document/application/use_cases/list_documents.py
+from core.document.domain.document import SingleDocumentOutput
+from infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
+
 
 class ListDocuments:
     def __init__(self, repository: DocumentRepository):
@@ -24,7 +20,7 @@ class ListDocuments:
         subtheme: str = None
         uploadedBy: str = None
         page: int = 1
-        limit: int = 10
+        limit: int = 5
     
         def toQuery(self) -> dict:
             query = {}
