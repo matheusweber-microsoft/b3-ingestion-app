@@ -1,0 +1,1 @@
+tree -a -I '.venv' -a -I 'venv' -a -I '__pycache__' -a -I 'node_modules' > tree.txt -a -I '.idea'  -a -I '.git'  -a -I '.vs-code' 

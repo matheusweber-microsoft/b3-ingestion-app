@@ -1,497 +1,138 @@
-  .
-  ├── .dockerignore
-  ├── .git
-  │   ├── COMMIT_EDITMSG
-  │   ├── FETCH_HEAD
-  │   ├── HEAD
-  │   ├── ORIG_HEAD
-  │   ├── branches
-  │   ├── config
-  │   ├── description
-  │   ├── hooks
-  │   │   ├── applypatch-msg.sample
-  │   │   ├── commit-msg.sample
-  │   │   ├── fsmonitor-watchman.sample
-  │   │   ├── post-update.sample
-  │   │   ├── pre-applypatch.sample
-  │   │   ├── pre-commit.sample
-  │   │   ├── pre-merge-commit.sample
-  │   │   ├── pre-push.sample
-  │   │   ├── pre-rebase.sample
-  │   │   ├── pre-receive.sample
-  │   │   ├── prepare-commit-msg.sample
-  │   │   ├── push-to-checkout.sample
-  │   │   ├── sendemail-validate.sample
-  │   │   └── update.sample
-  │   ├── index
-  │   ├── info
-  │   │   └── exclude
-  │   ├── logs
-  │   │   ├── HEAD
-  │   │   └── refs
-  │   │       ├── heads
-  │   │       │   ├── initial
-  │   │       │   ├── initial-frontend
-  │   │       │   └── main
-  │   │       └── remotes
-  │   │           └── origin
-  │   │               ├── HEAD
-  │   │               ├── feature
-  │   │               │   ├── documents
-  │   │               │   ├── hellow_world
-  │   │               │   ├── list_themes
-  │   │               │   └── themes
-  │   │               ├── initial
-  │   │               ├── initial-frontend
-  │   │               └── main
-  │   ├── objects
-  │   │   ├── 00
-  │   │   │   └── 68cc9fee52188be0dceb6fe6e70ea5e511aa16
-  │   │   ├── 01
-  │   │   │   └── 0c506bbbfad2b74eb8866ef0a5141084279338
-  │   │   ├── 02
-  │   │   │   ├── 54ef60714dac2f28e57a0c28429827755cb887
-  │   │   │   └── fbd5af62d9c7d31abce94b31fc03ea2b336413
-  │   │   ├── 09
-  │   │   │   └── 2df62fc1f79cbb10b6668825ee888aa10aaca4
-  │   │   ├── 0c
-  │   │   │   ├── 589eccd4d48e270e161a1ab91baee5e5f4b4bc
-  │   │   │   └── a446aab9d09eac8625b53e3df8da661976c458
-  │   │   ├── 0d
-  │   │   │   └── a8591c32878bde53b455d4388cbe625a088f21
-  │   │   ├── 0e
-  │   │   │   ├── 7a9f5765a28341f25ac0e446b1fa75cd495f47
-  │   │   │   └── 85140c83da52b8e929b4049219484f93973e93
-  │   │   ├── 12
-  │   │   │   └── 58aba677696488d78a27d4798ebbbdfa1a881c
-  │   │   ├── 13
-  │   │   │   └── e0b2fd4d5ee95e89436152eeeb9f8a08953bc0
-  │   │   ├── 14
-  │   │   │   └── f4c509c6986b32beb76622dd93bfb0a9f03607
-  │   │   ├── 1a
-  │   │   │   └── 2c3bf29e59a1e572162f03e11aebdd9233e1ce
-  │   │   ├── 1b
-  │   │   │   └── 04b37961bdff87ee2f76d6fc3114fdfa8c4827
-  │   │   ├── 1c
-  │   │   │   └── 81b2e1ed61196506bb8ff4f3748bc761ae6f04
-  │   │   ├── 1f
-  │   │   │   └── 6859b5d727843834828d9fb67b5b6fb6155747
-  │   │   ├── 22
-  │   │   │   └── 7002efe08e8460f4bb5b7e4599b59bc942f168
-  │   │   ├── 23
-  │   │   │   ├── 8155bf8d1242f21c531d8ad019f6fb73c1b323
-  │   │   │   └── aa802e2ec00c17956608c698f276b7c880014b
-  │   │   ├── 24
-  │   │   │   └── 8f037303d36d5265a4c61780af335705349590
-  │   │   ├── 25
-  │   │   │   ├── 4b5f1d95c42d1204cb7156402037969cc9278f
-  │   │   │   └── 7c451fd6cf1956263f029b7adc233e17c35ff4
-  │   │   ├── 26
-  │   │   │   ├── 64e2676792224dc96e2c6d69e4716b8127ddcb
-  │   │   │   └── efac0e7c047c9710a42269aeb002469bbde8fe
-  │   │   ├── 27
-  │   │   │   ├── d212b34fec9f7231e975128a22e2039fae7a49
-  │   │   │   └── e38185f526e665cee33763f86427d11d992571
-  │   │   ├── 2b
-  │   │   │   ├── 596625080c6be0188b2b457a82a543fa1f1279
-  │   │   │   └── 7cbd4f518794b4f9787f37b1f7c3d08e1f9097
-  │   │   ├── 2d
-  │   │   │   └── f2b01f6bd8b2998aba95faccc4596ae73a4964
-  │   │   ├── 2e
-  │   │   │   ├── 22b3bac4382b10fef2d6504d879ced98999357
-  │   │   │   └── 7af2b7f1a6f391da1631d93968a9d487ba977d
-  │   │   ├── 30
-  │   │   │   ├── 51adc31be94374d4016952f90d0e768097e314
-  │   │   │   └── c16807124891a4f5969627e78e904d2cacf3aa
-  │   │   ├── 31
-  │   │   │   └── d4bfc86d07f9b138447f6d8d8bf7e120bff81c
-  │   │   ├── 33
-  │   │   │   └── 1a60f891d73be26f188c2775c466eee111e62b
-  │   │   ├── 36
-  │   │   │   └── b59b931e4aa8562d9b825c57f46e9f154eef5d
-  │   │   ├── 38
-  │   │   │   └── b93666f4d4bedcb5c9c4ffc9d43323f969e20f
-  │   │   ├── 39
-  │   │   │   └── e68aac62e51bb068cbbfafc87c1f0228c066ce
-  │   │   ├── 3a
-  │   │   │   └── 8a8690cb205f7bcdb480649a49489391895a90
-  │   │   ├── 3b
-  │   │   │   └── 67f4e8859fb6e8ee30df0f1e2fb50f1300b3d8
-  │   │   ├── 3d
-  │   │   │   └── 1e6292c0762cf3656693ba782dda5fc13a7165
-  │   │   ├── 3e
-  │   │   │   ├── 212e1d4307a332e8511f530bc48a4ad5ed6f95
-  │   │   │   └── 54463f1f7001c40dcc215af9f926bb1dbc6bdc
-  │   │   ├── 43
-  │   │   │   └── 2fb3c74ad94e908e8b5bb77c5b577bef188ba5
-  │   │   ├── 45
-  │   │   │   ├── a7924f54b3e932e3999b47ea888f04f125b3ae
-  │   │   │   └── d04d5d5e591b21da5c6f8072c7c28075350029
-  │   │   ├── 49
-  │   │   │   ├── 5a195518a6bd1f1bdcf33f40a1795291f33ba3
-  │   │   │   └── e914fb0f5e2b2e5de51e42b5e50b4b98f4ecfd
-  │   │   ├── 4c
-  │   │   │   └── b53128d788242fb31b4444af449660041ffeb9
-  │   │   ├── 4f
-  │   │   │   └── c613959c0b6cff78f8cefd6435523b87a5a075
-  │   │   ├── 50
-  │   │   │   └── d903748867e2ad59522178c3013574015a3e34
-  │   │   ├── 51
-  │   │   │   └── 30b833fb2f38d95638010ba62c3e543d67ac52
-  │   │   ├── 52
-  │   │   │   └── 4c4a5ce9cb9d8e4824b6d904369a21478d4894
-  │   │   ├── 54
-  │   │   │   ├── 628f1c5e45511a07bfc1fe110d86042e65ddb5
-  │   │   │   └── b39dd1d900e866bb91ee441d372a8924b9d87a
-  │   │   ├── 55
-  │   │   │   └── 7b37c44d5cb352ff331f90e7fba0189cdfa65e
-  │   │   ├── 56
-  │   │   │   ├── b2b60dfde4c822e4343a48b16f20863f31b06a
-  │   │   │   └── df647060dfb9a738ecddcdeec48a9821af12c3
-  │   │   ├── 5a
-  │   │   │   ├── 33944a9b41b59a9cf06ee4bb5586c77510f06b
-  │   │   │   └── 4e97e401baa8992bbf73d41135e423cc8231db
-  │   │   ├── 5c
-  │   │   │   └── 8b409faebfe2af67fab1575018e06e16cb17b3
-  │   │   ├── 5f
-  │   │   │   └── 023df1f7f36fe34824b112ff96178aab620bf8
-  │   │   ├── 61
-  │   │   │   ├── 180fc7cd89cfb76de368784217c2a524743add
-  │   │   │   ├── 6ac7fc8263b46f30fb523c000c73ac05710e6f
-  │   │   │   └── f06f984cf41baa9c9ff5a5c1e7f2cfa28aef4b
-  │   │   ├── 62
-  │   │   │   └── 58eef5c7601e7acc493445893e85961830aea4
-  │   │   ├── 64
-  │   │   │   └── 03df177098abd0ecdf0319b1a3553c33fa737b
-  │   │   ├── 65
-  │   │   │   └── 57d862974ca7a024cd5cf5fee230e33d1c5960
-  │   │   ├── 66
-  │   │   │   └── e93f44be270289e91b70559fe244044b11a827
-  │   │   ├── 67
-  │   │   │   └── 41a865dde84770d33ceebecaa4417ec985ad57
-  │   │   ├── 6b
-  │   │   │   ├── 1db1df0572842e2c16b86d5bbc379df80270bf
-  │   │   │   └── be066226b92b938d19779db3b1d0916fd8d3a9
-  │   │   ├── 6c
-  │   │   │   └── 87de9bb3358469122cc991d5cf578927246184
-  │   │   ├── 6d
-  │   │   │   └── 2542699ca349ddeb48956fd8962d0668dccc33
-  │   │   ├── 6f
-  │   │   │   └── b2e2586674877b863a434cbb54729b896f341e
-  │   │   ├── 72
-  │   │   │   ├── 8656f50696068c33807ee9fc9f0c352eab113b
-  │   │   │   └── 9cf479a60c1ac03a4949fde88e12436c725a0b
-  │   │   ├── 76
-  │   │   │   └── dcec9521187d9b0eb510f6f107f3979a4e7ce3
-  │   │   ├── 7a
-  │   │   │   └── 2cf38c7303871f7d205b44226a4ab60aa4eb66
-  │   │   ├── 7b
-  │   │   │   └── 51637eea7e61295251d65ce1e8614b4240ab5e
-  │   │   ├── 7c
-  │   │   │   └── af9e5eeda77dcc67aefa2ded1d9adf93127e45
-  │   │   ├── 7f
-  │   │   │   └── 9a9982a0e0e09ef5aec826bb12e363f060ee5e
-  │   │   ├── 82
-  │   │   │   ├── 4008814fc9f2caeb003afdf1a7fabab663f1ca
-  │   │   │   └── 64e81521f8dfda495e2cf42d32acfd2939f84f
-  │   │   ├── 84
-  │   │   │   └── 3ac9fabaa0fc307d308623e310ed4699942958
-  │   │   ├── 86
-  │   │   │   └── f2e4b7abdd22fc7e5a7385facd19adb0f6329e
-  │   │   ├── 87
-  │   │   │   └── de70ce1640d4a11bbe69be4210738cdf0115c3
-  │   │   ├── 88
-  │   │   │   └── faf1e67ccf828e86fcc76b81067a4f5fee5366
-  │   │   ├── 89
-  │   │   │   ├── 1b5ef0e3f006c96e48757c6363c57cb1371596
-  │   │   │   ├── a305e028000a86c03e85344e31eb59d56354a0
-  │   │   │   ├── e422a7cb173f5e9ffa0305d8a6c56e0d2928be
-  │   │   │   └── efd66a18ac14ac24d530d601964756d4c74526
-  │   │   ├── 8b
-  │   │   │   └── f5865ae496b1cb79f28df18fa290fb8a44c738
-  │   │   ├── 90
-  │   │   │   ├── 5bbffe45548ba7add0d3659f048b1e0bee4dee
-  │   │   │   └── a911532b7d6436e131f8e8d74e3406fe4897e2
-  │   │   ├── 93
-  │   │   │   └── e3633aeb3492c5b824723f1a7d88cacfd22aa7
-  │   │   ├── 94
-  │   │   │   ├── 23f6149d1ee4f089b97f5d670dc20619447e22
-  │   │   │   └── c375e9a4fe07a9c04c71d071d88ad0167decfc
-  │   │   ├── 96
-  │   │   │   └── 659b4f2930f62800fb9b393a34025d33f8dc90
-  │   │   ├── 97
-  │   │   │   └── d0e02e6954399db19afed4c3bd6a8be52d4e18
-  │   │   ├── 98
-  │   │   │   └── 04b758e84cac41a6acc4d011f57310a1f63102
-  │   │   ├── 9a
-  │   │   │   └── 1c43453c1d171f10700bb74abad0ed2ca6dcde
-  │   │   ├── 9c
-  │   │   │   └── 75351c0af2a3e46f8e19a37b1750b539a24c3d
-  │   │   ├── a0
-  │   │   │   └── eb6b137b5fb04eca5c9c69e4293be5ac388a42
-  │   │   ├── a3
-  │   │   │   └── 5b30c551c36e1586202787da144933d42bc944
-  │   │   ├── a5
-  │   │   │   ├── 47bf36d8d11a4f89c59c144f24795749086dd1
-  │   │   │   └── 67170691a638bca3668765aa21ff85a970ae73
-  │   │   ├── a8
-  │   │   │   └── 372e97425d1176b8fde4f756bf1bad0bb85ebf
-  │   │   ├── a9
-  │   │   │   └── 20c23983c9c98e4f848f32a9b131bf5d5e8f46
-  │   │   ├── ab
-  │   │   │   └── 0498bbcd763144b03cedf9ef808041c35585c0
-  │   │   ├── ad
-  │   │   │   ├── 8cb0107165800ee5ff46b73d804a4765e1a911
-  │   │   │   └── ea89b652deb7e5a1b0a2462f12ac491e1c523c
-  │   │   ├── af
-  │   │   │   └── aa34a25c36d8aa375583e81dc83203ebd7fa16
-  │   │   ├── b2
-  │   │   │   ├── 8e8d6e13ec4d1525c5d30ec3bb45291c901310
-  │   │   │   └── 98297cb1038369923fed28947315add02be071
-  │   │   ├── b4
-  │   │   │   └── df2aa4246fdb25e76bc44430c51dd5cf4f63e1
-  │   │   ├── b5
-  │   │   │   ├── 23d195c65c03762411a736adaa7166c3bab07f
-  │   │   │   └── c61c956711f981a41e95f7fcf0038436cfbb22
-  │   │   ├── b7
-  │   │   │   └── d650ad26294ab3dac90f3ca8e6f48af1521754
-  │   │   ├── b8
-  │   │   │   └── 5ea08636c79e11661746758f5d0e763778ab9d
-  │   │   ├── b9
-  │   │   │   └── 960ff1d5c7a2738544934516f67bc7c50857d5
-  │   │   ├── bc
-  │   │   │   ├── 154ad3169273fdc8e77a3aa0d0f2868dcb8068
-  │   │   │   └── f84d4a9da803e9abca1f2fa516ce4c1e290d09
-  │   │   ├── bd
-  │   │   │   ├── 059d1f8018a44da80d305bfcbb2e4833e1e616
-  │   │   │   └── e0943489b4b043b2555951919358b66d87dd74
-  │   │   ├── c0
-  │   │   │   └── 052aae6d4dd1fd3553881d1a62b9863254e5c5
-  │   │   ├── c1
-  │   │   │   └── 15bab9f4622f94f069f96312089f6bedc6b366
-  │   │   ├── c2
-  │   │   │   └── 44c79e7dc45fa3ee510356549ee919210bb749
-  │   │   ├── c3
-  │   │   │   └── a3439c42e1d6e31d2b7f38ddcd9be8405007c0
-  │   │   ├── c4
-  │   │   │   ├── 6a3301034ecab90aba6975c17c740b5dacbd2d
-  │   │   │   └── b7ef28820769e8d1f63ffbb18309cc1ba644df
-  │   │   ├── c5
-  │   │   │   ├── 1cc1c19fad07451ec3c44cd7181c817b7f10c3
-  │   │   │   └── 6f4a027408c604a8cff61220bdbdcc092cd38b
-  │   │   ├── cd
-  │   │   │   └── 1831eadba8dabb1450319c44bc3a380600cac0
-  │   │   ├── ce
-  │   │   │   └── dc36c9604ea5758bfa8503d9083c0f8183a2d5
-  │   │   ├── d0
-  │   │   │   └── 37ed9f6b8c9548bc43187250311d73a863ef90
-  │   │   ├── d3
-  │   │   │   └── 01a58bc0f5f1fa48077e76fde43fc28f28fc19
-  │   │   ├── d4
-  │   │   │   └── ac6a2386a504bcb538fe833b71f139bbf31aa3
-  │   │   ├── d6
-  │   │   │   └── 22704133cdb2840d0cfc96e4a32ccbb42125b4
-  │   │   ├── d7
-  │   │   │   ├── 209dce6ffc1a28e400e64fe57567cf9ad80336
-  │   │   │   └── 8d505b10e4ee360b94cb16e7c001f4db4a3418
-  │   │   ├── d8
-  │   │   │   └── e49240f4ef32197a9d44f58de8b0f75bb85645
-  │   │   ├── d9
-  │   │   │   └── a0245599e634ff3331e877918c357a241fe244
-  │   │   ├── db
-  │   │   │   ├── b5ec5001905b9a98349f35b57694305fd46c92
-  │   │   │   └── bcc162fae59bcd121183bbc742abb2146953a5
-  │   │   ├── dc
-  │   │   │   ├── 4df0250223a3550cba08f9c4f05f416859bf7d
-  │   │   │   └── 6ec61119f53d2c7ad9a72360355623be725ee5
-  │   │   ├── dd
-  │   │   │   ├── 2153b388cef1fa516ba520e24eaaf7b301d41d
-  │   │   │   └── 34eeca410006cdff29ea38ef6c0bf61e3a40d2
-  │   │   ├── de
-  │   │   │   └── e4918348ea66759f4a8b93773639e8c4744db9
-  │   │   ├── e1
-  │   │   │   ├── 18d3d1d24b08fd3ed00edf472b19309fa8b59f
-  │   │   │   └── 2afc08aba3213495e9b17aeee3f5c88e5cfdb3
-  │   │   ├── e2
-  │   │   │   ├── 67e719b48df64b75d3a9e35cf8e19048956597
-  │   │   │   └── b0a0b949f166ec913cda05be6d291d6f2cd643
-  │   │   ├── e3
-  │   │   │   ├── 45b38810572a32e163fc40b3621de1a67a2168
-  │   │   │   └── 82c4dc4523a8a17d9a21d7ed5899104eb2ce38
-  │   │   ├── e6
-  │   │   │   ├── 318bffef23bd500e3da26d5f25ff2cd5b48128
-  │   │   │   ├── 9de29bb2d1d6434b8b29ae775ad8c2e48c5391
-  │   │   │   └── be8c3b05adac4054c5f9600375bf119a199e62
-  │   │   ├── e7
-  │   │   │   └── b8dfb1b2a60bd50538bec9f876511b9cac21e3
-  │   │   ├── e8
-  │   │   │   └── 9d680ffa663d12ee99f49f19571d2a3059ac3d
-  │   │   ├── e9
-  │   │   │   └── 3572c7eb1a1cfbad84ffbfe7233b8df3a3409b
-  │   │   ├── ea
-  │   │   │   ├── 96f9d0d71e643aea640dbe8f4c2cd61ecffb30
-  │   │   │   └── 9a20d700794e008549bd762772c98617abaf39
-  │   │   ├── ec
-  │   │   │   └── 651bf3c14d9547fe0d7d0c5b1cda722cf3db21
-  │   │   ├── ed
-  │   │   │   └── ca653ea628c4409af232be7e3a80de0c4d1f49
-  │   │   ├── ef
-  │   │   │   └── 4dc83e4182afe628db705d0a2cd7c7870765cb
-  │   │   ├── f0
-  │   │   │   └── 283e471eeee3fe6a42bac902d523b03665d512
-  │   │   ├── f2
-  │   │   │   └── 3ccb41faf8070d26155d8808555fb42232be33
-  │   │   ├── f7
-  │   │   │   └── 68e33fc946e6074d6bd3ce5d454853adb3615e
-  │   │   ├── f8
-  │   │   │   └── bbfb3743d8dd42c2612752725cb26d5002ce88
-  │   │   ├── f9
-  │   │   │   ├── 01c37dcfc026bf004b5c1102f1b37bfd77ec91
-  │   │   │   ├── 0bcc7e9b0f67fc9315d4c462922158fdb335ad
-  │   │   │   └── 65484863f017ab6a2c9967caa43fb7c497bc1a
-  │   │   ├── fa
-  │   │   │   └── 5b50e7b675ba9ac8b4d1c5332e3f7ad1a26730
-  │   │   ├── fd
-  │   │   │   └── ae37205de9be3d3ea6343ac1b68fe92fb78829
-  │   │   ├── fe
-  │   │   │   ├── 144a21079bf96b6d70304140df2299beb4643a
-  │   │   │   └── 1a2438c8a0ddc4b15418aecdec94d46d44be37
-  │   │   ├── ff
-  │   │   │   └── a8347a732909ba8768bd510cef7d3589c81f1a
-  │   │   ├── info
-  │   │   └── pack
-  │   │       ├── pack-fa2af5f947a3c6d395cfae3b1651d4da31c10e19.idx
-  │   │       ├── pack-fa2af5f947a3c6d395cfae3b1651d4da31c10e19.pack
-  │   │       └── pack-fa2af5f947a3c6d395cfae3b1651d4da31c10e19.rev
-  │   ├── packed-refs
-  │   └── refs
-  │       ├── heads
-  │       │   ├── initial
-  │       │   ├── initial-frontend
-  │       │   └── main
-  │       ├── remotes
-  │       │   └── origin
-  │       │       ├── HEAD
-  │       │       ├── feature
-  │       │       │   ├── documents
-  │       │       │   ├── hellow_world
-  │       │       │   ├── list_themes
-  │       │       │   └── themes
-  │       │       ├── initial
-  │       │       ├── initial-frontend
-  │       │       └── main
-  │       └── tags
-  ├── .gitignore
-  ├── api
-  │   ├── .pytest_cache
-  │   │   ├── .gitignore
-  │   │   ├── CACHEDIR.TAG
-  │   │   ├── README.md
-  │   │   └── v
-  │   │       └── cache
-  │   │           ├── lastfailed
-  │   │           ├── nodeids
-  │   │           └── stepwise
-  │   ├── README.md
-  │   ├── poetry.lock
-  │   ├── pyproject.toml
-  │   ├── pytest.ini
-  │   ├── src
-  │   │   └── api
-  │   │       ├── __init__.py
-  │   │       ├── core
-  │   │       │   ├── __init__.py
-  │   │       │   ├── _shared
-  │   │       │   │   ├── __init__.py
-  │   │       │   │   ├── domain
-  │   │       │   │   │   ├── __init__.py
-  │   │       │   │   │   ├── entity.py
-  │   │       │   │   │   └── notification.py
-  │   │       │   │   └── tests
-  │   │       │   │       └── domain
-  │   │       │   │           ├── __init__.py
-  │   │       │   │           └── test_entity.py
-  │   │       │   └── category
-  │   │       │       ├── __init__.py
-  │   │       │       ├── application
-  │   │       │       │   └── use_cases
-  │   │       │       │       ├── create_category.py
-  │   │       │       │       ├── exceptions.py
-  │   │       │       │       └── get_category.py
-  │   │       │       ├── domain
-  │   │       │       │   ├── category.py
-  │   │       │       │   └── category_repository.py
-  │   │       │       ├── infra
-  │   │       │       │   └── in_memory_category_repository.py
-  │   │       │       └── tests
-  │   │       │           ├── __init__.py
-  │   │       │           ├── application
-  │   │       │           │   ├── __init__.py
-  │   │       │           │   └── use_cases
-  │   │       │           │       ├── __init__.py
-  │   │       │           │       ├── integration
-  │   │       │           │       │   ├── __init__.py
-  │   │       │           │       │   ├── test_create_category.py
-  │   │       │           │       │   └── test_get_category.py
-  │   │       │           │       └── unit
-  │   │       │           │           ├── __init__.py
-  │   │       │           │           ├── test_create_category.py
-  │   │       │           │           └── test_get_category.py
-  │   │       │           ├── domain
-  │   │       │           │   ├── __init__.py
-  │   │       │           │   └── test_category.py
-  │   │       │           └── infra
-  │   │       │               ├── __init__.py
-  │   │       │               └── test_in_memory_category_repository.py
-  │   │       └── quart_project
-  │   │           ├── __init__.py
-  │   │           ├── app.py
-  │   │           └── routes.py
-  │   └── tree.txt
-  ├── dockerfile
-  ├── frontend
-  │   ├── .eslintrc.cjs
-  │   ├── .gitignore
-  │   ├── .nvmrc
-  │   ├── .vscode
-  │   │   └── settings.json
-  │   ├── README.md
-  │   ├── index.html
-  │   ├── package-lock.json
-  │   ├── package.json
-  │   ├── postcss.config.js
-  │   ├── public
-  │   │   ├── B3-logo.svg
-  │   │   ├── home-header.svg
-  │   │   ├── menu-chat.svg
-  │   │   └── vite.svg
-  │   ├── src
-  │   │   ├── App.jsx
-  │   │   ├── app
-  │   │   │   └── store.js
-  │   │   ├── components
-  │   │   │   ├── CustomInput.jsx
-  │   │   │   ├── Filters.jsx
-  │   │   │   ├── Header.jsx
-  │   │   │   ├── ListDocuments.jsx
-  │   │   │   ├── Title.jsx
-  │   │   │   ├── UploadDocumentForm.jsx
-  │   │   │   └── filtersSlice.js
-  │   │   ├── features
-  │   │   │   └── counter
-  │   │   │       ├── Counter.jsx
-  │   │   │       └── counterSlice.js
-  │   │   ├── index.css
-  │   │   ├── main.jsx
-  │   │   ├── pages
-  │   │   │   ├── DocumentsList.jsx
-  │   │   │   ├── UploadDocument.css
-  │   │   │   ├── UploadDocument.jsx
-  │   │   │   └── ViewDocument.jsx
-  │   │   └── styles
-  │   │       └── theme.js
-  │   ├── tailwind.config.js
-  │   └── vite.config.js
-  └── tree.txt
+.
+├── .dockerignore
+├── .gitignore
+├── .vscode
+│   ├── launch.json
+│   ├── settings.json
+│   └── tasks.json
+├── api
+│   ├── .env
+│   ├── .vscode
+│   │   └── settings.json
+│   ├── __main__.py
+│   ├── dockerfile
+│   ├── pyproject.toml
+│   ├── requirements.txt
+│   └── src
+│       ├── __init__.py
+│       ├── core
+│       │   ├── __init__.py
+│       │   ├── _shared
+│       │   │   ├── __init__.py
+│       │   │   ├── domain
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── entity.py
+│       │   │   │   └── notification.py
+│       │   │   └── tests
+│       │   │       └── domain
+│       │   │           ├── __init__.py
+│       │   │           └── test_entity.py
+│       │   ├── document
+│       │   │   ├── application
+│       │   │   │   └── use_cases
+│       │   │   │       ├── create_document.py
+│       │   │   │       ├── exceptions.py
+│       │   │   │       ├── get_document.py
+│       │   │   │       └── list_documents.py
+│       │   │   └── domain
+│       │   │       ├── document.py
+│       │   │       └── document_repository.py
+│       │   └── theme
+│       │       ├── application
+│       │       │   └── use_cases
+│       │       │       └── list_themes.py
+│       │       └── domain
+│       │           ├── theme.py
+│       │           └── theme_repository.py
+│       ├── infra
+│       │   ├── cosmosDB
+│       │   │   ├── cosmosRepository.py
+│       │   │   └── repositories
+│       │   │       ├── cosmosDB_document_repository.py
+│       │   │       └── cosmosDB_theme_repository.py
+│       │   ├── storageContainer
+│       │   │   ├── exceptions.py
+│       │   │   ├── repositories
+│       │   │   │   └── storage_container_document_repository.py
+│       │   │   └── storageContainerRepository.py
+│       │   └── storageQueue
+│       │       └── StorageQueueService.py
+│       └── quart_project
+│           ├── __init__.py
+│           ├── app.py
+│           └── routes.py
+├── docker-compose.yml
+├── frontend
+│   ├── .eslintrc.cjs
+│   ├── .nvmrc
+│   ├── .vscode
+│   │   └── settings.json
+│   ├── README.md
+│   ├── dist
+│   │   ├── B3-logo.svg
+│   │   ├── assets
+│   │   │   ├── index-DRoifOuL.js
+│   │   │   └── index-bZ8mdwQu.css
+│   │   ├── home-header.svg
+│   │   ├── index.html
+│   │   ├── menu-chat.svg
+│   │   ├── menu-pdf.svg
+│   │   └── vite.svg
+│   ├── dockerfile
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── B3-logo.svg
+│   │   ├── home-header.svg
+│   │   ├── menu-chat.svg
+│   │   └── vite.svg
+│   ├── src
+│   │   ├── App.jsx
+│   │   ├── api
+│   │   │   ├── api.ts
+│   │   │   └── models.ts
+│   │   ├── app
+│   │   │   └── store.js
+│   │   ├── components
+│   │   │   ├── CustomButton.jsx
+│   │   │   ├── CustomDateField.jsx
+│   │   │   ├── CustomFileInput.jsx
+│   │   │   ├── CustomInput.jsx
+│   │   │   ├── CustomSelect.jsx
+│   │   │   ├── DocumentDetails.jsx
+│   │   │   ├── ErrorMessage.jsx
+│   │   │   ├── Filters.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── Loading.jsx
+│   │   │   ├── LoadingV2.jsx
+│   │   │   ├── SuccessMessage.jsx
+│   │   │   ├── Title.jsx
+│   │   │   ├── filtersSlice.js
+│   │   │   └── pagesComponents
+│   │   │       ├── ListDocuments.jsx
+│   │   │       ├── ListPDF.css
+│   │   │       ├── ListPDF.jsx
+│   │   │       └── UploadDocumentForm.jsx
+│   │   ├── features
+│   │   │   └── counter
+│   │   │       ├── Counter.jsx
+│   │   │       └── counterSlice.js
+│   │   ├── images
+│   │   │   └── upload-ic.png
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── pages
+│   │   │   ├── DocumentsList.jsx
+│   │   │   ├── UploadDocument.css
+│   │   │   ├── UploadDocument.jsx
+│   │   │   └── ViewDocument.jsx
+│   │   └── styles
+│   │       └── theme.js
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── tree.command.bash
+└── tree.txt
 
-  186 directories, 308 files
+39 directories, 96 files
