@@ -188,7 +188,7 @@ class SingleDocumentOutput:
             if not upload_date == "":
                 upload_date = upload_date["$date"]
                 if upload_date != None:
-                    self.uploadDate = datetime.fromtimestamp(int(upload_date) / 1000).strftime("%d/%m/%Y")
+                    self.uploadDate = datetime.fromtimestamp(int(upload_date) / 1000).strftime("%d/%m/%Y %H:%M:%S")
 
         self.expiryDate = ""
         expiry_date = data.get("expiryDate", "")

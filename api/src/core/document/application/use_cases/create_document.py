@@ -47,19 +47,19 @@ class CreateDocument:
         if self.repository.verify_duplicity(document=document):
             raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
                 
-        # try:
-        #     self.storageRepository.upload_file(document)
-        # except Exception as e:
-        #     if e.error_code == "BlobAlreadyExists":
-        #         raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
-        #     else:
-        #         raise GenericErrorUploadFile(e) 
+        try:
+            self.storageRepository.upload_file(document)
+        except Exception as e:
+            if e.error_code == "BlobAlreadyExists":
+                raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
+            else:
+                raise GenericErrorUploadFile(e) 
 
         self.repository.save(document)
 
-        # self.queueService.send_message(
-        #     message_dict=self.generate_message_from_document(document)
-        # )
+        self.queueService.send_message(
+            message_dict=self.generate_message_from_document(document)
+        )
         
         return CreateDocumentResponse(id=document.id)
     
