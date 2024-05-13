@@ -115,7 +115,7 @@ const UploadDocumentForm = (props) => {
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
               <input type="date" id="field4" name="expiryDate" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
             </div>
-            <input type="hidden" id="language" name="language" value="pt-BR" />
+            <input type="hidden" id="language" name="language" value="eng" />
 
             {/* <div className="flex flex-col  flex-grow">
                   <label htmlFor="field1" className="text-xs font-bold">Language:</label>
