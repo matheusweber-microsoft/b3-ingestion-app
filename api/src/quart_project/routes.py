@@ -53,14 +53,15 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         theme = request.args.get("theme")
         subtheme = request.args.get("subtheme")
         uploadedBy = request.args.get("uploadedBy")
-        input = ListDocuments.Input(documentTitle=documentTitle, fileName=fileName, uploadDate=uploadDate, onlyExpired=onlyExpired, theme=theme, subtheme=subtheme, uploadedBy=uploadedBy)
-
+        page = request.args.get("page")
+        if page == '' or page == None:
+            page = 1
+        input = ListDocuments.Input(documentTitle=documentTitle, fileName=fileName, uploadDate=uploadDate, onlyExpired=onlyExpired, theme=theme, subtheme=subtheme, uploadedBy=uploadedBy, page=int(page))
         use_case = ListDocuments(DocumentRepository(cosmos_repository))
 
         try:
             response = use_case.execute(input)
             documents_json = [document.to_dict() for document in response.data]
-            print(documents_json)
             return documents_json, 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400

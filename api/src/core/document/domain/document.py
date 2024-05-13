@@ -204,15 +204,18 @@ class SingleDocumentOutput:
 
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
-
-        return {
+        dict_to_return = {
             "id": str(self.id),
             "fileName": self.fileName,
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
-            "uploadDate": self.uploadDate,
-            "expiryDate": self.expiryDate,
+            "uploadDate": self.uploadDate if self.uploadDate else None,
+            "expiryDate": self.expiryDate if self.expiryDate else None,
             "uploadedBy": self.uploadedBy,
-            "documentPages": document_pages
         }
+
+        if len(document_pages) > 0:
+            dict_to_return["documentPages"] = document_pages
+        
+        return dict_to_return
