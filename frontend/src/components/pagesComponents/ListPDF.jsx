@@ -10,7 +10,7 @@ const ListPDF = ({ documents }) => {
     //   }));
     
       const [currentPage, setCurrentPage] = useState(1);
-      const documentsPerPage = 4;
+      const documentsPerPage = 15;
       const totalPages = Math.ceil(documents.length / documentsPerPage);
     
       // Get current documents
