@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import CustomSelect from "./CustomSelect";
-import CustomDateField from "./CustomDateField";
-import Title from "./Title";
-import CustomInput from "./CustomInput";
-import CustomFileInput from "./CustomFileInput";
+import CustomSelect from "../CustomSelect";
+import CustomDateField from "../CustomDateField";
+import Title from "../Title";
+import CustomInput from "../CustomInput";
+import CustomFileInput from "../CustomFileInput";
 import React, { useState, useEffect, useRef } from 'react';
 
 
-function DocumentDetails({documentTitle, fileName, theme, subtheme, uploadedDate, expiryDate, uploadedBy}) {
+function DocumentDetails({documentTitle, fileName, theme, themeName, subtheme, subthemeName, uploadedDate, expiryDate, uploadedBy}) {
     const fileInputRef = useRef();
     return (
         <main class="relative" style={{ padding: '10px' }}>
@@ -21,12 +21,12 @@ function DocumentDetails({documentTitle, fileName, theme, subtheme, uploadedDate
 
                     <div className="flex flex-col flex-grow">
                     <label htmlFor="field1" className="text-xs font-bold">Tema:</label>
-                        <CustomInput placeholder="" name="" value={theme} disabled={true}/>
+                        <CustomInput placeholder="" name="" value={themeName} disabled={true}/>
                     </div>
     
                     <div className="flex flex-col  flex-grow">
                     <label htmlFor="field1" className="text-xs font-bold">Subtema:</label>
-                        <CustomInput placeholder="" name="" value={subtheme} disabled={true}/>
+                        <CustomInput placeholder="" name="" value={subthemeName} disabled={true}/>
                     </div>
                 </div>
                 <div className="flex flex-row space-x-4 " style={{ marginTop: '45px' }}>
