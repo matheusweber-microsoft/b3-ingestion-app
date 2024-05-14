@@ -8,6 +8,7 @@ from src.infra.cosmosDB.repositories.cosmosDB_document_repository import Documen
 from src.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
 import os
+import logging
 
 @dataclass
 class CreateDocumentRequest:
@@ -31,6 +32,7 @@ class CreateDocument:
         self.queueService = StorageQueueService(os.getenv('DOCUMENTS_QUEUE'))
 
     def execute(self, request: CreateDocumentRequest) -> CreateDocumentResponse:
+        logging.info('Executing CreateDocument...')
         try:
             document = Document(
                 documentTitle=request.documentTitle,
@@ -42,17 +44,22 @@ class CreateDocument:
                 language=request.language
             )
         except ValueError as err:
+            logging.error('InvalidDocument: %s', err)
             raise InvalidDocument(err)
         
+        
         if self.repository.verify_duplicity(document=document):
+            logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
             raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
                 
         try:
             self.storageRepository.upload_file(document)
         except Exception as e:
             if e.error_code == "BlobAlreadyExists":
+                logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
                 raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
             else:
+                logging.error('GenericErrorUploadFile: %s', e)
                 raise GenericErrorUploadFile(e) 
 
         self.repository.save(document)
@@ -60,6 +67,8 @@ class CreateDocument:
         self.queueService.send_message(
             message_dict=self.generate_message_from_document(document)
         )
+
+        logging.info('Document created successfully.')
         
         return CreateDocumentResponse(id=document.id)
     

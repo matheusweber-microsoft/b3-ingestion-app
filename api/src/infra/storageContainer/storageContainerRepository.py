@@ -1,9 +1,11 @@
 import os
+import logging
 from src.infra.storageContainer.exceptions import FileNotUploaded
 from azure.storage.blob import generate_blob_sas, BlobSasPermissions, BlobClient, BlobServiceClient
-
 from werkzeug.datastructures import FileStorage
 from datetime import datetime, timedelta
+
+logger = logging.getLogger(__name__)
 
 class StorageContainerRepository:
     container_name = "originaldocuments"
@@ -14,6 +16,7 @@ class StorageContainerRepository:
     def upload_blob(self, container_name, blob_name, data):
         container_client = self.blob_service_client.get_container_client(container_name)
         container_client.upload_blob(name=blob_name, data=data)
+        logger.info(f"Blob '{blob_name}' uploaded to container '{container_name}'")
 
     def save_file_to_azure(self, file_storage: FileStorage, container_path: str):
         container_names = container_path.split("/")
@@ -24,20 +27,27 @@ class StorageContainerRepository:
             container_name += "/" + sub_container
             try:
                 self.blob_service_client.create_container(container_name)
+                logger.info(f"Container '{container_name}' created")
             except Exception as e:
-                print(f"Container '{container_name}' already exists. Skipping creation.")  
+                logger.warning(f"Container '{container_name}' already exists. Skipping creation.")
         
         self.upload_blob(container_name[:-1], file_storage.filename, file_storage)
-
+        
         if not self.verify_blob(container_name[:-1], file_storage.filename):
+            logger.error(f"Blob '{file_storage.filename}' was not uploaded successfully")
             raise FileNotUploaded
 
     def verify_blob(self, container_name: str, blob_name: str) -> bool:
         try:
             blob_client = self.blob_service_client.get_blob_client(container_name, blob_name)
-            return blob_client.exists()
+            exists = blob_client.exists()
+            if exists:
+                logger.info(f"Blob '{blob_name}' exists in container '{container_name}'")
+            else:
+                logger.warning(f"Blob '{blob_name}' does not exist in container '{container_name}'")
+            return exists
         except Exception as e:
-            print(f"An exception occurred: {e}")
+            logger.error(f"An exception occurred: {e}")
             return False
         
     def get_document_url(self, container_path: str) -> str:
@@ -55,4 +65,5 @@ class StorageContainerRepository:
         )
         # Append the SAS token to the blob URL
         blob_url = blob_client.url + "?" + sas_token
+        logger.info(f"Generated URL for blob '{blob_name}' in container '{container_name}'")
         return blob_url
