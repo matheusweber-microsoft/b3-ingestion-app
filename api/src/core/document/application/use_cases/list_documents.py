@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-from core.document.domain.document import SingleDocumentOutput
-from infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
+from src.core.document.domain.document import SingleDocumentOutput
+from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 
 
 class ListDocuments:
@@ -21,17 +21,21 @@ class ListDocuments:
         uploadedBy: str = None
         page: int = 1
         limit: int = 5
-    
+
         def toQuery(self) -> dict:
             query = {}
             if self.documentTitle:
-                query['documentTitle'] = {'$regex': self.documentTitle, '$options': 'i'}
+                query['documentTitle'] = {
+                    '$regex': self.documentTitle, '$options': 'i'}
             if self.fileName:
                 query['fileName'] = {'$regex': self.fileName, '$options': 'i'}
             if self.uploadDate:
-                start_of_day = datetime.strptime(self.uploadDate, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
-                end_of_day = start_of_day.replace(hour=23, minute=59, second=59)
-                query['uploadDate'] = {'$gte': start_of_day, '$lte': end_of_day}
+                start_of_day = datetime.strptime(
+                    self.uploadDate, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
+                end_of_day = start_of_day.replace(
+                    hour=23, minute=59, second=59)
+                query['uploadDate'] = {
+                    '$gte': start_of_day, '$lte': end_of_day}
             if self.theme:
                 query['theme'] = self.theme
             if self.subtheme:
@@ -39,9 +43,9 @@ class ListDocuments:
             if self.onlyExpired and self.onlyExpired == True:
                 query['expiryDate'] = {'$lt': datetime.now()}
             if self.uploadedBy:
-                query['uploadedBy'] = {'$regex': self.uploadedBy, '$options': 'i'}
+                query['uploadedBy'] = {
+                    '$regex': self.uploadedBy, '$options': 'i'}
             return query
-
 
     @dataclass
     class Output:
@@ -53,5 +57,5 @@ class ListDocuments:
             page=input.page,
             limit=input.limit
         )
-       
+
         return self.Output(data=documents)
