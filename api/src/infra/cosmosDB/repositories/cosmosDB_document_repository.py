@@ -21,13 +21,13 @@ class DocumentRepository():
         }
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 
-    def list(self, filters) -> List[DocumentOutput]:
-        documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "uploadedBy": 1, "_id": 0})
+    def list(self, filters, page=1, limit=100) -> List[SingleDocumentOutput]:
+        documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "uploadedBy": 1, "_id": 0}, page=page, limit=limit)
         list_of_documents = []
 
         for document in documents:
             if all(field in document for field in ["id", "fileName", "documentTitle", "theme", "subtheme", "indexStatus", "uploadDate", "expiryDate", "uploadedBy"]):
-                documentToSave = DocumentOutput(UUID(document["id"]), document["fileName"], document["documentTitle"], document["theme"], document["subtheme"], document["indexStatus"], document["uploadDate"], document["expiryDate"], document["uploadedBy"])
+                documentToSave = SingleDocumentOutput(document)
                 list_of_documents.append(documentToSave)
 
         return list_of_documents

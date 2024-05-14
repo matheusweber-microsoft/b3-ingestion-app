@@ -13,7 +13,7 @@ from quart_cors import route_cors
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
-    @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def create_document():
         data = await request.form
         files = await request.files
@@ -29,7 +29,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
-    @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def get_themes():
         data = await request.form
         use_case = ListTheme(ThemeRepository(cosmos_repository))
@@ -42,7 +42,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
     
     @app.get("/api/v1/documents")
-    @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def get_documents():
         data = await request.json
 
@@ -53,20 +53,21 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         theme = request.args.get("theme")
         subtheme = request.args.get("subtheme")
         uploadedBy = request.args.get("uploadedBy")
-        input = ListDocuments.Input(documentTitle=documentTitle, fileName=fileName, uploadDate=uploadDate, onlyExpired=onlyExpired, theme=theme, subtheme=subtheme, uploadedBy=uploadedBy)
-
+        page = request.args.get("page")
+        if page == '' or page == None:
+            page = 1
+        input = ListDocuments.Input(documentTitle=documentTitle, fileName=fileName, uploadDate=uploadDate, onlyExpired=onlyExpired, theme=theme, subtheme=subtheme, uploadedBy=uploadedBy, page=int(page))
         use_case = ListDocuments(DocumentRepository(cosmos_repository))
 
         try:
             response = use_case.execute(input)
             documents_json = [document.to_dict() for document in response.data]
-            print(documents_json)
             return documents_json, 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/document/<id>")
-    @route_cors(allow_origin=os.getenv('LOCALHOST_URI'))
+    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def get_document(id):
         use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
 
