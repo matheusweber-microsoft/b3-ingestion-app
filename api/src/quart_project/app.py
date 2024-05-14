@@ -8,16 +8,20 @@ import os
 from quart_cors import cors
 
 app = Quart(__name__)
-app = cors(app, allow_origin="http://localhost:5173")
+app = cors(app, allow_origin=os.getenv('ORIGIN_CORS'))
+
 
 def run():
     app = create_app()
     app.run(host='0.0.0.0', port=5000)
 
+
 def create_app():
     load_dotenv()
-    cosmos_repository = CosmosRepository(connection_string=os.getenv('CONNECTION_STRING_COSMOS_DB'), database_name=os.getenv('DATABASE_NAME'))
-    storage_container_repository = StorageContainerRepository(connection_string=os.getenv('CONNECTION_STRING_STORAGE_CONTAINER'))
-    
+    cosmos_repository = CosmosRepository(connection_string=os.getenv(
+        'CONNECTION_STRING_COSMOS_DB'), database_name=os.getenv('DATABASE_NAME'))
+    storage_container_repository = StorageContainerRepository(
+        connection_string=os.getenv('CONNECTION_STRING_STORAGE_CONTAINER'))
+
     setup_routes(app, cosmos_repository, storage_container_repository)
     return app
