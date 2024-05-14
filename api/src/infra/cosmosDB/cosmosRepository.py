@@ -9,8 +9,8 @@ class CosmosRepository:
         self.client = pymongo.MongoClient(connection_string)
         self.db = self.client[database_name]
         if database_name not in self.client.list_database_names():
-            self.db.command({"customAction": "CreateDatabase"})
-            logging.debug("Created db '{}' with shared throughput.\n".format(database_name))
+            logging.error("Database '{}' not found.".format(database_name))
+            raise Exception("Database '{}' not found.".format(database_name))
         else:
             print("Using database: '{}'.\n".format(database_name))
         logging.debug("Connected to database: '{}'.\n".format(database_name))
