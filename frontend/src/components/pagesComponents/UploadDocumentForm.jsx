@@ -91,7 +91,7 @@ const UploadDocumentForm = (props) => {
           <div className="flex flex-row space-x-4 " style={{ marginTop: '30px' }}>
             <div className="flex flex-col flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Tema:</label>
-              <select id="theme" name="theme" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required onChange={handleThemeChange}>
+              <select id="theme" name="theme" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required onChange={handleThemeChange}>
                 <option value="default">Selecione um tema</option>
                 {themes.map((theme, index) => (
                   <option key={index} value={theme.themeId}>{theme.themeName}</option>
@@ -101,7 +101,7 @@ const UploadDocumentForm = (props) => {
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Subtema:</label>
-              <select id="subtheme" name="subtheme" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
+              <select id="subtheme" name="subtheme" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
                 <option value="default">Selecione um subtema</option>
                 {
                   subthemes.length === 0 ? <option value="default">Selecione um tema</option> : subthemes.map((subtheme, index) => (
@@ -113,7 +113,7 @@ const UploadDocumentForm = (props) => {
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
-              <input type="date" id="field4" name="expiryDate" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
+              <input type="date" id="field4" name="expiryDate" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
             </div>
             <input type="hidden" id="language" name="language" value="eng" />
 

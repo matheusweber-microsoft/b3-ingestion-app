@@ -22,7 +22,7 @@ const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
     }));
 
     return (
-        <div className="rounded-md border-b-2" style={{ background: 'rgba(0, 176, 230, 0.4)', display: 'flex', alignItems: 'center', height: '60px', paddingLeft: '10px', borderBottomColor: '#00B0E6'}}>
+        <div className="rounded-md border-b-2" style={{ background: '#e3e5e7', display: 'flex', alignItems: 'center', height: '60px', paddingLeft: '10px', borderBottomColor: '#00B0E6'}}>
             <input ref={fileInputRef} type="file" onChange={handleFileChange} name={name} style={{ display: 'none' }} />
             <label htmlFor="fileInput" style={{ cursor: 'pointer', width: '90%' }} onClick={handleClick}>
                 {fileName ? fileName : placeholder}
