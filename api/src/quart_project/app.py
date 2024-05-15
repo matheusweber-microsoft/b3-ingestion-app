@@ -5,6 +5,7 @@ from src.quart_project.routes import setup_routes
 from src.infra.cosmosDB.cosmosRepository import CosmosRepository
 from dotenv import load_dotenv
 import os
+import logging
 from quart_cors import cors
 
 app = Quart(__name__)
@@ -12,6 +13,7 @@ app = cors(app, allow_origin=os.getenv('ORIGIN_CORS'))
 
 
 def run():
+    logging.basicConfig(level=logging.INFO)
     app = create_app()
     app.run(host='0.0.0.0', port=5000)
 

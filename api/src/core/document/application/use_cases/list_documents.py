@@ -4,7 +4,7 @@ from uuid import UUID
 
 from src.core.document.domain.document import SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
-
+import logging
 
 class ListDocuments:
     def __init__(self, repository: DocumentRepository):
@@ -52,6 +52,7 @@ class ListDocuments:
         data: list[SingleDocumentOutput]
 
     def execute(self, input: Input) -> Output:
+        logging.info("Executing ListDocuments use case")
         documents = self.repository.list(
             filters=input.toQuery(),
             page=input.page,

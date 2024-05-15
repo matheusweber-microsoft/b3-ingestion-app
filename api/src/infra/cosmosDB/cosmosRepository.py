@@ -1,7 +1,8 @@
 from azure.cosmos import CosmosClient, PartitionKey
 import pymongo
 import uuid
- 
+import logging
+
 class CosmosRepository:
     def __init__(self, connection_string, database_name):
         # A conexão é inicializada usando a connection string
@@ -9,9 +10,10 @@ class CosmosRepository:
         self.db = self.client[database_name]
         if database_name not in self.client.list_database_names():
             self.db.command({"customAction": "CreateDatabase"})
-            print("Created db '{}' with shared throughput.\n".format(database_name))
+            logging.debug("Created db '{}' with shared throughput.\n".format(database_name))
         else:
             print("Using database: '{}'.\n".format(database_name))
+        logging.debug("Connected to database: '{}'.\n".format(database_name))
 
     def save(self, collectionName, item) -> None:
         collection = self.db.get_collection(collectionName)
