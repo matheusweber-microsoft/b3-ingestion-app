@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CreateDocumentResponse, Theme, ViewDocument } from "./models";
-const API_URL = 'http://localhost:5000/api/v1/';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1/';
 export async function fetchThemes(): Promise<[Theme] | undefined> {
     try {
         const response = await axios.get(API_URL + 'themes');
