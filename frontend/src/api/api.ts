@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CreateDocumentResponse, Theme, ViewDocument } from "./models";
 
-const API_URL = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:5000/api/v1/';
+const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 export async function fetchThemes(): Promise<[Theme] | undefined> {
     try {
