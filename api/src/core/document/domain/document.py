@@ -94,11 +94,11 @@ class Document(Entity):
             "storageFilePath": self.storageFilePath,
             "indexStatus": self.indexStatus,
             "uploadDate": {
-            "$date": int(self.uploadDate.timestamp()  * 1000)
+            "$date": int(self.uploadDate.timestamp() * 1000)
             },
             "indexCompletionDate": None,
             "expiryDate": {
-            "$date": int(self.expiryDate.timestamp()  * 1000)
+            "$date": int(self.expiryDate.timestamp() * 1000)
             },
             "originalFileFormat": self.originalFileFormat,
             "uploadedBy": self.uploadedBy,

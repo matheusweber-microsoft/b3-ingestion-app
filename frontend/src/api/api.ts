@@ -16,25 +16,32 @@ export async function fetchThemes(): Promise<[Theme] | undefined> {
 export async function uploadDocument(
         documentTitle: string,
         theme: string,
+        themeName: string,
         subtheme: string,
+        subthemeName: string,
         expiryDate: string,
         documentFile: File,
         uploadedBy: string,
         language: string
     ): Promise<CreateDocumentResponse | undefined> {
     // Validate parameters
-    if (!documentTitle || !theme || !subtheme || !expiryDate || !documentFile || !uploadedBy || !language) {
+    if (!documentTitle || !theme || !subtheme || !expiryDate || !documentFile || !uploadedBy || !language || !themeName || !subthemeName) {
       throw new Error('All parameters must be provided');
     }
+
     // Create form data
     const formData = new FormData();
     formData.append('documentTitle', documentTitle);
     formData.append('theme', theme);
+    formData.append('themeName', themeName);
     formData.append('subtheme', subtheme);
+    formData.append('subthemeName', subthemeName);
     formData.append('expiryDate', expiryDate);
     formData.append('documentFile', documentFile);
     formData.append('uploadedBy', uploadedBy);
     formData.append('language', language);
+
+    
 
     try {
       const response = await axios.post(API_URL + 'document', formData, {

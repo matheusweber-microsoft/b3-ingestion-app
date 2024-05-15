@@ -5,7 +5,7 @@ const Title = ({ title }) => {
     return (
         <div>
             <h1 className="text-3xl" style={{
-                color: lightTheme.colors.title, // Add this line to set the text color
+                color: lightTheme.colors.title, 
             }}>
                 {title}
             </h1>

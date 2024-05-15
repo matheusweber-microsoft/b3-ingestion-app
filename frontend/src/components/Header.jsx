@@ -1,12 +1,12 @@
 import { useState } from "react";
-import lightTheme from "../styles/theme.js";
+import theme from "../styles/theme.js";
 
 export default function Header() {
   return (
-    <header className="bg-[#F6F6F7] flex justify-between px-8 py-2 shadow-sm">
+    <header className="flex justify-between px-8 py-2" style={{background: theme.colors.menuBackground, boxShadow: `0 0px 10px -10px ${theme.colors.shadow}`}}>
       <div className="flex">
         <img src="home-header.svg" />
-        <p className="text-b3-blue font-bold m-4">HOME</p>
+        <p className="font-bold m-4" style={{color: theme.colors.title}}>HOME</p>
       </div>
     </header>
   );

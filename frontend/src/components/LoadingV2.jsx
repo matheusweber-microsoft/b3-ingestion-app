@@ -4,7 +4,7 @@ const LoadingV2 = () => {
     return (
         <div class="relative bg-white z-10 h-full w-full flex items-center justify-center" style={{ height: "105vh", width: "100%"}}>
             <div class="flex items-center">
-            <span class="text-3xl mr-4">Loading</span>
+            <span class="text-3xl mr-4">Carregando</span>
             <svg class="animate-spin h-8 w-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

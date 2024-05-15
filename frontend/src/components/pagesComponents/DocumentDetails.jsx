@@ -1,9 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import CustomSelect from "../CustomSelect";
-import CustomDateField from "../CustomDateField";
 import Title from "../Title";
 import CustomInput from "../CustomInput";
-import CustomFileInput from "../CustomFileInput";
 import React, { useState, useEffect, useRef } from 'react';
 
 
