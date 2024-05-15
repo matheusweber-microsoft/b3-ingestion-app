@@ -3,42 +3,39 @@ import { useState } from "react";
 import './ListPDF.css';
 
 const ListPDF = ({ documents }) => {
-    // const documents = Array.from({ length: 16 }, (_, i) => ({
-    //     id: i + 1,
-    //     citation: `Citação ${i + 1}`,
-    //     indexedDate: "20/04/2024",
-    //   }));
-    
-      const [currentPage, setCurrentPage] = useState(1);
-      const documentsPerPage = 15;
-      const totalPages = Math.ceil(documents.length / documentsPerPage);
-    
-      // Get current documents
-      const indexOfLastDocument = currentPage * documentsPerPage;
-      const indexOfFirstDocument = indexOfLastDocument - documentsPerPage;
-      const currentDocuments = documents.slice(
+    if(documents !== null) {
+        documents = [];
+    }
+    const [currentPage, setCurrentPage] = useState(1);
+    const documentsPerPage = 15;
+    const totalPages = Math.ceil(documents.length / documentsPerPage);
+
+    // Get current documents
+    const indexOfLastDocument = currentPage * documentsPerPage;
+    const indexOfFirstDocument = indexOfLastDocument - documentsPerPage;
+    const currentDocuments = documents.slice(
         indexOfFirstDocument,
         indexOfLastDocument
-      );
-    
-      // Change page
-      const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    
-      // Generate page numbers
-      const pageNumbers = [];
-      if (totalPages <= 3) {
+    );
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    // Generate page numbers
+    const pageNumbers = [];
+    if (totalPages <= 3) {
         for (let i = 1; i <= totalPages; i++) {
-          pageNumbers.push(i);
+            pageNumbers.push(i);
         }
-      } else {
+    } else {
         if (currentPage === 1 || currentPage === 2) {
-          pageNumbers.push(1, 2, 3);
+            pageNumbers.push(1, 2, 3);
         } else if (currentPage === totalPages || currentPage === totalPages - 1) {
-          pageNumbers.push(totalPages - 2, totalPages - 1, totalPages);
+            pageNumbers.push(totalPages - 2, totalPages - 1, totalPages);
         } else {
-          pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
+            pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
         }
-      }
+    }
     
     return (
         <div>

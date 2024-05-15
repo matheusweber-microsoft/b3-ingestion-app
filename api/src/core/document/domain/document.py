@@ -12,7 +12,9 @@ from datetime import datetime
 class Document(Entity):
     documentTitle: str
     theme: str
+    themeName: str
     subtheme: str
+    subthemeName: str
     expiryDate: datetime
     documentFile: FileStorage  
     language: str
@@ -39,6 +41,12 @@ class Document(Entity):
     def validate(self):
         if len(self.documentTitle) > 255:
             self.notification.add_error("Titulo não pode ter mais de 255 caracteres")
+
+        if not self.themeName: 
+            self.notification.add_error("Nome do tema não pode estar vazio")
+
+        if not self.subthemeName:
+            self.notification.add_error("Nome do subtema não pode estar vazio")
 
         if not self.documentTitle: 
             self.notification.add_error("Titulo não pode estar vazio")
@@ -80,15 +88,17 @@ class Document(Entity):
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
+            "themeName": self.themeName,
+            "subthemeName": self.subthemeName,
             "language": self.language,
             "storageFilePath": self.storageFilePath,
             "indexStatus": self.indexStatus,
             "uploadDate": {
-                "$date": int(self.uploadDate.timestamp()  * 1000)
+            "$date": int(self.uploadDate.timestamp()  * 1000)
             },
             "indexCompletionDate": None,
             "expiryDate": {
-                "$date": int(self.expiryDate.timestamp()  * 1000)
+            "$date": int(self.expiryDate.timestamp()  * 1000)
             },
             "originalFileFormat": self.originalFileFormat,
             "uploadedBy": self.uploadedBy,
@@ -100,6 +110,8 @@ class Document(Entity):
             f"Document Title: {self.documentTitle}\n"
             f"Theme: {self.theme}\n"
             f"Subtheme: {self.subtheme}\n"
+            f"Theme Name: {self.themeName}\n"
+            f"Subtheme Name: {self.subthemeName}\n"
             f"Expiry Date: {self.expiryDate}\n"
             f"Filename: {self.filename}\n"
             f"Language: {self.language}\n"
@@ -166,7 +178,9 @@ class SingleDocumentOutput:
     fileName: str
     documentTitle: str
     theme: str
+    themeName: str
     subtheme: str
+    subthemeName: str
     uploadDate: str
     expiryDate: str
     uploadedBy: str
@@ -178,7 +192,8 @@ class SingleDocumentOutput:
         self.documentTitle = data.get("documentTitle", "")
         self.theme = data.get("theme", "")
         self.subtheme = data.get("subtheme", "")
-        
+        self.themeName = data.get("themeName", "")
+        self.subthemeName = data.get("subthemeName", "")
         self.uploadDate = ""
 
         upload_date = data.get("uploadDate", "")
@@ -210,6 +225,8 @@ class SingleDocumentOutput:
             "documentTitle": self.documentTitle,
             "theme": self.theme,
             "subtheme": self.subtheme,
+            "themeName": self.themeName,
+            "subthemeName": self.subthemeName,
             "uploadDate": self.uploadDate if self.uploadDate else None,
             "expiryDate": self.expiryDate if self.expiryDate else None,
             "uploadedBy": self.uploadedBy,

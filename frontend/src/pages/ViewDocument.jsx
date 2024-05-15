@@ -1,14 +1,11 @@
-import DocumentDetails from "../components/DocumentDetails.jsx";
-import Header from "../components/Header.jsx";
 import Title from "../components/Title.jsx";
 import ListPDF from "../components/pagesComponents/ListPDF.jsx";
 import lightTheme from "../styles/theme.js";
 import { useEffect, useState } from "react";
 import { getDocument } from "../api/api.ts";
 import { useParams } from "react-router-dom";
-import Loading from "../components/Loading.jsx";
 import LoadingV2 from "../components/LoadingV2.jsx";
-
+import DocumentDetails from "../components/pagesComponents/DocumentDetails.jsx";
 export default function ViewDocument() {
   const [loading, setLoading] = useState(true);
   const [document, setDocument] = useState([]);
@@ -50,7 +47,9 @@ export default function ViewDocument() {
                 documentTitle={document.documentTitle}
                 fileName={document.fileName}
                 theme={document.theme}
+                themeName={document.themeName}
                 subtheme={document.subtheme}
+                subthemeName={document.subthemeName}
                 uploadedDate={document.uploadDate}
                 expiryDate={document.expiryDate}
                 uploadedBy={document.uploadedBy}

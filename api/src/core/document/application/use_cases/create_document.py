@@ -14,7 +14,9 @@ import logging
 class CreateDocumentRequest:
     documentTitle: str
     theme: str
+    themeName: str
     subtheme: str
+    subthemeName: str
     expiryDate: datetime
     documentFile: bytes
     uploadedBy: str
@@ -37,7 +39,9 @@ class CreateDocument:
             document = Document(
                 documentTitle=request.documentTitle,
                 theme=request.theme,
+                themeName=request.themeName,
                 subtheme=request.subtheme,
+                subthemeName=request.subthemeName,
                 expiryDate=request.expiryDate,
                 documentFile=request.documentFile,
                 uploadedBy=request.uploadedBy,
