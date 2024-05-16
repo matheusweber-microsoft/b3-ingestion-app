@@ -1,5 +1,6 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import uploadIcon from '../images/upload-ic.png'; // Import the image
+import theme from '../styles/theme.js';
 
 const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
     const [fileName, setFileName] = useState('');
@@ -22,7 +23,7 @@ const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
     }));
 
     return (
-        <div className="rounded-md border-b-2" style={{ background: '#e3e5e7', display: 'flex', alignItems: 'center', height: '60px', paddingLeft: '10px', borderBottomColor: '#00B0E6'}}>
+        <div className="rounded-md border-b-2" style={{ color: theme.colors.textfieldColor, background: theme.colors.field, display: 'flex', alignItems: 'center', height: '60px', paddingLeft: '10px', borderBottomColor: theme.colors.primary}}>
             <input ref={fileInputRef} type="file" onChange={handleFileChange} name={name} style={{ display: 'none' }} />
             <label htmlFor="fileInput" style={{ cursor: 'pointer', width: '90%' }} onClick={handleClick}>
                 {fileName ? fileName : placeholder}

@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
+import theme from '../styles/theme.js';
 
-const CustomDateField = (name, initialValue, disabled) => {
-    const [selectedDate, setSelectedDate] = useState(null);
-
-    const handleDateChange = (event) => {
-        setSelectedDate(event.target.value);
-    };
-
+const CustomDateField = ({name}) => {
     return (
-        <input type="date" id="field4" name={name} className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#e3e5e7', marginTop: '10px'  }} value={initialValue} disabled={disabled} required min={new Date().toISOString().split('T')[0]} />
+        <input type="date" name={name} className="rounded-md p-2 border-b-2" style={{ height: '60px', color: theme.colors.textfieldColor, borderBottomColor: theme.colors.primary, backgroundColor: theme.colors.field, marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
     );
 };
 

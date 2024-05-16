@@ -6,9 +6,12 @@ import SuccessMessage from '../SuccessMessage.jsx';
 import CustomInput from '../CustomInput.jsx';
 import CustomButton from '../CustomButton.jsx';
 import CustomFileInput from '../CustomFileInput.jsx';
+import CustomSelect from '../CustomSelect.jsx';
+import CustomDateField from '../CustomDateField.jsx';
 
 const UploadDocumentForm = (props) => {
   const [selectedTheme, setSelectedTheme] = useState(null);
+  const [selectedSubtheme, setSelectedSubtheme] = useState(null); 
   const [subthemes, setSubthemes] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -24,8 +27,6 @@ const UploadDocumentForm = (props) => {
       const theme = themes.find(theme => theme.themeId === selectedTheme);
       if (theme) {
         setSubthemes(theme.subThemes);
-        console.log(theme.subThemes);
-        console.log("subthemes = " + subthemes);
       } else {
         setSubthemes([]);
       }
@@ -36,6 +37,10 @@ const UploadDocumentForm = (props) => {
     setSelectedTheme(event.target.value);
   };
 
+  const handleSubthemeChange = (event) => {
+    setSelectedSubtheme(event.target.value);
+  };
+
   const handleClean = () => {
     fileInputRef.current.clean();
   };
@@ -44,32 +49,37 @@ const UploadDocumentForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { title, theme, subtheme, expiryDate, language, file } = event.target;
-
+    
+    const themeObj = themes.find(theme => theme.themeId === selectedTheme);
+    const themeName = themeObj.themeName;
+    const subthemeObj = subthemes.find(subtheme => subtheme.subthemeId === selectedSubtheme);
+    const subthemeName = subthemeObj.subthemeName;
+    console.log(expiryDate);
     onLoading(true);
     setShowErrorMessage(false);
     setShowSuccessMessage(false);
 
-    uploadDocument(title.value, theme.value, subtheme.value, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
-      document.getElementById("messages").style.display = "block";
-      if (response.success) {
-        setResponse(response);
-        setShowSuccessMessage(true);
-        title.value = ""; // Clear the title field
-        theme.value = "default"; // Reset the theme select to default
-        subtheme.value = "default"; // Reset the subtheme select to default
-        expiryDate.value = ""; // Clear the expiry date field
-        file.value = ""; // Clear the file input
-        handleClean();
-      } else {
-        setErrorMessage(response.message);
-        setShowErrorMessage(true);
-      }
-    }).catch((error) => {
-      setErrorMessage(error.message);
-      setShowErrorMessage(true);
-    }).finally(() => {
-      onLoading(false);
-    });
+    // uploadDocument(title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
+    //   document.getElementById("messages").style.display = "block";
+    //   if (response.success) {
+    //     setResponse(response);
+    //     setShowSuccessMessage(true);
+    //     title.value = ""; // Clear the title field
+    //     theme.value = "default"; // Reset the theme select to default
+    //     subtheme.value = "default"; // Reset the subtheme select to default
+    //     expiryDate.value = ""; // Clear the expiry date field
+    //     file.value = ""; // Clear the file input
+    //     handleClean();
+    //   } else {
+    //     setErrorMessage(response.message);
+    //     setShowErrorMessage(true);
+    //   }
+    // }).catch((error) => {
+    //   setErrorMessage(error.message);
+    //   setShowErrorMessage(true);
+    // }).finally(() => {
+    //   onLoading(false);
+    // });
   };
   return (
     <main className="relative">
@@ -91,44 +101,22 @@ const UploadDocumentForm = (props) => {
           <div className="flex flex-row space-x-4 " style={{ marginTop: '30px' }}>
             <div className="flex flex-col flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Tema:</label>
-              <select id="theme" name="theme" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required onChange={handleThemeChange}>
-                <option value="default">Selecione um tema</option>
-                {themes.map((theme, index) => (
-                  <option key={index} value={theme.themeId}>{theme.themeName}</option>
-                ))}
-              </select>
+              <CustomSelect name="theme" defaultOption="Selecione um tema" options={themes.map((theme, index) => ({value: theme.themeId, label: theme.themeName}))} disabled={false} onChange={handleThemeChange} />
             </div>
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Subtema:</label>
-              <select id="subtheme" name="subtheme" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
-                <option value="default">Selecione um subtema</option>
-                {
-                  subthemes.length === 0 ? <option value="default">Selecione um tema</option> : subthemes.map((subtheme, index) => (
-                    <option key={index} value={subtheme.subthemeId}>{subtheme.subthemeName}</option>
-                  ))
-                }
-              </select>
+              <CustomSelect name="subtheme" defaultOption="Selecione um subtema" options={subthemes.map((subtheme, index) => ({value: subtheme.subthemeId, label: subtheme.subthemeName}))} disabled={false} onChange={handleSubthemeChange} />
             </div>
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
-              <input type="date" id="field4" name="expiryDate" className="rounded-md p-2 border-b-2 bg-[#e3e5e7]" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required min={new Date().toISOString().split('T')[0]} />
+              <CustomDateField name="expiryDate" />
             </div>
             <input type="hidden" id="language" name="language" value="eng" />
-
-            {/* <div className="flex flex-col  flex-grow">
-                  <label htmlFor="field1" className="text-xs font-bold">Language:</label>
-                  <select id="language" name="language" className="rounded-md p-2 border-b-2 bg-gray-100" style={{ height: '60px', borderBottomColor: '#00B0E6', marginTop: '10px'  }} required>
-                    <option value="eng">English</option>
-                    <option value="pt-br">Portuguese</option>
-                  </select>
-                </div>
-           */}
           </div>
           <div className="flex flex-col">
           <label htmlFor="field1" className="text-xs font-bold" style={{ paddingBottom: '10px'  }} >File:</label>
-            {/* <input type="file" id="file" name="file" className="border border-gray-300 rounded-md p-2" required/> */}
           <CustomFileInput ref={fileInputRef} placeholder="Selecione um Arquivo" name="file" />
           </div>
           

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './ListPDF.css';
 
 export default function ListDocuments() {
   const documents = Array.from({ length: 8 }, (_, i) => ({
@@ -43,70 +44,63 @@ export default function ListDocuments() {
       pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
     }
   }
-
+  
   return (
     <div>
-      <table className="table-auto w-full">
-        <thead>
-          <tr>
-            <th>Actions</th>
-            <th>File Name</th>
-            <th>Theme / Sub-Theme</th>
-            <th>Index Status</th>
-            <th>Upload Date</th>
-            <th>Expiry Date</th>
-            <th>Upload By</th>
-            <th>About to Expire</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentDocuments.map((document) => (
-            <tr key={document.id}>
-              <td>
-                <div className="flex">
-                  <button className="btn">View</button>
-                  <button className="btn">Download</button>
-                </div>
-              </td>
-              <td>{document.filename}</td>
-              <td>
-                {document.theme} / {document.subTheme}
-              </td>
-              <td>{document.indexStatus}</td>
-              <td>{document.uploadDate}</td>
-              <td>{document.expiryDate}</td>
-              <td>{document.uploadBy}</td>
-              <td>{document.aboutToExpire}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <table className="table-auto w-full">
+            <thead>
+                <tr>
+                    <th className="px-4 py-2">Nome do Arquivo</th>
+                    <th className="px-4 py-2">Tema/Subtema</th>
+                    <th className="px-4 py-2">Indexamento</th>
+                    <th className="px-4 py-2">Data de Upload</th>
+                    <th className="px-4 py-2">Data de Validade</th>
+                    <th className="px-4 py-2">Salvo por</th>
+                    <th className="px-4 py-2">Ações</th>
+                    <th className="px-4 py-2">Prestes a expirar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {currentDocuments.map((document) => (
+                    <tr key={document.id}>
+                        <td className="border px-4 py-2">Arqivo</td>
+                        <td className="border px-4 py-2">Tema</td>
+                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">Index</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
 
-      <div className="flex justify-center">
-        <button
-          className="btn mx-1"
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            className="btn mx-1"
-            onClick={() => paginate(number)}
-          >
-            {number}
-          </button>
-        ))}
-        <button
-          className="btn mx-1"
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+        <div className="flex justify-center mt-4">
+            <button
+                className="btn mx-1"
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+            >
+                Anterior
+            </button>
+            {pageNumbers.map((number) => (
+                <button
+                    key={number}
+                    className={`btn mx-3 ${currentPage === number ? 'bg-blue-500 text-white p-2' : ''}`}
+                    onClick={() => paginate(number)}
+                >
+                    {number}
+                </button>
+            ))}
+            <button
+                className="btn mx-1"
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+            >
+                Próximo
+            </button>
+        </div>
     </div>
-  );
+);
 }
