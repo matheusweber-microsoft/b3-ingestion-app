@@ -27,7 +27,7 @@ export default function ViewDocument() {
 
   return (
     <main
-      class="relative"
+    className="relative"
       style={{
         backgroundColor: lightTheme.colors.background,
       }}

@@ -59,27 +59,27 @@ const UploadDocumentForm = (props) => {
     setShowErrorMessage(false);
     setShowSuccessMessage(false);
 
-    // uploadDocument(title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
-    //   document.getElementById("messages").style.display = "block";
-    //   if (response.success) {
-    //     setResponse(response);
-    //     setShowSuccessMessage(true);
-    //     title.value = ""; // Clear the title field
-    //     theme.value = "default"; // Reset the theme select to default
-    //     subtheme.value = "default"; // Reset the subtheme select to default
-    //     expiryDate.value = ""; // Clear the expiry date field
-    //     file.value = ""; // Clear the file input
-    //     handleClean();
-    //   } else {
-    //     setErrorMessage(response.message);
-    //     setShowErrorMessage(true);
-    //   }
-    // }).catch((error) => {
-    //   setErrorMessage(error.message);
-    //   setShowErrorMessage(true);
-    // }).finally(() => {
-    //   onLoading(false);
-    // });
+    uploadDocument(title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
+      document.getElementById("messages").style.display = "block";
+      if (response.success) {
+        setResponse(response);
+        setShowSuccessMessage(true);
+        title.value = ""; // Clear the title field
+        theme.value = "default"; // Reset the theme select to default
+        subtheme.value = "default"; // Reset the subtheme select to default
+        expiryDate.value = ""; // Clear the expiry date field
+        file.value = ""; // Clear the file input
+        handleClean();
+      } else {
+        setErrorMessage(response.message);
+        setShowErrorMessage(true);
+      }
+    }).catch((error) => {
+      setErrorMessage(error.message);
+      setShowErrorMessage(true);
+    }).finally(() => {
+      onLoading(false);
+    });
   };
   return (
     <main className="relative">

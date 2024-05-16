@@ -1,5 +1,4 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
-import uploadIcon from '../images/upload-ic.png'; // Import the image
 import theme from '../styles/theme.js';
 
 const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
@@ -29,7 +28,7 @@ const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
                 {fileName ? fileName : placeholder}
             </label>
             <div style={{ width: '10%', paddingRight: '10px' }}>
-                <img src={uploadIcon} alt="Upload Icon" style={{ marginLeft: '10px', width: '24px', height: '24px', float: 'right' }} />
+                <img src="upload-ic.png" alt="Upload Icon" style={{ marginLeft: '10px', width: '24px', height: '24px', float: 'right' }} />
             </div>
         </div>
     );

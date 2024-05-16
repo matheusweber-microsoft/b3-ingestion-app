@@ -9,7 +9,7 @@ import logging
 from quart_cors import cors
 
 app = Quart(__name__)
-app = cors(app, allow_origin=os.getenv('ORIGIN_CORS'))
+app = cors(app, allow_origin="*")
 
 
 def run():

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 
 export default function App() {
+  console.log("V1.0")
   return (
     <Router>
       <div className="flex" style={{background: lightTheme.colors.background}}>
