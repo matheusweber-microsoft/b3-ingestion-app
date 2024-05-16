@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { CreateDocumentResponse, Theme, ViewDocument } from "./models";
-const API_URL = 'http://localhost:5000/api/v1/';
+
+const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 export async function fetchThemes(): Promise<[Theme] | undefined> {
     try {
-        const response = await axios.get(API_URL + 'themes');
-        const themes = response.data;
-        return themes;
+      const response = await axios.get(API_URL + 'themes');
+        
+      const themes = response.data;
+      return themes;
     } catch (error) {
         console.error('Error fetching themes:', error);
     }
