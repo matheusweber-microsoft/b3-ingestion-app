@@ -60,6 +60,12 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         fileName = request.args.get("fileName")
         uploadDate = request.args.get("uploadDate")
         onlyExpired = request.args.get("onlyExpired")
+        
+        if onlyExpired == 'false':
+            onlyExpired = False
+        elif onlyExpired == 'true':
+            onlyExpired = True
+
         theme = request.args.get("theme")
         subtheme = request.args.get("subtheme")
         uploadedBy = request.args.get("uploadedBy")

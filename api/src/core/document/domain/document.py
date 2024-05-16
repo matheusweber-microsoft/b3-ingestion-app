@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass, field
 from typing import List
 from uuid import UUID
@@ -185,6 +185,7 @@ class SingleDocumentOutput:
     expiryDate: str
     uploadedBy: str
     documentPages: List[DocumentPage]
+    expireStatus: int = -1
 
     def __init__(self, data: dict):
         self.id = UUID(data.get("id", ""))
@@ -207,8 +208,16 @@ class SingleDocumentOutput:
 
         self.expiryDate = ""
         expiry_date = data.get("expiryDate", "")
+
         if isinstance(expiry_date, datetime):
             self.expiryDate = expiry_date.strftime("%d/%m/%Y")
+            today = datetime.now().date()
+            if expiry_date.date() < today:
+                self.expireStatus = 2
+            elif expiry_date.date() < today + timedelta(days=7):
+                self.expireStatus = 1
+            else:
+                self.expireStatus = 0
         else:
             if not expiry_date == "":
                 expiry_date = expiry_date["$date"]
@@ -230,6 +239,7 @@ class SingleDocumentOutput:
             "uploadDate": self.uploadDate if self.uploadDate else None,
             "expiryDate": self.expiryDate if self.expiryDate else None,
             "uploadedBy": self.uploadedBy,
+            "expireStatus": self.expireStatus,
         }
 
         if len(document_pages) > 0:

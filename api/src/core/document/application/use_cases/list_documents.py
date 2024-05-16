@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from uuid import UUID
 
 from src.core.document.domain.document import SingleDocumentOutput
@@ -18,7 +18,7 @@ class ListDocuments:
         onlyExpired: bool = None
         theme: str = None
         subtheme: str = None
-        uploadedBy: str = None
+        uploadedBy: int = None
         page: int = 1
         limit: int = 5
 
@@ -30,18 +30,14 @@ class ListDocuments:
             if self.fileName:
                 query['fileName'] = {'$regex': self.fileName, '$options': 'i'}
             if self.uploadDate:
-                start_of_day = datetime.strptime(
-                    self.uploadDate, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
-                end_of_day = start_of_day.replace(
-                    hour=23, minute=59, second=59)
-                query['uploadDate'] = {
-                    '$gte': start_of_day, '$lte': end_of_day}
+                days = int(self.uploadDate) - 1
+                query['uploadDate'] = {'$gte': datetime.now() - timedelta(days=days)}
             if self.theme:
                 query['theme'] = self.theme
             if self.subtheme:
                 query['subtheme'] = self.subtheme
             if self.onlyExpired and self.onlyExpired == True:
-                query['expiryDate'] = {'$lt': datetime.now()}
+                query['expiryDate'] = {'$lte': datetime.now() + timedelta(days=7)}
             if self.uploadedBy:
                 query['uploadedBy'] = {
                     '$regex': self.uploadedBy, '$options': 'i'}
