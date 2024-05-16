@@ -20,7 +20,7 @@ class ListDocuments:
         subtheme: str = None
         uploadedBy: int = None
         page: int = 1
-        limit: int = 5
+        limit: int = 10
 
         def toQuery(self) -> dict:
             query = {}
@@ -46,13 +46,22 @@ class ListDocuments:
     @dataclass
     class Output:
         data: list[SingleDocumentOutput]
+        count: int
+
+        def toDict(self) -> dict:
+            return {
+                "data": [document.to_dict() for document in self.data],
+                "count": self.count
+            }
 
     def execute(self, input: Input) -> Output:
         logging.info("Executing ListDocuments use case")
-        documents = self.repository.list(
+        data = self.repository.list(
             filters=input.toQuery(),
             page=input.page,
             limit=input.limit
         )
 
-        return self.Output(data=documents)
+        
+
+        return self.Output(data=data[0], count=data[1])

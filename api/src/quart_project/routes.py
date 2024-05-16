@@ -74,9 +74,8 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
 
         try:
             response = use_case.execute(input)
-            documents_json = [document.to_dict() for document in response.data]
             logging.info("Documents retrieved successfully")
-            return documents_json, 200
+            return response.toDict(), 200
         except Exception as e:
             logging.error(f"Error getting documents: {str(e)}")
             return jsonify({'error': str(e)}), 400

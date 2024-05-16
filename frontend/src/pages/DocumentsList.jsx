@@ -5,24 +5,49 @@ import DocumentListFilter from "../components/pagesComponents/DocumentListFilter
 import React, { useState, useEffect } from 'react';
 import lightTheme from "../styles/theme.js";
 import Loading from "../components/Loading.jsx";
-import { fetchThemes } from "../api/api.ts";
+import { fetchThemes, fetchDocuments } from "../api/api.ts";
 
-export default function DocumentsList() {
-  const [loading, setLoading] = useState(true);
+export default function DocumentsList(props) {
   const [themes, setThemes] = useState([]);
+  const [reloadDocuments, setReloadDocuments] = useState(true);
+  const [documents, setDocuments] = useState([]);
+  const [count, setCount] = useState(0);
   
+  const { onLoading } = props;
+
   useEffect(() => {
+    onLoading(true);
+    
     fetchThemes()
       .then((themes) => {
         // Do something with the themes
         setThemes(themes);
-        setLoading(false);
+        onLoading(false);
       })
       .catch((error) => {
         // Handle the error
-        setLoading(false);
+        onLoading(false);
+      });
+
+    fetchDocuments({})
+      .then((documents) => {
+        // Do something with the documents
+        setDocuments(documents[0]);
+        setCount(documents[1]);
+        onLoading(false);
+      })
+      .catch((error) => {
+        // Handle the error
+        onLoading(false);
       });
   }, []);
+
+  const handleFilter = (fields) => {
+    const filteredFields = Object.fromEntries(
+      Object.entries(fields).filter(([key, value]) => value !== undefined && value !== "default")
+    );
+    fetchDocuments(filteredFields);
+  };
 
   return (
     <main
@@ -31,9 +56,7 @@ export default function DocumentsList() {
         backgroundColor: lightTheme.colors.background,
       }}
     >
-      {loading && <Loading />}
-
-      <DocumentListFilter themes={themes} onLoading={setLoading} />
+      <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
       <div style={{marginTop: "20px", float:"left", width:"100%"}}>
         <ListDocuments />

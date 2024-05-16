@@ -93,31 +93,30 @@ const UploadDocumentForm = (props) => {
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">
             <div className="flex flex-col flex-grow" >
-              <CustomInput placeholder="Título do Documento" name="title" disabled={false}/>
-              {/* <input type="text" id="field2" name="title" className="border border-gray-300 rounded-md p-1 mt-2" required/> */}
+              <CustomInput placeholder="Título do Documento" name="title" disabled={false} required={true}/>
             </div>
           </div>
 
           <div className="flex flex-row space-x-4 " style={{ marginTop: '30px' }}>
             <div className="flex flex-col flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Tema:</label>
-              <CustomSelect name="theme" defaultOption="Selecione um tema" options={themes.map((theme, index) => ({value: theme.themeId, label: theme.themeName}))} disabled={false} onChange={handleThemeChange} />
+              <CustomSelect name="theme" defaultOption="Selecione um tema" options={themes.map((theme, index) => ({value: theme.themeId, label: theme.themeName}))} disabled={false} onChange={handleThemeChange} required={true}/>
             </div>
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Subtema:</label>
-              <CustomSelect name="subtheme" defaultOption="Selecione um subtema" options={subthemes.map((subtheme, index) => ({value: subtheme.subthemeId, label: subtheme.subthemeName}))} disabled={false} onChange={handleSubthemeChange} />
+              <CustomSelect name="subtheme" defaultOption="Selecione um subtema" options={subthemes.map((subtheme, index) => ({value: subtheme.subthemeId, label: subtheme.subthemeName}))} disabled={false} onChange={handleSubthemeChange} required={true} />
             </div>
 
             <div className="flex flex-col  flex-grow">
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
-              <CustomDateField name="expiryDate" />
+              <CustomDateField name="expiryDate" required={true} />
             </div>
             <input type="hidden" id="language" name="language" value="eng" />
           </div>
           <div className="flex flex-col">
           <label htmlFor="field1" className="text-xs font-bold" style={{ paddingBottom: '10px'  }} >File:</label>
-          <CustomFileInput ref={fileInputRef} placeholder="Selecione um Arquivo" name="file" />
+          <CustomFileInput ref={fileInputRef} placeholder="Selecione um Arquivo" name="file" required={true} />
           </div>
           
           <CustomButton buttonText="Enviar" />

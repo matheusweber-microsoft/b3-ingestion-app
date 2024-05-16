@@ -1,7 +1,7 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import theme from '../styles/theme.js';
 
-const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
+const CustomFileInput = forwardRef(({ placeholder, name, required }, ref) => {
     const [fileName, setFileName] = useState('');
     const fileInputRef = useRef(null);
 
@@ -23,7 +23,7 @@ const CustomFileInput = forwardRef(({ placeholder, name }, ref) => {
 
     return (
         <div className="rounded-md border-b-2" style={{ color: theme.colors.textfieldColor, background: theme.colors.field, display: 'flex', alignItems: 'center', height: '60px', paddingLeft: '10px', borderBottomColor: theme.colors.primary}}>
-            <input ref={fileInputRef} type="file" onChange={handleFileChange} name={name} style={{ display: 'none' }} />
+            <input ref={fileInputRef} type="file" onChange={handleFileChange} name={name} style={{ display: 'none' }} required={required}/>
             <label htmlFor="fileInput" style={{ cursor: 'pointer', width: '90%' }} onClick={handleClick}>
                 {fileName ? fileName : placeholder}
             </label>

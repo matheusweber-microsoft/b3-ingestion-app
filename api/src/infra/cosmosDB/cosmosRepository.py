@@ -23,6 +23,11 @@ class CosmosRepository:
         existing_document = self.db.get_collection(collectionName).find_one(query)
         return existing_document is not None
 
+    def count(self, collectionName):
+        collection = self.db.get_collection(collectionName)
+        count = collection.count_documents({})
+        return count
+    
     def get_by_id(self, item_id: uuid.UUID):
         try:
             response = self.container.read_item(item=str(item_id), partition_key=str(item_id))

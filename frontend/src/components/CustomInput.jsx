@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import theme from '../styles/theme.js';
 
-const CustomInput = ({ placeholder, name, value, disabled }) => {
+const CustomInput = ({ placeholder, name, value, disabled, required }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
@@ -18,6 +18,7 @@ const CustomInput = ({ placeholder, name, value, disabled }) => {
         className="border-b-2 py-2 px-4 rounded-md w-full outline-none" 
         style={{ height: '60px', color: theme.colors.textfieldColor, borderBottomColor: theme.colors.primary, backgroundColor: theme.colors.field, marginTop: '10px'  }}
         type="text"
+        required={required}
         placeholder={isFocused ? '' : placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}

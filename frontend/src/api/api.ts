@@ -70,3 +70,18 @@ export async function getDocument(id): Promise<[ViewDocument] | undefined> {
   }
   return undefined;
 }
+
+export async function fetchDocuments(fields): Promise<[Document[], number] | undefined> {
+  const queryParams = new URLSearchParams(fields);
+  const url = API_URL + '/api/v1/documents?' + queryParams.toString();
+  const response = await axios.get(url, { withCredentials: false });
+  try {
+    const documents = response.data["data"];
+    const count = response.data["count"];
+    return [documents, count];
+  } catch (error) {
+    console.error('Error fetching document:', error);
+  }
+  return undefined;
+}
+

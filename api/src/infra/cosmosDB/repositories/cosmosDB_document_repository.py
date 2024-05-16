@@ -24,10 +24,11 @@ class DocumentRepository():
         logging.debug("Verifying duplicity for document: %s", document)
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 
-    def list(self, filters, page=1, limit=100) -> List[SingleDocumentOutput]:
+    def list(self, filters, page=1, limit=100) -> tuple[List[SingleDocumentOutput], int]:
         logging.info("Listing documents with filters: %s, page: %s, limit: %s", filters, page, limit)
         documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "uploadedBy": 1, "_id": 0}, page=page, limit=limit)
-        print(documents)
+        number_of_documents = self.repository.count(self.collection_name)
+
         list_of_documents = []
 
         for document in documents:
@@ -35,7 +36,7 @@ class DocumentRepository():
                 documentToSave = SingleDocumentOutput(document)
                 list_of_documents.append(documentToSave)
 
-        return list_of_documents
+        return [list_of_documents, number_of_documents]
     
     def get_by_id(self, id: UUID) -> SingleDocumentOutput:
         logging.info("Getting document by id: %s", id)
