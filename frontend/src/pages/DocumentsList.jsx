@@ -46,7 +46,19 @@ export default function DocumentsList(props) {
     const filteredFields = Object.fromEntries(
       Object.entries(fields).filter(([key, value]) => value !== undefined && value !== "default")
     );
-    fetchDocuments(filteredFields);
+    onLoading(true);
+    console.log(filteredFields);
+    fetchDocuments(filteredFields)
+      .then((documents) => {
+        // Do something with the documents
+        setDocuments(documents[0]);
+        setCount(documents[1]);
+        onLoading(false);
+      })
+      .catch((error) => {
+        // Handle the error
+        onLoading(false);
+      });
   };
 
   return (

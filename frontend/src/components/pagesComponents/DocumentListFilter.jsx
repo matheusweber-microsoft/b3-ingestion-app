@@ -40,11 +40,11 @@ const DocumentListFilter = (props) => {
     
     const handleSubmit = (event) => {
         event.preventDefault();
-        const { documentTitle, fileName, uploadedDate, theme, subtheme, onlyExpired } = event.target;
+        const { documentTitle, fileName, uploadDate, theme, subtheme, onlyExpired } = event.target;
         const formData = {
             documentTitle: documentTitle.value || undefined,
             fileName: fileName.value || undefined,
-            uploadedDate: uploadedDate.value || undefined,
+            uploadDate: uploadDate.value || undefined,
             theme: theme.value || undefined,
             subtheme: subtheme.value || undefined,
             onlyExpired: onlyExpired.checked || undefined
@@ -71,7 +71,7 @@ const DocumentListFilter = (props) => {
 
                                 <div className="flex flex-col flex-grow" style={{width: "33%"}}>
                                     <label htmlFor="field1" className="text-xs font-bold">Enviado nos últimos:</label>
-                                    <CustomSelect name="uploadedDate" defaultOption="Selecione uma opção" options={uploadedDateOptions} required={false} disabled={false} onChange={() => {}} />
+                                    <CustomSelect name="uploadDate" defaultOption="Selecione uma opção" options={uploadedDateOptions} required={false} disabled={false} onChange={() => {}} />
                                 </div>
                             </div>
                             <div className="flex flex-row space-x-4 " style={{ marginTop: '15px' }}>
