@@ -49,6 +49,8 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
         return 'Processando';
       case 'Indexed':
         return 'Concluído';
+      case 'Deleting':
+        return 'Deletando';
       default:
         return '';
     }

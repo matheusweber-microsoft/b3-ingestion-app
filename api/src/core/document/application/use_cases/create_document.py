@@ -51,6 +51,7 @@ class CreateDocument:
             logging.error('InvalidDocument: %s', err)
             raise InvalidDocument(err)
         
+        print(document.storageFilePath)
         
         if self.repository.verify_duplicity(document=document):
             logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
