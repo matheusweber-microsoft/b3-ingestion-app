@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 function DocumentDetails({documentTitle, fileName, theme, themeName, subtheme, subthemeName, uploadedDate, expiryDate, uploadedBy}) {
     const fileInputRef = useRef();
     return (
-        <main class="relative" style={{ padding: '10px' }}>
+        <main className="relative" style={{ padding: '10px' }}>
             <Title title={"Detalhes do documento: " + documentTitle}/>
             <div style={{ marginTop: '10px' }}>
                 <div className="flex flex-row space-x-4 ">

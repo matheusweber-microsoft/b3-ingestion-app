@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 export async function fetchThemes(): Promise<[Theme] | undefined> {
     try {
-      const response = await axios.get(API_URL + 'themes');
+      const response = await axios.get(API_URL + '/api/v1/themes', { withCredentials: false });
         
       const themes = response.data;
       return themes;
@@ -46,7 +46,8 @@ export async function uploadDocument(
     
 
     try {
-      const response = await axios.post(API_URL + 'document', formData, {
+      const response = await axios.post(API_URL + '/api/v1/document', formData, {
+        withCredentials: false,
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -61,7 +62,7 @@ export async function uploadDocument(
 
 export async function getDocument(id): Promise<[ViewDocument] | undefined> {
   try {
-      const response = await axios.get(API_URL + 'document/' + id);
+      const response = await axios.get(API_URL + '/api/v1/documents/' + id, { withCredentials: false });
       const document = response.data;
       return document;
   } catch (error) {

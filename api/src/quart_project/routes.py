@@ -15,7 +15,6 @@ import logging
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
-    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def create_document():
         logging.info("Received request to create document")
         data = await request.form
@@ -35,7 +34,6 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
-    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def get_themes():
         logging.info("Received request to get themes")
         data = await request.form
@@ -51,7 +49,6 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
     
     @app.get("/api/v1/documents")
-    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
     async def get_documents():
         logging.info("Received request to get documents")
         data = await request.json
@@ -84,8 +81,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             logging.error(f"Error getting documents: {str(e)}")
             return jsonify({'error': str(e)}), 400
         
-    @app.get("/api/v1/document/<id>")
-    @route_cors(allow_origin=os.getenv('ORIGIN_CORS'))
+    @app.get("/api/v1/documents/<id>")
     async def get_document(id):
         logging.info(f"Received request to get document with id: {id}")
         use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))

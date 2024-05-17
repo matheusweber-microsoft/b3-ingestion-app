@@ -31,7 +31,7 @@ export default function UploadDocument() {
 
   return (
     <main
-      class="relative"
+    className="relative"
       style={{
         backgroundColor: lightTheme.colors.background,
       }}

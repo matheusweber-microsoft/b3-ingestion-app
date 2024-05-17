@@ -40,7 +40,7 @@ const DocumentListFilter = (props) => {
     
 
     return (
-        <main class="relative" style={{ padding: '10px' }}>
+        <main className="relative" style={{ padding: '10px' }}>
             <Title title={"Documentos"}/>
             <div style={{width: "100%", float:"left"}}>
                 <div className="flex flex-row" style={{ marginTop: '10px' }}>

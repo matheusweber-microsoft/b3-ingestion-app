@@ -26,7 +26,7 @@ export default function DocumentsList() {
 
   return (
     <main
-      class="relative"
+    className="relative"
       style={{
         backgroundColor: lightTheme.colors.background,
       }}
