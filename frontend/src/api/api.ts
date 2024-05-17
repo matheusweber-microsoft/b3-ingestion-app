@@ -75,6 +75,7 @@ export async function fetchDocuments(fields): Promise<DocumentListResponse | und
   const queryParams = new URLSearchParams(fields);
   const url = API_URL + '/api/v1/documents?' + queryParams.toString();
   const response = await axios.get(url, { withCredentials: false });
+  console.log(url);
   try {
     const documents = response.data["data"];
     const metadata = response.data["metadata"];

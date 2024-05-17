@@ -23,9 +23,9 @@ class CosmosRepository:
         existing_document = self.db.get_collection(collectionName).find_one(query)
         return existing_document is not None
 
-    def count(self, collectionName):
+    def count(self, collectionName, query = {}):
         collection = self.db.get_collection(collectionName)
-        count = collection.count_documents({})
+        count = collection.count_documents(query)
         return count
     
     def get_by_id(self, item_id: uuid.UUID):

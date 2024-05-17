@@ -12,8 +12,21 @@ export default function DocumentsList(props) {
   const [reloadDocuments, setReloadDocuments] = useState(true);
   const [listDocuments, setListDocuments] = useState([]);
   const [count, setCount] = useState(0);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({});
+
   const { onLoading } = props;
+
+  useEffect(() => {
+    filters.page = currentPage;
+    setFilters(filters);
+
+    searchFilteredDocuments(filters);
+  }, [currentPage]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   useEffect(() => {
     onLoading(true);
@@ -45,9 +58,15 @@ export default function DocumentsList(props) {
     const filteredFields = Object.fromEntries(
       Object.entries(fields).filter(([key, value]) => value !== undefined && value !== "default")
     );
+    setFilters(filteredFields);
+    setCurrentPage(1);
+    searchFilteredDocuments(filteredFields);
+  };
+
+  const searchFilteredDocuments = (fields) => {
     onLoading(true);
-    console.log(filteredFields);
-    fetchDocuments(filteredFields)
+
+    fetchDocuments(fields)
       .then((response) => {
         // Do something with the documents
         setListDocuments(response);
@@ -69,7 +88,7 @@ export default function DocumentsList(props) {
       <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
       <div style={{marginTop: "20px", float:"left", width:"100%"}}>
-        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages} />
+        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} />
       </div>
     </main>
   );
