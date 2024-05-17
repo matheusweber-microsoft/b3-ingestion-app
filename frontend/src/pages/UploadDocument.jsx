@@ -1,33 +1,28 @@
 import "./UploadDocument.css";
 import "../styles/theme.js";
 import lightTheme from "../styles/theme.js";
-import Header from "../components/Header";
 import UploadDocumentForm from "../components/pagesComponents/UploadDocumentForm.jsx";
 import { useEffect } from "react";
 import { fetchThemes } from "../api/api.ts";
 import { useState } from "react";
-import Loading from "../components/Loading.jsx";
 
-export default function UploadDocument() {
-  const [loading, setLoading] = useState(true);
+export default function UploadDocument(props) {
   const [themes, setThemes] = useState([]);
+  const { onLoading } = props;
 
   useEffect(() => {
+    onLoading(true);
     fetchThemes()
       .then((themes) => {
         // Do something with the themes
         setThemes(themes);
-        setLoading(false);
+        onLoading(false);
       })
       .catch((error) => {
         // Handle the error
-        setLoading(false);
+        onLoading(false);
       });
   }, []);
-
-  const handleChildLoading = (show) => {
-    setLoading(show);
-  };
 
   return (
     <main
@@ -36,7 +31,6 @@ export default function UploadDocument() {
         backgroundColor: lightTheme.colors.background,
       }}
     >
-      {loading && <Loading />}
 
       <div
         className="content"
@@ -47,7 +41,7 @@ export default function UploadDocument() {
           height: "100vh",
         }}
       >
-        <UploadDocumentForm themes={themes} onLoading={handleChildLoading} />
+        <UploadDocumentForm themes={themes} onLoading={onLoading} />
       </div>
     </main>
   );
