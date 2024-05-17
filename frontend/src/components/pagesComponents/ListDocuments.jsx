@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
 
-export default function ListDocuments({documents, totalCount, totalPages}) {
+export default function ListDocuments({documents, onPageChange, totalCount, totalPages}) {
   if(documents === null || documents === undefined) {
     documents = [];
   }
@@ -20,8 +20,11 @@ export default function ListDocuments({documents, totalCount, totalPages}) {
   );
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    onPageChange(pageNumber);
+  };
+   
   // Generate page numbers
   const pageNumbers = [];
   if (totalPages <= 3) {
@@ -67,8 +70,8 @@ export default function ListDocuments({documents, totalCount, totalPages}) {
                 </tr>
             </thead>
             <tbody>
-                {currentDocuments.map((document) => (
-                    <tr key={document.id}>
+                {documents.map((document) => (
+                    <tr key={document.id}  style={{ height: '50px' }}>
                         <td className="border px-4 py-2">{document.fileName}</td>
                         <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
                         <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
