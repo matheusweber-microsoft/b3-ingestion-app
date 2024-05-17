@@ -21,7 +21,7 @@ export default function DocumentsList(props) {
     filters.page = currentPage;
     setFilters(filters);
 
-    handleFilter(filters);
+    searchFilteredDocuments(filters);
   }, [currentPage]);
 
   const handlePageChange = (pageNumber) => {
@@ -59,9 +59,14 @@ export default function DocumentsList(props) {
       Object.entries(fields).filter(([key, value]) => value !== undefined && value !== "default")
     );
     setFilters(filteredFields);
+    setCurrentPage(1);
+    searchFilteredDocuments(filteredFields);
+  };
+
+  const searchFilteredDocuments = (fields) => {
     onLoading(true);
 
-    fetchDocuments(filteredFields)
+    fetchDocuments(fields)
       .then((response) => {
         // Do something with the documents
         setListDocuments(response);
