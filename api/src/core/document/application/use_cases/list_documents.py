@@ -5,6 +5,7 @@ from uuid import UUID
 from src.core.document.domain.document import SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 import logging
+import math
 
 class ListDocuments:
     def __init__(self, repository: DocumentRepository):
@@ -47,11 +48,15 @@ class ListDocuments:
     class Output:
         data: list[SingleDocumentOutput]
         count: int
+        pages: int
 
         def toDict(self) -> dict:
             return {
                 "data": [document.to_dict() for document in self.data],
-                "count": self.count
+                "metadata": {
+                    "totalCount": self.count,
+                    "totalPages": self.pages
+                }
             }
 
     def execute(self, input: Input) -> Output:
@@ -64,4 +69,4 @@ class ListDocuments:
 
         
 
-        return self.Output(data=data[0], count=data[1])
+        return self.Output(data=data[0], count=data[1], pages=math.ceil(data[1] / input.limit))

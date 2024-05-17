@@ -21,7 +21,7 @@ export type DocumentPage = { filePageName: string; indexCompletionDate: string; 
 
 export type ViewDocument = { documentPages: DocumentPage[]; documentTitle: string; expiryDate: string; fileName: string; id: string; subtheme: string; subthemeName: string; theme: string; themeName: string; uploadDate: string; uploadedBy: string; };
 
-export type Document {
+export type Document = {
     documentTitle: string;
     expireStatus: number;
     expiryDate: string;
@@ -33,4 +33,11 @@ export type Document {
     themeName: string;
     uploadDate: string;
     uploadedBy: string;
+    indexStatus: string;
+};
+
+export type DocumentListResponse = {
+    documents: Document[];
+    count: number;
+    pages: number;
 };

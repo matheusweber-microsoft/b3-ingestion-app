@@ -186,6 +186,7 @@ class SingleDocumentOutput:
     uploadedBy: str
     documentPages: List[DocumentPage]
     expireStatus: int = -1
+    indexStatus: str = "Submitted"
 
     def __init__(self, data: dict):
         self.id = UUID(data.get("id", ""))
@@ -196,6 +197,7 @@ class SingleDocumentOutput:
         self.themeName = data.get("themeName", "")
         self.subthemeName = data.get("subthemeName", "")
         self.uploadDate = ""
+        self.indexStatus = data.get("indexStatus", "")
 
         upload_date = data.get("uploadDate", "")
         if isinstance(upload_date, datetime):
@@ -240,6 +242,7 @@ class SingleDocumentOutput:
             "expiryDate": self.expiryDate if self.expiryDate else None,
             "uploadedBy": self.uploadedBy,
             "expireStatus": self.expireStatus,
+            "indexStatus": self.indexStatus if self.indexStatus else None 
         }
 
         if len(document_pages) > 0:
