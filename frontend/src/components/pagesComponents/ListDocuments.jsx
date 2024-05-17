@@ -1,22 +1,15 @@
 import { useState } from "react";
 import './ListPDF.css';
+import StatusView from "../StatusView";
+import { Link } from "react-router-dom";
 
-export default function ListDocuments() {
-  const documents = Array.from({ length: 8 }, (_, i) => ({
-    id: i + 1,
-    filename: `Document ${i + 1}`,
-    theme: "This is a document",
-    subTheme: "This is a document",
-    indexStatus: "This is a document",
-    uploadDate: "This is a document",
-    expiryDate: "This is a document",
-    uploadBy: "This is a document",
-    aboutToExpire: "This is a document",
-  }));
+export default function ListDocuments({documents, totalCount, totalPages}) {
+  if(documents === null || documents === undefined) {
+    documents = [];
+  }
 
   const [currentPage, setCurrentPage] = useState(1);
-  const documentsPerPage = 2;
-  const totalPages = Math.ceil(documents.length / documentsPerPage);
+  const documentsPerPage = 10;
 
   // Get current documents
   const indexOfLastDocument = currentPage * documentsPerPage;
@@ -44,6 +37,19 @@ export default function ListDocuments() {
       pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
     }
   }
+
+  const getTranslatedIndexStatus = (indexStatus) => {
+    switch (indexStatus) {
+      case 'Submitted':
+        return 'Enviado';
+      case 'Processing':
+        return 'Processando';
+      case 'Indexed':
+        return 'Concluído';
+      default:
+        return '';
+    }
+  };
   
   return (
     <div>
@@ -56,21 +62,30 @@ export default function ListDocuments() {
                     <th className="px-4 py-2">Data de Upload</th>
                     <th className="px-4 py-2">Data de Validade</th>
                     <th className="px-4 py-2">Salvo por</th>
-                    <th className="px-4 py-2">Ações</th>
-                    <th className="px-4 py-2">Prestes a expirar</th>
+                    <th className="px-4 py-2" style={{width: "100px"}}>Ações</th>
+                    <th className="px-4 py-2" style={{width: "200px"}}>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {currentDocuments.map((document) => (
                     <tr key={document.id}>
-                        <td className="border px-4 py-2">Arqivo</td>
-                        <td className="border px-4 py-2">Tema</td>
-                        <td className="border px-4 py-2">Index</td>
-                        <td className="border px-4 py-2">Index</td>
-                        <td className="border px-4 py-2">Index</td>
-                        <td className="border px-4 py-2">Index</td>
-                        <td className="border px-4 py-2">Index</td>
-                        <td className="border px-4 py-2">Index</td>
+                        <td className="border px-4 py-2">{document.fileName}</td>
+                        <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
+                        <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
+                        <td className="border px-4 py-2">{document.uploadDate}</td>
+                        <td className="border px-4 py-2">{document.expiryDate}</td>
+                        <td className="border px-4 py-2">{document.uploadedBy}</td>
+                        <td className="border px-4 py-2">
+                          <div className="flex flex-row">
+                            <div className="flex flex-col space-x-4  flex-grow">
+                              <Link to={`/edit-document/${document.id}`}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px' }} /></Link>
+                            </div>
+                            <div className="flex flex-col space-x-4  flex-grow">
+                            <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px' }} /></Link>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="border px-4 py-2"><StatusView status={document.expireStatus}></StatusView></td>
                     </tr>
                 ))}
             </tbody>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateDocumentResponse, Theme, ViewDocument } from "./models";
+import { CreateDocumentResponse, DocumentListResponse, Theme, ViewDocument } from "./models";
 
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -71,14 +71,17 @@ export async function getDocument(id): Promise<[ViewDocument] | undefined> {
   return undefined;
 }
 
-export async function fetchDocuments(fields): Promise<[Document[], number] | undefined> {
+export async function fetchDocuments(fields): Promise<DocumentListResponse | undefined> {
   const queryParams = new URLSearchParams(fields);
   const url = API_URL + '/api/v1/documents?' + queryParams.toString();
   const response = await axios.get(url, { withCredentials: false });
   try {
     const documents = response.data["data"];
-    const count = response.data["count"];
-    return [documents, count];
+    const metadata = response.data["metadata"];
+    const count = metadata["totalCount"];
+    const pages = metadata["totalPages"]; 
+
+    return { documents, count, pages};
   } catch (error) {
     console.error('Error fetching document:', error);
   }

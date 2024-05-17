@@ -3,7 +3,7 @@ import { useState } from "react";
 import './ListPDF.css';
 
 const ListPDF = ({ documents }) => {
-    if(documents !== null) {
+    if(documents === null || documents === undefined) {
         documents = [];
     }
     const [currentPage, setCurrentPage] = useState(1);

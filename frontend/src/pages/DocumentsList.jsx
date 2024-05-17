@@ -10,7 +10,7 @@ import { fetchThemes, fetchDocuments } from "../api/api.ts";
 export default function DocumentsList(props) {
   const [themes, setThemes] = useState([]);
   const [reloadDocuments, setReloadDocuments] = useState(true);
-  const [documents, setDocuments] = useState([]);
+  const [listDocuments, setListDocuments] = useState([]);
   const [count, setCount] = useState(0);
   
   const { onLoading } = props;
@@ -30,10 +30,9 @@ export default function DocumentsList(props) {
       });
 
     fetchDocuments({})
-      .then((documents) => {
+      .then((response) => {
         // Do something with the documents
-        setDocuments(documents[0]);
-        setCount(documents[1]);
+        setListDocuments(response);
         onLoading(false);
       })
       .catch((error) => {
@@ -49,10 +48,9 @@ export default function DocumentsList(props) {
     onLoading(true);
     console.log(filteredFields);
     fetchDocuments(filteredFields)
-      .then((documents) => {
+      .then((response) => {
         // Do something with the documents
-        setDocuments(documents[0]);
-        setCount(documents[1]);
+        setListDocuments(response);
         onLoading(false);
       })
       .catch((error) => {
@@ -71,7 +69,7 @@ export default function DocumentsList(props) {
       <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
       <div style={{marginTop: "20px", float:"left", width:"100%"}}>
-        <ListDocuments />
+        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages} />
       </div>
     </main>
   );
