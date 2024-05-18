@@ -1,11 +1,8 @@
-import Filters from "../components/Filters";
-import { Link } from "react-router-dom";
 import ListDocuments from "../components/pagesComponents/ListDocuments";
 import DocumentListFilter from "../components/pagesComponents/DocumentListFilter";
 import React, { useState, useEffect } from 'react';
 import lightTheme from "../styles/theme.js";
-import Loading from "../components/Loading.jsx";
-import { fetchThemes, fetchDocuments } from "../api/api.ts";
+import { fetchThemes, fetchDocuments, deleteDocument } from "../api/api.ts";
 
 export default function DocumentsList(props) {
   const [themes, setThemes] = useState([]);
@@ -26,6 +23,26 @@ export default function DocumentsList(props) {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleDeleteClicked = (id) => {
+    if (window.confirm("Você tem certeza que deseja deletar este documento?")) {
+      console.log("Delete clicked", id);
+      onLoading(true);
+
+      deleteDocument(id)
+        .then((response) => { 
+          alert(response);
+          window.location.reload();
+          onLoading(false);
+        })
+        .catch((error) => {
+          // Handle the error
+          alert(error);
+          onLoading(false);
+        });
+      // Add your delete logic here
+    }
   };
 
   useEffect(() => {
@@ -88,7 +105,7 @@ export default function DocumentsList(props) {
       <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
       <div style={{marginTop: "20px", float:"left", width:"100%"}}>
-        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} />
+        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} onDelete={handleDeleteClicked} />
       </div>
     </main>
   );

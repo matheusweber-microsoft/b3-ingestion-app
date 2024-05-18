@@ -89,3 +89,15 @@ export async function fetchDocuments(fields): Promise<DocumentListResponse | und
   return undefined;
 }
 
+export async function deleteDocument(id): Promise<String | undefined> {
+  try {
+      const response = await axios.delete(API_URL + '/api/v1/documents/' + id, { withCredentials: false });
+      const message = response.data['message'];
+      return message;
+  } catch (error) {
+      console.error('Error fetching document:', error);
+      return error.response.data['error'];
+  }
+  return undefined;
+}
+

@@ -3,7 +3,7 @@ import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
 
-export default function ListDocuments({documents, onPageChange, totalCount, totalPages}) {
+export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete}) {
   if(documents === null || documents === undefined) {
     documents = [];
   }
@@ -82,9 +82,10 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
                         <td className="border px-4 py-2">{document.uploadedBy}</td>
                         <td className="border px-4 py-2">
                           <div className="flex flex-row">
-                            <div className="flex flex-col space-x-4  flex-grow">
-                              <Link to={`/edit-document/${document.id}`}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px' }} /></Link>
-                            </div>
+                            {document.indexStatus === 'Indexed' && <div className="flex flex-col space-x-4  flex-grow">
+                              <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px' }} /></button>
+                            </div>}
+                            
                             <div className="flex flex-col space-x-4  flex-grow">
                             <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px' }} /></Link>
                             </div>

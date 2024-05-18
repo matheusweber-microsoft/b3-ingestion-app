@@ -42,7 +42,7 @@ class DeleteDocument:
         
         if document.indexStatus != "Indexed":
             logging.error("Document is not in indexed status")
-            raise DocumentNotIndexedDelete("Document is not in indexed status")
+            raise DocumentNotIndexedDelete("Documento não está indexado. Não é possível deletar.")
 
         #TODO: Add validation: request user against the uploaded by value
         
@@ -54,7 +54,7 @@ class DeleteDocument:
             message_dict=self.generate_message_from_document(document)
         )
            
-        return self.Output(message="Documento está sendo deletado")
+        return self.Output(message="Documento está sendo deletado.")
 
     def generate_message_from_document(self, document: Document):
         message_dict = {
