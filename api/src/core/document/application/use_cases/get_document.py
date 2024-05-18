@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-from core.document.application.use_cases.exceptions import DocumentNotFound
+from src.core.document.application.use_cases.exceptions import DocumentNotFound
 
 from src.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository

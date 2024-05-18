@@ -44,6 +44,8 @@ class DeleteDocument:
             logging.error("Document is not in indexed status")
             raise DocumentNotIndexedDelete("Document is not in indexed status")
 
+        #TODO: Add validation: request user against the uploaded by value
+        
         logging.info("Updating document with id: %s", input.id)
         self.repository.update(UUID(input.id), {"indexStatus": "Deleting"})
 
