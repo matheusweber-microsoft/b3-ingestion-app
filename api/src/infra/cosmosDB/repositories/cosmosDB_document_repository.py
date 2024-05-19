@@ -1,6 +1,6 @@
 from typing import List
 from uuid import UUID
-from src.core.document.application.use_cases.exceptions import DocumentNotFound
+from src.core.document.application.use_cases.exceptions import DocumentNotFound, DocumentWithWrongFormat
 from src.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from src.infra.cosmosDB.cosmosRepository import CosmosRepository
 import logging
@@ -26,7 +26,7 @@ class DocumentRepository():
 
     def list(self, filters, page=1, limit=100) -> tuple[List[SingleDocumentOutput], int]:
         logging.info("Listing documents with filters: %s, page: %s, limit: %s", filters, page, limit)
-        documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "themeName": 1, "subthemeName": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "uploadedBy": 1, "_id": 0}, page=page, limit=limit)
+        documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "themeName": 1, "subthemeName": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "storageFilePath": 1, "uploadedBy": 1, "originalFileFormat": 1, "language": 1, "_id": 0}, page=page, limit=limit)
         number_of_documents = self.repository.count(self.collection_name, filters)
 
         list_of_documents = []
@@ -40,10 +40,25 @@ class DocumentRepository():
     
     def get_by_id(self, id: UUID) -> SingleDocumentOutput:
         logging.info("Getting document by id: %s", id)
-        document = SingleDocumentOutput(self.repository.get_by_id(self.collection_name, str(id)))
+        try:
+            document = SingleDocumentOutput(self.repository.get_by_id(self.collection_name, str(id)))
+        except:
+            logging.error("Unable to create object with this document id: %s", id)
+            return None
 
         if document == None:
             logging.error("Document not found with id: %s", id)
             raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
             
         return document
+    
+    def update(self, id: UUID, updated_data: dict) -> None:
+        logging.info("Updating document with id: %s", id)
+        existing_document = self.repository.get_by_id(self.collection_name, str(id))
+
+        if existing_document is None:
+            logging.error("Document not found with id: %s", id)
+            raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
+
+        self.repository.update(self.collection_name, str(id), updated_data)
+       

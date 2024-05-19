@@ -12,9 +12,17 @@ export default function SideBar() {
       <div className="flex flex-col justify-center" style={{width: "100%", float:"left"}} >
           <div className="flex flex-row items-center ml-5">
               <div className="flex items-center">
-                <Link src="/">
+                <Link to="/upload">
                     <img src="menu-pdf.svg" style={{float: 'left'}}/>
-                    <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>upload </p>
+                    <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Ingestão de Documentos</p>
+                </Link>
+              </div>
+          </div>
+          <div className="flex flex-row items-center ml-5 mt-5">
+              <div className="flex items-center">
+                <Link to="/">
+                    <img src="menu-ic.svg" style={{float: 'left'}}/>
+                    <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Visualizar Documentos</p>
                 </Link>
               </div>
           </div>

@@ -50,8 +50,7 @@ class CreateDocument:
         except ValueError as err:
             logging.error('InvalidDocument: %s', err)
             raise InvalidDocument(err)
-        
-        
+                
         if self.repository.verify_duplicity(document=document):
             logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
             raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")

@@ -10,6 +10,8 @@ import json
 from src.core.document.application.use_cases.create_document import CreateDocument, CreateDocumentRequest, CreateDocumentResponse
 from src.core.document.application.use_cases.list_documents import ListDocuments
 from src.core.document.application.use_cases.get_document import GetDocument
+from src.core.document.application.use_cases.delete_document import DeleteDocument
+
 from quart_cors import route_cors
 import logging
 
@@ -89,6 +91,19 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             response = use_case.execute(GetDocument.Input(id))
             logging.info("Document retrieved successfully")
             return (response.data.to_dict(), 200)
+        except Exception as e:
+            logging.error(f"Error getting document: {str(e)}")
+            return jsonify({'error': str(e)}), 400
+        
+    @app.delete("/api/v1/documents/<id>")
+    async def delete_document(id):
+        logging.info(f"Received request to delete document with id: {id}")
+        use_case = DeleteDocument(DocumentRepository(cosmos_repository))
+
+        try:
+            response = use_case.execute(DeleteDocument.Input(id))
+            logging.info("Document deleted successfully")
+            return (response.to_dict(), 200)
         except Exception as e:
             logging.error(f"Error getting document: {str(e)}")
             return jsonify({'error': str(e)}), 400
