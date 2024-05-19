@@ -9,8 +9,7 @@ import { useMsal } from "@azure/msal-react";
 
 export default function UploadDocument(props) {
   const [themes, setThemes] = useState([]);
-  const { onLoading } = props;
-  const { instance } = useMsal();
+  const { onLoading, instance } = props;
 
   useEffect(() => {
     onLoading(true);

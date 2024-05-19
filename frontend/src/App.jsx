@@ -44,9 +44,9 @@ export default function App() {
           <Header />
           <div className="mx-6 mt-6">
             <Routes>
-              <Route path="/" element={<DocumentsList onLoading={handleChildLoading} />} />
-              <Route path="/upload" element={<UploadDocument onLoading={handleChildLoading}  />} />
-              <Route path="/document/:id" element={<ViewDocument />} />
+              <Route path="/" element={<DocumentsList onLoading={handleChildLoading} instance={instance} />} />
+              <Route path="/upload" element={<UploadDocument onLoading={handleChildLoading} instance={instance}   />} />
+              <Route path="/document/:id" element={<ViewDocument onLoading={handleChildLoading} instance={instance}  />} />
             </Routes>
           </div>
         </div>

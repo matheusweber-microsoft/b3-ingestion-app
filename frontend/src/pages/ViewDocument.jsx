@@ -6,22 +6,22 @@ import { getDocument } from "../api/api.ts";
 import { useParams } from "react-router-dom";
 import LoadingV2 from "../components/LoadingV2.jsx";
 import DocumentDetails from "../components/pagesComponents/DocumentDetails.jsx";
-export default function ViewDocument() {
-  const [loading, setLoading] = useState(true);
+export default function ViewDocument(props) {
   const [document, setDocument] = useState([]);
   const { id } = useParams();
+  const { onLoading, instance } = props;
 
   useEffect(() => {
-    setLoading(true);
-    getDocument(id)
+    onLoading(true);
+    getDocument(instance, id)
       .then((document) => {
         // Do something with the document
         setDocument(document);
-        setLoading(false);
+        onLoading(false);
       })
       .catch((error) => {
         // Handle the error
-        setLoading(false);
+        onLoading(false);
       });
   }, []);
 
@@ -32,10 +32,7 @@ export default function ViewDocument() {
         backgroundColor: lightTheme.colors.background,
       }}
     >
-      {loading ? (
-        <LoadingV2 />
-      ) : (
-        <div
+     <div
           style={{
             height: "105vh",
             backgroundColor: lightTheme.colors.background,
@@ -66,7 +63,6 @@ export default function ViewDocument() {
             <div>Error: Documento não encontrado.</div>
           )}
         </div>
-      )}
     </main>
   );
 }

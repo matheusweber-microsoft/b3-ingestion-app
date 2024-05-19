@@ -46,6 +46,7 @@ export async function fetchThemes(instance): Promise<[Theme] | undefined> {
 }
 
 export async function uploadDocument(
+        instance,
         documentTitle: string,
         theme: string,
         themeName: string,
@@ -73,13 +74,13 @@ export async function uploadDocument(
     formData.append('uploadedBy', uploadedBy);
     formData.append('language', language);
 
-    
-
     try {
+      const token = await getToken(instance);
       const response = await axios.post(API_URL + '/api/v1/document', formData, {
         withCredentials: false,
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+           Authorization: `Bearer ${token}`
         }
       });
       const documentId = response.data['id'];
@@ -90,9 +91,15 @@ export async function uploadDocument(
     }
   }
 
-export async function getDocument(id): Promise<[ViewDocument] | undefined> {
+export async function getDocument(instance, id): Promise<[ViewDocument] | undefined> {
   try {
-      const response = await axios.get(API_URL + '/api/v1/documents/' + id, { withCredentials: false });
+      const token = await getToken(instance);
+      const response = await axios.get(API_URL + '/api/v1/documents/' + id, {
+        withCredentials: false,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const document = response.data;
       return document;
   } catch (error) {
@@ -101,10 +108,16 @@ export async function getDocument(id): Promise<[ViewDocument] | undefined> {
   return undefined;
 }
 
-export async function fetchDocuments(fields): Promise<DocumentListResponse | undefined> {
+export async function fetchDocuments(instance, fields): Promise<DocumentListResponse | undefined> {
+  const token = await getToken(instance);
   const queryParams = new URLSearchParams(fields);
   const url = API_URL + '/api/v1/documents?' + queryParams.toString();
-  const response = await axios.get(url, { withCredentials: false });
+  const response = await axios.get(url, {
+    withCredentials: false,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
   console.log(url);
   try {
     const documents = response.data["data"];
@@ -119,11 +132,17 @@ export async function fetchDocuments(fields): Promise<DocumentListResponse | und
   return undefined;
 }
 
-export async function deleteDocument(id): Promise<String | undefined> {
+export async function deleteDocument(instance, id): Promise<String | undefined> {
   try {
-      const response = await axios.delete(API_URL + '/api/v1/documents/' + id, { withCredentials: false });
-      const message = response.data['message'];
-      return message;
+    const token = await getToken(instance);
+    const response = await axios.delete(API_URL + '/api/v1/documents/' + id, {
+      withCredentials: false,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const message = response.data['message'];
+    return message;
   } catch (error) {
       console.error('Error fetching document:', error);
       return error.response.data['error'];

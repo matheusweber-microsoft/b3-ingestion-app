@@ -12,9 +12,8 @@ export default function DocumentsList(props) {
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({});
-  const { instance } = useMsal();
 
-  const { onLoading } = props;
+  const { onLoading, instance } = props;
 
   useEffect(() => {
     filters.page = currentPage;
@@ -61,7 +60,7 @@ export default function DocumentsList(props) {
         onLoading(false);
       });
 
-    fetchDocuments({})
+    fetchDocuments(instance, {})
       .then((response) => {
         // Do something with the documents
         setListDocuments(response);
@@ -85,7 +84,7 @@ export default function DocumentsList(props) {
   const searchFilteredDocuments = (fields) => {
     onLoading(true);
 
-    fetchDocuments(fields)
+    fetchDocuments(instance, fields)
       .then((response) => {
         // Do something with the documents
         setListDocuments(response);
