@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 from uuid import UUID
 
-from infra.storageQueue.StorageQueueService import StorageQueueService
+from src.infra.storageQueue.StorageQueueService import StorageQueueService
 
 from src.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository

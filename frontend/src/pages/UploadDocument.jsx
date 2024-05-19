@@ -5,14 +5,16 @@ import UploadDocumentForm from "../components/pagesComponents/UploadDocumentForm
 import { useEffect } from "react";
 import { fetchThemes } from "../api/api.ts";
 import { useState } from "react";
+import { useMsal } from "@azure/msal-react";
 
 export default function UploadDocument(props) {
   const [themes, setThemes] = useState([]);
   const { onLoading } = props;
+  const { instance } = useMsal();
 
   useEffect(() => {
     onLoading(true);
-    fetchThemes()
+    fetchThemes(instance)
       .then((themes) => {
         // Do something with the themes
         setThemes(themes);

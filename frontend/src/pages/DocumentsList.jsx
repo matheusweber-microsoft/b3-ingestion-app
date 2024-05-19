@@ -3,6 +3,7 @@ import DocumentListFilter from "../components/pagesComponents/DocumentListFilter
 import React, { useState, useEffect } from 'react';
 import lightTheme from "../styles/theme.js";
 import { fetchThemes, fetchDocuments, deleteDocument } from "../api/api.ts";
+import { useMsal } from "@azure/msal-react";
 
 export default function DocumentsList(props) {
   const [themes, setThemes] = useState([]);
@@ -11,6 +12,7 @@ export default function DocumentsList(props) {
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({});
+  const { instance } = useMsal();
 
   const { onLoading } = props;
 
@@ -48,7 +50,7 @@ export default function DocumentsList(props) {
   useEffect(() => {
     onLoading(true);
     
-    fetchThemes()
+    fetchThemes(instance)
       .then((themes) => {
         // Do something with the themes
         setThemes(themes);

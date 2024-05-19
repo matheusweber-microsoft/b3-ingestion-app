@@ -1,12 +1,42 @@
 import axios from 'axios';
 import { CreateDocumentResponse, DocumentListResponse, Theme, ViewDocument } from "./models";
+import { InteractionRequiredAuthError } from '@azure/msal-browser';
+import { useMsal } from "@azure/msal-react";
 
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
-export async function fetchThemes(): Promise<[Theme] | undefined> {
+async function getToken(instance) {
+  const account = instance.getAllAccounts()[0];
+  const tokenRequest = {
+    scopes: ["User.Read"], // replace with your API scopes
+    account: account
+  };
+
+  try {
+    const response = await instance.acquireTokenSilent(tokenRequest);
+    return response.accessToken;
+  } catch (error) {
+    if (error instanceof InteractionRequiredAuthError) {
+      // fallback to interaction when silent call fails
+      return instance.acquireTokenPopup(tokenRequest)
+        .then(response => {
+          return response.accessToken;
+        });
+    }
+  }
+}
+
+
+export async function fetchThemes(instance): Promise<[Theme] | undefined> {
     try {
-      const response = await axios.get(API_URL + '/api/v1/themes', { withCredentials: false });
-        
+      const token = await getToken(instance);
+      const response = await axios.get(API_URL + '/api/v1/themes', {
+        withCredentials: false,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
       const themes = response.data;
       return themes;
     } catch (error) {
