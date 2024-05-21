@@ -14,12 +14,13 @@ import { LogLevel } from "@azure/msal-browser";
 const VITE_MSAL_CLIENT_ID = import.meta.env.VITE_MSAL_CLIENT_ID;
 const VITE_MSAL_AUTHORITY = import.meta.env.VITE_MSAL_AUTHORITY;
 const VITE_MSAL_REDIRECT_URI = import.meta.env.VITE_MSAL_REDIRECT_URI;
+const VITE_MSAL_SCOPE = import.meta.env.VITE_MSAL_SCOPE;
 
 export const msalConfig = {
     auth: {
         clientId: VITE_MSAL_CLIENT_ID,
         authority: VITE_MSAL_AUTHORITY,
-        redirectUri: '/',
+        redirectUri: VITE_MSAL_REDIRECT_URI,
         postLogoutRedirectUri: '/',
         clientCapabilities: ['CP1'],
     },
@@ -28,6 +29,7 @@ export const msalConfig = {
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
     system: {	
+        
         loggerOptions: {	
             loggerCallback: (level, message, containsPii) => {	
                 if (containsPii) {		
@@ -61,14 +63,13 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 
-export const scopes = ["api://71e7b8e6-1c0e-4172-912d-dabe898295f7/access_via_approle_assignments"]
+export const scopes = [VITE_MSAL_SCOPE]
 
 export const loginRequest = {
     scopes: scopes
 };
 
 export const appRoles = {
-    TaskUser: "TaskUser",
-    TaskAdmin: "TaskAdmin",
-    TaskAdmin2: "TaskAdmin2"
+    User: "DocumentsManager.User",
+    Admin: "DocumentsManager.Admin",
 }

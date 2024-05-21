@@ -20,7 +20,7 @@ const Pages = ({ instance, loading }) => {
         exact
         path="/" 
         element={
-          <RouteGuard roles={[appRoles.TaskUser, appRoles.TaskAdmin]}>
+          <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <DocumentsList onLoading={loading} instance={instance} />
           </RouteGuard>
         } 
@@ -29,7 +29,7 @@ const Pages = ({ instance, loading }) => {
         exact
         path="/upload" 
         element={
-          <RouteGuard roles={[appRoles.TaskUser, appRoles.TaskAdmin]}>
+          <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <UploadDocument onLoading={loading} instance={instance} />
           </RouteGuard>
         }
@@ -38,7 +38,7 @@ const Pages = ({ instance, loading }) => {
         exact
         path="/document/:id" 
         element={
-          <RouteGuard roles={[appRoles.TaskUser, appRoles.TaskAdmin]}>
+          <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <ViewDocument onLoading={loading} instance={instance}  />
           </RouteGuard>
         } />
