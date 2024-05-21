@@ -1,4 +1,3 @@
-from src.infra.middlewares.authentication import AuthenticationMiddleware
 from src.infra.storageContainer.storageContainerRepository import StorageContainerRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
 from quart import Quart
@@ -11,7 +10,6 @@ from quart_cors import cors
 
 app = Quart(__name__)
 app = cors(app, allow_origin="*")
-# app.asgi_app = AuthenticationMiddleware(app.asgi_app)
 
 def run():
     logging.basicConfig(level=logging.INFO)

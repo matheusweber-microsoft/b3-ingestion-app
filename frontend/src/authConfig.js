@@ -19,10 +19,12 @@ export const msalConfig = {
     auth: {
         clientId: VITE_MSAL_CLIENT_ID,
         authority: VITE_MSAL_AUTHORITY,
-        redirectUri: VITE_MSAL_REDIRECT_URI
+        redirectUri: '/',
+        postLogoutRedirectUri: '/',
+        clientCapabilities: ['CP1'],
     },
     cache: {
-        cacheLocation: "sessionStorage", // This configures where your cache will be stored
+        cacheLocation: "localStorage", // This configures where your cache will be stored
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
     system: {	
@@ -58,14 +60,15 @@ export const msalConfig = {
  * For more information about OIDC scopes, visit: 
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
+
+export const scopes = ["api://71e7b8e6-1c0e-4172-912d-dabe898295f7/access_via_approle_assignments"]
+
 export const loginRequest = {
-    scopes: ["User.Read"]
+    scopes: scopes
 };
 
-/**
- * Add here the scopes to request when obtaining an access token for MS Graph API. For more information, see:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
- */
-export const graphConfig = {
-    graphMeEndpoint: "Enter_the_Graph_Endpoint_Herev1.0/me" //e.g. https://graph.microsoft.com/v1.0/me
-};
+export const appRoles = {
+    TaskUser: "TaskUser",
+    TaskAdmin: "TaskAdmin",
+    TaskAdmin2: "TaskAdmin2"
+}

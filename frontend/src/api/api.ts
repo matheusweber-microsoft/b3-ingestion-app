@@ -2,13 +2,14 @@ import axios from 'axios';
 import { CreateDocumentResponse, DocumentListResponse, Theme, ViewDocument } from "./models";
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { useMsal } from "@azure/msal-react";
+import { scopes } from "../authConfig";
 
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 async function getToken(instance) {
   const account = instance.getAllAccounts()[0];
   const tokenRequest = {
-    scopes: ["User.Read"], // replace with your API scopes
+    scopes: scopes, // replace with your API scopes
     account: account
   };
 
