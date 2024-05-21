@@ -11,7 +11,6 @@ from quart_cors import cors
 app = Quart(__name__)
 app = cors(app, allow_origin="*")
 
-
 def run():
     logging.basicConfig(level=logging.INFO)
     app = create_app()

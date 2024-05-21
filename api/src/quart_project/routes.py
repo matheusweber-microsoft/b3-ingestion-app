@@ -1,18 +1,16 @@
 from quart_cors import route_cors
 import logging
-import os
+
+from src.decorators.authentication import requires_auth
 from src.core.theme.application.use_cases.list_themes import ListTheme
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from src.infra.cosmosDB.repositories.cosmosDB_theme_repository import ThemeRepository
 from src.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from quart import jsonify, request
-import json
 from src.core.document.application.use_cases.create_document import CreateDocument, CreateDocumentRequest, CreateDocumentResponse
 from src.core.document.application.use_cases.list_documents import ListDocuments
 from src.core.document.application.use_cases.get_document import GetDocument
 from src.core.document.application.use_cases.delete_document import DeleteDocument
-
-from quart_cors import route_cors
 import logging
 
 def setup_routes(app, cosmos_repository, storage_container_repository):

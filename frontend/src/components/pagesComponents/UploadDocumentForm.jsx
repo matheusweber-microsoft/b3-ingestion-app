@@ -8,6 +8,7 @@ import CustomButton from '../CustomButton.jsx';
 import CustomFileInput from '../CustomFileInput.jsx';
 import CustomSelect from '../CustomSelect.jsx';
 import CustomDateField from '../CustomDateField.jsx';
+import { useMsal } from "@azure/msal-react";
 
 const UploadDocumentForm = (props) => {
   const [selectedTheme, setSelectedTheme] = useState(null);
@@ -17,6 +18,7 @@ const UploadDocumentForm = (props) => {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [response, setResponse] = useState({});
+  const { instance } = useMsal();
 
   const { themes = [], onLoading } = props;
   const fileInputRef = useRef();
@@ -59,7 +61,7 @@ const UploadDocumentForm = (props) => {
     setShowErrorMessage(false);
     setShowSuccessMessage(false);
 
-    uploadDocument(title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
+    uploadDocument(instance, title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
       document.getElementById("messages").style.display = "block";
       if (response.success) {
         setResponse(response);
