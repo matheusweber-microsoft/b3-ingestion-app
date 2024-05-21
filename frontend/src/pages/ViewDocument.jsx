@@ -4,8 +4,9 @@ import lightTheme from "../styles/theme.js";
 import { useEffect, useState } from "react";
 import { getDocument } from "../api/api.ts";
 import { useParams } from "react-router-dom";
-import LoadingV2 from "../components/LoadingV2.jsx";
 import DocumentDetails from "../components/pagesComponents/DocumentDetails.jsx";
+import { getLocaleDate } from "../api/models.ts";
+
 export default function ViewDocument(props) {
   const [document, setDocument] = useState([]);
   const { id } = useParams();
@@ -47,8 +48,8 @@ export default function ViewDocument(props) {
                 themeName={document.themeName}
                 subtheme={document.subtheme}
                 subthemeName={document.subthemeName}
-                uploadedDate={document.uploadDate}
-                expiryDate={document.expiryDate}
+                uploadedDate={getLocaleDate(document.uploadDate)}
+                expiryDate={getLocaleDate(document.expiryDate)}
                 uploadedBy={document.uploadedBy}
               />
 

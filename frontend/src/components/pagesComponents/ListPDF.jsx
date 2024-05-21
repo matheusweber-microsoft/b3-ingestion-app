@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import './ListPDF.css';
+import { getLocaleDate } from "../../api/models.ts";
 
 const ListPDF = ({ documents }) => {
     if(documents === null || documents === undefined) {
@@ -42,17 +43,17 @@ const ListPDF = ({ documents }) => {
             <table className="table-auto w-full">
                 <thead>
                     <tr>
+                        <th className="px-4 py-2" style={{width: "20px"}}>Ações</th>
                         <th className="px-4 py-2">Citação</th>
                         <th className="px-4 py-2">Indexada em:</th>
-                        <th className="px-4 py-2">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentDocuments.map((document) => (
-                        <tr key={document.id}>
+                        <tr key={document.documentURL}>
+                            <td className="border px-4 py-2" style={{ textAlign: 'center' }}><a href={document.documentURL} target="_blank"><img src="../eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></a></td>
                             <td className="border px-4 py-2">{document.filePageName}</td>
-                            <td className="border px-4 py-2">{document.indexCompletionDate}</td>
-                            <td className="border px-4 py-2"><a href={document.documentURL} target="_blank">Visualizar</a></td>
+                            <td className="border px-4 py-2">{getLocaleDate(document.indexCompletionDate)}</td>
                         </tr>
                     ))}
                 </tbody>

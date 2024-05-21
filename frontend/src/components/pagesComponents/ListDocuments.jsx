@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
+import { getLocaleDate } from "../../api/models.ts";
 
 export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete}) {
   if(documents === null || documents === undefined) {
@@ -77,8 +78,8 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
                         <td className="border px-4 py-2">{document.fileName}</td>
                         <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
                         <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
-                        <td className="border px-4 py-2">{document.uploadDate}</td>
-                        <td className="border px-4 py-2">{document.expiryDate}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.uploadDate)}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.expiryDate)}</td>
                         <td className="border px-4 py-2">{document.uploadedBy}</td>
                         <td className="border px-4 py-2">
                           <div className="flex flex-row">
