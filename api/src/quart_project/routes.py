@@ -1,7 +1,7 @@
 from quart_cors import route_cors
 import logging
 
-from src.decorators.authentication import requires_auth
+from src.decorators.authentication import requires_auth, requires_role
 from src.core.theme.application.use_cases.list_themes import ListTheme
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from src.infra.cosmosDB.repositories.cosmosDB_theme_repository import ThemeRepository
@@ -15,6 +15,8 @@ import logging
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
+    @requires_auth
+    @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def create_document():
         logging.info("Received request to create document")
         data = await request.form
@@ -34,6 +36,8 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
+    @requires_auth
+    @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_themes():
         logging.info("Received request to get themes")
         data = await request.form
@@ -49,6 +53,8 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
     
     @app.get("/api/v1/documents")
+    @requires_auth
+    @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_documents():
         logging.info("Received request to get documents")
         data = await request.json
@@ -81,6 +87,8 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/documents/<id>")
+    @requires_auth
+    @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_document(id):
         logging.info(f"Received request to get document with id: {id}")
         use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
@@ -94,6 +102,8 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
             return jsonify({'error': str(e)}), 400
         
     @app.delete("/api/v1/documents/<id>")
+    @requires_auth
+    @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def delete_document(id):
         logging.info(f"Received request to delete document with id: {id}")
         use_case = DeleteDocument(DocumentRepository(cosmos_repository))
