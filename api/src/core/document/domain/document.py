@@ -185,7 +185,7 @@ class SingleDocumentOutput:
     expiryDate: str
     uploadedBy: str
     documentPages: List[DocumentPage]
-    expireStatus: int = -1
+    expireStatus: int = 0
     indexStatus: str = "Submitted"
     storageFilePath: str = ""
     originalFileFormat: str = ""
@@ -209,6 +209,27 @@ class SingleDocumentOutput:
         self.uploadedBy = data.get("uploadedBy", "")
         self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
 
+        expiry_date = data.get("expiryDate", None)
+        if expiry_date not in ["", None]:
+            if isinstance(expiry_date, datetime):
+                today = datetime.now().date()
+                if expiry_date.date() < today:
+                    self.expireStatus = 2
+                elif expiry_date.date() < today + timedelta(days=7):
+                    self.expireStatus = 1
+                else:
+                    self.expireStatus = 0
+            elif isinstance(expiry_date, dict):  # Add this line
+                expiry_date = expiry_date["$date"]
+                today = datetime.now().date()
+                expiry_date = datetime.fromtimestamp(expiry_date / 1000).date()
+                if expiry_date < today:
+                    self.expireStatus = 2
+                elif expiry_date < today + timedelta(days=7):
+                    self.expireStatus = 1
+                else:
+                    self.expireStatus = 0
+                    
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
         dict_to_return = {

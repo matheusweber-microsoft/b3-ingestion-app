@@ -2,6 +2,12 @@ import React from 'react';
 
 const StatusView = ({ status }) => {
     switch (status) {
+        case 0:
+            return (
+                <div className="bg-green-500 text-white p-4 rounded-xl flex items-center justify-center w-full h-2">
+                    <p className="text-sm">Ativo</p>
+                </div>
+            )
         case 1:
             return (
                 <div className="bg-yellow-500 text-white p-4 rounded-xl flex items-center justify-center w-full h-2">
