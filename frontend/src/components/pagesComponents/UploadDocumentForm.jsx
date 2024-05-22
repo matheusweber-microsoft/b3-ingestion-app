@@ -61,7 +61,7 @@ const UploadDocumentForm = (props) => {
     setShowErrorMessage(false);
     setShowSuccessMessage(false);
 
-    uploadDocument(instance, title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], "matheus", language.value).then((response) => {
+    uploadDocument(instance, title.value, theme.value, themeName, subtheme.value, subthemeName, expiryDate.value, file.files[0], language.value).then((response) => {
       document.getElementById("messages").style.display = "block";
       if (response.success) {
         setResponse(response);

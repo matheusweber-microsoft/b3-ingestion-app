@@ -16,3 +16,6 @@ class GenericErrorUploadFile(Exception):
 
 class DocumentNotIndexedDelete(Exception):
     pass
+
+class DocumentNotDeleted(Exception):
+    pass

@@ -15,6 +15,12 @@ export default function DocumentsList(props) {
 
   const { onLoading, instance } = props;
 
+  let activeAccount;
+
+  if (instance) {
+      activeAccount = instance.getActiveAccount();
+  }
+
   useEffect(() => {
     filters.page = currentPage;
     setFilters(filters);
@@ -33,7 +39,6 @@ export default function DocumentsList(props) {
       deleteDocument(instance, id)
         .then((response) => { 
           alert(response);
-          console.log(response);
           window.location.reload();
           onLoading(false);
         })
@@ -48,28 +53,21 @@ export default function DocumentsList(props) {
 
   useEffect(() => {
     onLoading(true);
-    
-    fetchThemes(instance)
-      .then((themes) => {
-        // Do something with the themes
-        setThemes(themes);
-        onLoading(false);
-      })
-      .catch((error) => {
-        // Handle the error
-        onLoading(false);
-      });
 
-    fetchDocuments(instance, {})
-      .then((response) => {
-        // Do something with the documents
-        setListDocuments(response);
+    Promise.all([
+        fetchThemes(instance),
+        fetchDocuments(instance, {})
+    ])
+    .then(([themes, documents]) => {
+        setThemes(themes);
+        setListDocuments(documents);
+    })
+    .catch((error) => {
         onLoading(false);
-      })
-      .catch((error) => {
-        // Handle the error
+    })
+    .finally(() => {
         onLoading(false);
-      });
+    });
   }, []);
 
   const handleFilter = (fields) => {
@@ -106,7 +104,7 @@ export default function DocumentsList(props) {
       <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
       <div style={{marginTop: "20px", float:"left", width:"100%"}}>
-        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} onDelete={handleDeleteClicked} />
+        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} onDelete={handleDeleteClicked} username={activeAccount.username}/>
       </div>
     </main>
   );

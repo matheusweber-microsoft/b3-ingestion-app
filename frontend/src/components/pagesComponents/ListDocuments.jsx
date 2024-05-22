@@ -4,7 +4,7 @@ import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
 import { getLocaleDate } from "../../api/models.ts";
 
-export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete}) {
+export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete, username}) {
   if(documents === null || documents === undefined) {
     documents = [];
   }
@@ -78,13 +78,14 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
                     <tr key={document.id}  style={{ height: '50px' }}>
                         <td className="border px-4 py-2">
                           <div className="flex flex-row">
-                            {document.indexStatus === 'Indexed' && <div className="flex flex-col space-x-4  flex-grow">
-                              <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
-                            </div>}
-                            
+                            {document.indexStatus === 'Indexed' && document.uploadedBy === username && 
+                              <div className="flex flex-col space-x-4  flex-grow">
+                                <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
+                              </div>
+                            }
                             <div className="flex flex-col space-x-4  flex-grow">
-                            <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></Link>
-                            </div>
+                              <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></Link>
+                            </div>  
                           </div>
                         </td>
                         <td className="border px-4 py-2">{document.documentTitle}</td>
