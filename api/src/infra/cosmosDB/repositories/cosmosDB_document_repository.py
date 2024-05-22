@@ -31,6 +31,7 @@ class DocumentRepository():
             self.collection_name,
             filters,
             {"fileName": 1, "documentTitle": 1, "theme": 1, "themeName": 1, "subthemeName": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "storageFilePath": 1, "uploadedBy": 1, "originalFileFormat": 1, "language": 1, "_id": 0},
+            sort=[("uploadDate", -1)],
             page=page,
             limit=limit
         )

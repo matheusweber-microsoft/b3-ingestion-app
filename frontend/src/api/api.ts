@@ -101,6 +101,7 @@ export async function getDocument(instance, id): Promise<[ViewDocument] | undefi
           Authorization: `Bearer ${token}`
         }
       });
+      console.log(token);
       const document = response.data;
       return document;
   } catch (error) {

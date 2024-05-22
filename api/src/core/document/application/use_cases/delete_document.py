@@ -40,9 +40,9 @@ class DeleteDocument:
         logging.info("Executing DeleteDocument use case")
         document = self.repository.get_by_id(UUID(input.id))
         
-        if document.indexStatus != "Indexed":
-            logging.error("Document is not in indexed status")
-            raise DocumentNotIndexedDelete("Documento não está indexado. Não é possível deletar.")
+        # if document.indexStatus != "Indexed":
+        #     logging.error("Document is not in indexed status")
+        #     raise DocumentNotIndexedDelete("Documento não está indexado. Não é possível deletar.")
 
         #TODO: Add validation: request user against the uploaded by value
         

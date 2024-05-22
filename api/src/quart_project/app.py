@@ -13,18 +13,6 @@ from jose.exceptions import ExpiredSignatureError
 app = Quart(__name__)
 app = cors(app, allow_origin="*")
 
-@app.errorhandler(AuthError)
-async def handle_auth_error(e):
-    response = jsonify(e.error)
-    response.status_code = e.status_code
-    return response
-
-@app.errorhandler(ExpiredSignatureError)
-async def handle_expired_signature_error(e):
-    response = jsonify({"code": "token_expired", "description": "token is expired"})
-    response.status_code = 401
-    return response
-
 def run():
     logging.basicConfig(level=logging.INFO)
     app = create_app()
