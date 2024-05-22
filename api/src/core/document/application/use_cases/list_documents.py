@@ -6,6 +6,7 @@ from src.core.document.domain.document import SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 import logging
 import math
+from datetime import datetime, timedelta, timezone
 
 class ListDocuments:
     def __init__(self, repository: DocumentRepository):
@@ -32,15 +33,17 @@ class ListDocuments:
                 query['fileName'] = {'$regex': self.fileName, '$options': 'i'}
             if self.uploadDate:
                 days = int(self.uploadDate)
-                print("Days: ", days)
-                query['uploadDate'] = {'$gte': datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=days)}
+                current_time = datetime.now(timezone.utc)
+                start_time = current_time.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=days)
+                query['uploadDate'] = {'$gte': start_time}
                 print({'$gte': datetime.now() - timedelta(days=days)})
             if self.theme:
                 query['theme'] = self.theme
             if self.subtheme:
                 query['subtheme'] = self.subtheme
             if self.onlyExpired and self.onlyExpired == True:
-                query['expiryDate'] = {'$lte': datetime.now() + timedelta(days=6)}
+                current_time = datetime.now(timezone.utc)
+                query['expiryDate'] = {'$lte': current_time + timedelta(days=7)}
             if self.uploadedBy:
                 query['uploadedBy'] = {
                     '$regex': self.uploadedBy, '$options': 'i'}

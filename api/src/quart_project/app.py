@@ -1,4 +1,4 @@
-from decorators.exceptions import AuthError
+from src.decorators.exceptions import AuthError
 from src.infra.storageContainer.storageContainerRepository import StorageContainerRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
 from quart import Quart, jsonify
