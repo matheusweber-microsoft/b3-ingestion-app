@@ -28,12 +28,12 @@ export default function DocumentsList(props) {
 
   const handleDeleteClicked = (id) => {
     if (window.confirm("Você tem certeza que deseja deletar este documento?")) {
-      console.log("Delete clicked", id);
       onLoading(true);
 
-      deleteDocument(id)
+      deleteDocument(instance, id)
         .then((response) => { 
           alert(response);
+          console.log(response);
           window.location.reload();
           onLoading(false);
         })

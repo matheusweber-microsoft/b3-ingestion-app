@@ -1,62 +1,31 @@
-import os
-from quart import jsonify, request
-from six.moves.urllib.request import urlopen
 from functools import wraps
-from jose import jwt
+import os
 import json
+from quart import jsonify, request
+import requests
+from src.decorators.exceptions import AuthError
+from jose import jwt
+import logging
 
-# Error handler
-class AuthError(Exception):
-    def __init__(self, error, status_code):
-        self.error = error
-        self.status_code = status_code
-
-def handle_auth_error(ex):
-    print('handling error')
-    response = jsonify(ex.error)
-    response.status_code = ex.status_code
-    return response
-
-def get_token_auth_header():
-    """Obtains the Access Token from the Authorization Header
-    """
-    auth = request.headers.get("Authorization", None)
-    if not auth:
-        raise AuthError({"code": "authorization_header_missing",
-                         "description":
-                         "Authorization header is expected"}, 401)
-
-    parts = auth.split()
-
-    if parts[0].lower() != "bearer":
-        raise AuthError({"code": "invalid_header",
-                         "description":
-                         "Authorization header must start with"
-                         " Bearer"}, 401)
-    elif len(parts) == 1:
-        raise AuthError({"code": "invalid_header",
-                         "description": "Token not found"}, 401)
-    elif len(parts) > 2:
-        raise AuthError({"code": "invalid_header",
-                         "description":
-                         "Authorization header must be"
-                         " Bearer token"}, 401)
-
-    token = parts[1]
-    return token
+ID_TOKEN = "Token retrived from response of MSAL"
 
 def requires_auth(f):
-    """Determines if the Access Token is valid
-    """
     @wraps(f)
-    def decorated(*args, **kwargs):
-        print("TEST")
-        try:
-            token = get_token_auth_header()
-            jsonurl = urlopen("https://login.microsoftonline.com/" +
-                            os.getenv('TENANT_ID') + "/discovery/v2.0/keys")
-            jwks = json.loads(jsonurl.read())
-            unverified_header = jwt.get_unverified_header(token)
+    async def decorated(*args, **kwargs):
+        auth_header = request.headers.get('Authorization', None)
+        logging.info(f"Starting authentication...")
+        if auth_header:
+            logging.info("Authorization header found")
+            bearer_token = auth_header.split(' ')[1]
+
+            # Get the public keys from Microsoft's JWKS endpoint
+            jsonurl = requests.get(f"https://login.microsoftonline.com/{os.getenv('TENANT_ID')}/discovery/v2.0/keys")
+            jwks = jsonurl.json()
+
+            # Get the unverified header of the JWT
+            unverified_header = jwt.get_unverified_header(bearer_token)
+            unverified_claims = jwt.get_unverified_claims(bearer_token)
+
             rsa_key = {}
             for key in jwks["keys"]:
                 if key["kid"] == unverified_header["kid"]:
@@ -67,52 +36,65 @@ def requires_auth(f):
                         "n": key["n"],
                         "e": key["e"]
                     }
-            print(rsa_key)
-        except Exception:
+
+            if rsa_key:
+                logging.info("RSA Key found")
+                try:
+                    # Decode the token and verify its signature, issuer, and audience
+                    payload = jwt.decode(
+                        bearer_token,
+                        rsa_key,
+                        algorithms=["RS256"],
+                        audience=os.getenv('MSAL_API_AUDIENCE'),
+                        issuer=os.getenv('MSAL_ISSUER')
+                    )
+                    logging.info("Token decoded successfully")
+                    # Extract the scopes from the payload
+                    roles = payload['roles']
+                    kwargs['roles'] = roles
+                except jwt.ExpiredSignatureError:
+                    logging.error("Token is expired")
+                    raise AuthError({"code": "token_expired",
+                                    "description": "token is expired"}, 401)
+                except jwt.JWTClaimsError:
+                    logging.error("Incorrect claims")
+                    raise AuthError({"code": "invalid_claims",
+                                    "description":
+                                    "incorrect claims,"
+                                    "please check the audience and issuer"}, 401)
+                except Exception:
+                    logging.error("Unable to parse authentication token")
+                    raise AuthError({"code": "invalid_header",
+                                    "description":
+                                    "Unable to parse authentication"
+                                    " token."}, 401)
+        else:
+            logging.error("Unable to parse authentication token")
             raise AuthError({"code": "invalid_header",
-                                "description":
-                                "Unable to parse authentication"
-                                " token."}, 401)
-        if rsa_key:
-            try:
-                payload = jwt.decode(
-                    token,
-                    rsa_key,
-                    algorithms=["RS256"],
-                    audience= os.getenv('API_AUDIENCE'),
-                    issuer="https://sts.windows.net/" +  os.getenv('TENANT_ID') + "/"
-                )
-            except jwt.ExpiredSignatureError:
-                raise AuthError({"code": "token_expired",
-                                 "description": "token is expired"}, 401)
-            except jwt.JWTClaimsError:
-                raise AuthError({"code": "invalid_claims",
-                                 "description":
-                                 "incorrect claims,"
-                                 "please check the audience and issuer"}, 401)
-            except Exception:
-                raise AuthError({"code": "invalid_header",
-                                 "description":
-                                 "Unable to parse authentication"
-                                 " token."}, 401)
-            _request_ctx_stack.top.current_user = payload
-            # print(_request_ctx_stack.top.current_user)
-            return f(*args, **kwargs)
-        raise AuthError({"code": "invalid_header",
-                         "description": "Unable to find appropriate key"}, 401)
+                            "description":
+                            "Unable to parse authentication"
+                            " token."}, 401)
+        
+        return await f(*args, **kwargs)
     return decorated
 
-
-def requires_scope(required_scope):
-    """Determines if the required scope is present in the Access Token
-    Args:
-        required_scope (str): The scope required to access the resource
-    """
-    token = get_token_auth_header()
-    unverified_claims = jwt.get_unverified_claims(token)
-    if unverified_claims.get("scope"):
-            token_scopes = unverified_claims["scope"].split()
-            for token_scope in token_scopes:
-                if token_scope == required_scope:
-                    return True
-    return False
+def requires_role(roles):
+    def decorator(f):
+        @wraps(f)
+        async def decorated(*args, **kwargs):
+            logging.info("Checking roles...")
+            if 'roles' in kwargs:
+                user_roles = kwargs['roles']
+                for role in roles:
+                    if role in user_roles:
+                        kwargs.pop('roles', [])
+                        return await f(*args, **kwargs)
+                logging.error("Unauthorized role")
+                raise AuthError({"code": "unauthorized_role",
+                                "description": "Unauthorized role"}, 403)
+            else:
+                logging.error("Roles not found")
+                raise AuthError({"code": "roles_not_found",
+                                "description": "Roles not found"}, 403)
+        return decorated
+    return decorator
