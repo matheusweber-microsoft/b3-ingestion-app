@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
+import { getLocaleDate } from "../../api/models.ts";
+import theme from '../../styles/theme.js';
 
 export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete}) {
   if(documents === null || documents === undefined) {
@@ -61,36 +63,39 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
         <table className="table-auto w-full">
             <thead>
                 <tr>
-                    <th className="px-4 py-2">Nome do Arquivo</th>
-                    <th className="px-4 py-2">Tema/Subtema</th>
-                    <th className="px-4 py-2">Indexamento</th>
-                    <th className="px-4 py-2">Data de Upload</th>
-                    <th className="px-4 py-2">Data de Validade</th>
-                    <th className="px-4 py-2">Salvo por</th>
-                    <th className="px-4 py-2" style={{width: "100px"}}>Ações</th>
-                    <th className="px-4 py-2" style={{width: "200px"}}>Status</th>
+                  <th className="px-4 py-2" style={{width: "100px"}}>Ações</th>
+                  <th className="px-4 py-2">Título</th>
+                  <th className="px-4 py-2">Nome do Arquivo</th>
+                  <th className="px-4 py-2">Tema/Subtema</th>
+                  <th className="px-4 py-2">Indexamento</th>
+                  <th className="px-4 py-2">Data de Upload</th>
+                  <th className="px-4 py-2">Data de Validade</th>
+                  <th className="px-4 py-2">Salvo por</th>
+                  <th className="px-4 py-2" style={{width: "200px"}}>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {documents.map((document) => (
                     <tr key={document.id}  style={{ height: '50px' }}>
-                        <td className="border px-4 py-2">{document.fileName}</td>
-                        <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
-                        <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
-                        <td className="border px-4 py-2">{document.uploadDate}</td>
-                        <td className="border px-4 py-2">{document.expiryDate}</td>
-                        <td className="border px-4 py-2">{document.uploadedBy}</td>
                         <td className="border px-4 py-2">
                           <div className="flex flex-row">
                             {document.indexStatus === 'Indexed' && <div className="flex flex-col space-x-4  flex-grow">
-                              <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px' }} /></button>
+                              <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
                             </div>}
                             
                             <div className="flex flex-col space-x-4  flex-grow">
-                            <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px' }} /></Link>
+                            <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></Link>
                             </div>
                           </div>
                         </td>
+                        <td className="border px-4 py-2">{document.documentTitle}</td>
+                        <td className="border px-4 py-2">{document.fileName}</td>
+                        <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
+                        <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.uploadDate)}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.expiryDate)}</td>
+                        <td className="border px-4 py-2">{document.uploadedBy}</td>
+                        
                         <td className="border px-4 py-2"><StatusView status={document.expireStatus}></StatusView></td>
                     </tr>
                 ))}
@@ -121,6 +126,12 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
             >
                 Próximo
             </button>
+        </div>
+        <div className="flex mt-4">
+            <Link to="/upload">
+                <img src="menu-pdf.svg" style={{float: 'left'}}/>
+                <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Registrar um novo Documento</p>
+            </Link>
         </div>
     </div>
 );

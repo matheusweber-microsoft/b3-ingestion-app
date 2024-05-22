@@ -165,14 +165,10 @@ class DocumentPage:
         self.indexCompletionDate = data.get("indexCompletionDate", "")
 
     def to_dict(self):
-        indexCompletionDate = ""
-        if isinstance(self.indexCompletionDate, datetime):
-            indexCompletionDate = self.indexCompletionDate.strftime("%d/%m/%Y %H:%M:%S")
-
         return {
             "filePageName": self.filePageName,
             "storageFilePath": self.storageFilePath,
-            "indexCompletionDate": indexCompletionDate,
+            "indexCompletionDate": self.indexCompletionDate,
             "documentURL": self.documentURL
         }
 
@@ -189,7 +185,7 @@ class SingleDocumentOutput:
     expiryDate: str
     uploadedBy: str
     documentPages: List[DocumentPage]
-    expireStatus: int = -1
+    expireStatus: int = 0
     indexStatus: str = "Submitted"
     storageFilePath: str = ""
     originalFileFormat: str = ""
@@ -208,21 +204,14 @@ class SingleDocumentOutput:
         self.storageFilePath = data.get("storageFilePath", "")
         self.originalFileFormat = data.get("originalFileFormat", "")
         self.language = data.get("language", "")
+        self.uploadDate = data.get("uploadDate", "")
+        self.expiryDate = data.get("expiryDate", None)
+        self.uploadedBy = data.get("uploadedBy", "")
+        self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
 
-        upload_date = data.get("uploadDate", "")
-        if isinstance(upload_date, datetime):
-            self.uploadDate = upload_date.strftime("%d/%m/%Y")
-        else:
-            if not upload_date == "" and isinstance(upload_date, dict):
-                upload_date = upload_date["$date"]
-                if upload_date != None:
-                    self.uploadDate = datetime.fromtimestamp(int(upload_date) / 1000).strftime("%d/%m/%Y %H:%M:%S")
-
-        self.expiryDate = ""
         expiry_date = data.get("expiryDate", None)
         if expiry_date not in ["", None]:
             if isinstance(expiry_date, datetime):
-                self.expiryDate = expiry_date.strftime("%d/%m/%Y")
                 today = datetime.now().date()
                 if expiry_date.date() < today:
                     self.expireStatus = 2
@@ -232,12 +221,15 @@ class SingleDocumentOutput:
                     self.expireStatus = 0
             elif isinstance(expiry_date, dict):  # Add this line
                 expiry_date = expiry_date["$date"]
-                if expiry_date != None:
-                    self.expiryDate = datetime.fromtimestamp(int(expiry_date) / 1000).strftime("%d/%m/%Y")
-
-        self.uploadedBy = data.get("uploadedBy", "")
-        self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
-
+                today = datetime.now().date()
+                expiry_date = datetime.fromtimestamp(expiry_date / 1000).date()
+                if expiry_date < today:
+                    self.expireStatus = 2
+                elif expiry_date < today + timedelta(days=7):
+                    self.expireStatus = 1
+                else:
+                    self.expireStatus = 0
+                    
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
         dict_to_return = {
@@ -248,8 +240,8 @@ class SingleDocumentOutput:
             "subtheme": self.subtheme,
             "themeName": self.themeName,
             "subthemeName": self.subthemeName,
-            "uploadDate": self.uploadDate if self.uploadDate else None,
-            "expiryDate": self.expiryDate if self.expiryDate else None,
+            "uploadDate": self.uploadDate,
+            "expiryDate": self.expiryDate,
             "uploadedBy": self.uploadedBy,
             "expireStatus": self.expireStatus,
             "indexStatus": self.indexStatus if self.indexStatus else None 

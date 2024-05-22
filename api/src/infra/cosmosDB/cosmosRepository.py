@@ -47,9 +47,12 @@ class CosmosRepository:
         documents = list(collection.find())
         return documents
     
-    def list_all(self, collectionName, filter, fields, page=1, limit=999):
+    def list_all(self, collectionName, filter, fields, page=1, limit=999, sort=None):
         collection = self.db.get_collection(collectionName)
-        documents = list(collection.find(filter, fields).skip((page-1)*limit).limit(limit))
+        if sort is not None:
+            documents = list(collection.find(filter, fields).sort(sort).skip((page-1)*limit).limit(limit))
+        else:
+            documents = list(collection.find(filter, fields).skip((page-1)*limit).limit(limit))
         return documents
 
     def get_by_id(self, collectionName, item_id):
