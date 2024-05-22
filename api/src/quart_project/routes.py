@@ -1,3 +1,4 @@
+from src.decorators.exceptions import AuthError
 from quart_cors import route_cors
 import logging
 
