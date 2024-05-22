@@ -26,7 +26,6 @@ class Document(Entity):
     originalFileFormat: str = ""
     uploadedBy: str = ""
 
-
     def __post_init__(self):
         self.fill_fields()
         self.validate()

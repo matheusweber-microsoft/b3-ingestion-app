@@ -1,6 +1,7 @@
 from functools import wraps
 import os
 import json
+from src.decorators.models.User import User
 from quart import jsonify, request
 import requests
 from src.decorators.exceptions import AuthError
@@ -50,6 +51,7 @@ def requires_auth(f):
                     # Extract the scopes from the payload
                     roles = payload['roles']
                     kwargs['roles'] = roles
+                    kwargs['user'] = User(payload)
                 except jwt.ExpiredSignatureError:
                     logging.error("Token is expired")
                     response = jsonify({"code": "token_expired"})

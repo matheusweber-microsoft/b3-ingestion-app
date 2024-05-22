@@ -48,7 +48,6 @@ export function convertGMTToLocal(gmtDate: string, withHours: boolean = false): 
         const seconds = String(date.getSeconds()).padStart(2, '0');
         localDate += ` ${hours}:${minutes}:${seconds}`;
     }
-    console.log("INVALID DATE: " + gmtDate + " CONVERTED TO: " + localDate);
     if (isNaN(date.getDate())) {
         return "";
     }

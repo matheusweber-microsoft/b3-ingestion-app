@@ -55,11 +55,10 @@ export async function uploadDocument(
         subthemeName: string,
         expiryDate: string,
         documentFile: File,
-        uploadedBy: string,
         language: string
     ): Promise<CreateDocumentResponse | undefined> {
     // Validate parameters
-    if (!documentTitle || !theme || !subtheme || !expiryDate || !documentFile || !uploadedBy || !language || !themeName || !subthemeName) {
+    if (!documentTitle || !theme || !subtheme || !expiryDate || !documentFile || !language || !themeName || !subthemeName) {
       throw new Error('All parameters must be provided');
     }
 
