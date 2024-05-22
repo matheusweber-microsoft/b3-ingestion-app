@@ -15,14 +15,14 @@ class Document(Entity):
     themeName: str
     subtheme: str
     subthemeName: str
-    expiryDate: datetime
+    expiryDate: str
     documentFile: FileStorage  
     language: str
     filename: str = ""
     storageFilePath: str = ""
     indexStatus: str = "Submitted"
-    uploadDate: datetime = datetime.now(timezone.utc)
-    indexCompletionDate: str = ""
+    uploadDate: int = 0
+    indexCompletionDate: int = 0
     originalFileFormat: str = ""
     uploadedBy: str = ""
 
@@ -34,9 +34,9 @@ class Document(Entity):
     def fill_fields(self):
         self.filename = self.documentFile.filename
         self.storageFilePath = f"{self.theme}/{self.subtheme}/{self.filename}"        
-        self.uploadDate = datetime.now(timezone.utc)
+        self.uploadDate = int(datetime.now().timestamp() * 1000)
+        self.expiryDate = int(datetime.strptime(self.expiryDate,'%Y-%m-%d').timestamp() * 1000)
         self.originalFileFormat = os.path.splitext(self.filename)[1][1:].lower()
-        self.expiryDate = datetime.fromisoformat(self.expiryDate)
 
     def validate(self):
         if len(self.documentTitle) > 255:
@@ -77,7 +77,7 @@ class Document(Entity):
             raise ValueError(self.notification.messages)
 
     def is_valid_date(self, date):
-        if date >= datetime.now():
+        if datetime.fromtimestamp(date / 1000) >= datetime.now():
             return True
         return False
     
@@ -93,13 +93,9 @@ class Document(Entity):
             "language": self.language,
             "storageFilePath": self.storageFilePath,
             "indexStatus": self.indexStatus,
-            "uploadDate": {
-            "$date": int(self.uploadDate.timestamp() * 1000)
-            },
+            "uploadDate": self.uploadDate,
             "indexCompletionDate": None,
-            "expiryDate": {
-            "$date": int(self.expiryDate.timestamp() * 1000)
-            },
+            "expiryDate": self.expiryDate,
             "originalFileFormat": self.originalFileFormat,
             "uploadedBy": self.uploadedBy,
             "documentPages": []
@@ -168,7 +164,7 @@ class DocumentPage:
         return {
             "filePageName": self.filePageName,
             "storageFilePath": self.storageFilePath,
-            "indexCompletionDate": self.indexCompletionDate,
+            "indexCompletionDate": str(self.indexCompletionDate),
             "documentURL": self.documentURL
         }
 
@@ -182,7 +178,7 @@ class SingleDocumentOutput:
     subtheme: str
     subthemeName: str
     uploadDate: str
-    expiryDate: str
+    expiryDate: int
     uploadedBy: str
     documentPages: List[DocumentPage]
     expireStatus: int = 0
@@ -210,26 +206,16 @@ class SingleDocumentOutput:
         self.documentPages = [DocumentPage(page) for page in data.get("documentPages", [])]
 
         expiry_date = data.get("expiryDate", None)
-        if expiry_date not in ["", None]:
-            if isinstance(expiry_date, datetime):
-                today = datetime.now().date()
-                if expiry_date.date() < today:
-                    self.expireStatus = 2
-                elif expiry_date.date() < today + timedelta(days=7):
-                    self.expireStatus = 1
-                else:
-                    self.expireStatus = 0
-            elif isinstance(expiry_date, dict):  # Add this line
-                expiry_date = expiry_date["$date"]
-                today = datetime.now().date()
-                expiry_date = datetime.fromtimestamp(expiry_date / 1000).date()
-                if expiry_date < today:
-                    self.expireStatus = 2
-                elif expiry_date < today + timedelta(days=7):
-                    self.expireStatus = 1
-                else:
-                    self.expireStatus = 0
-                    
+        if expiry_date and isinstance(expiry_date, int):
+            today = datetime.now().date()
+            expiry_date = datetime.fromtimestamp(expiry_date / 1000).date()
+            if expiry_date < today:
+                self.expireStatus = 2
+            elif expiry_date < today + timedelta(days=7):
+                self.expireStatus = 1
+            else:
+                self.expireStatus = 0
+
     def to_dict(self):
         document_pages = [page.to_dict() for page in self.documentPages]
         dict_to_return = {

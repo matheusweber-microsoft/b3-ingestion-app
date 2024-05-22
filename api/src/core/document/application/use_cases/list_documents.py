@@ -31,14 +31,16 @@ class ListDocuments:
             if self.fileName:
                 query['fileName'] = {'$regex': self.fileName, '$options': 'i'}
             if self.uploadDate:
-                days = int(self.uploadDate) - 1
-                query['uploadDate'] = {'$gte': datetime.now() - timedelta(days=days)}
+                days = int(self.uploadDate)
+                print("Days: ", days)
+                query['uploadDate'] = {'$gte': datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=days)}
+                print({'$gte': datetime.now() - timedelta(days=days)})
             if self.theme:
                 query['theme'] = self.theme
             if self.subtheme:
                 query['subtheme'] = self.subtheme
             if self.onlyExpired and self.onlyExpired == True:
-                query['expiryDate'] = {'$lte': datetime.now() + timedelta(days=7)}
+                query['expiryDate'] = {'$lte': datetime.now() + timedelta(days=6)}
             if self.uploadedBy:
                 query['uploadedBy'] = {
                     '$regex': self.uploadedBy, '$options': 'i'}
@@ -66,7 +68,5 @@ class ListDocuments:
             page=input.page,
             limit=input.limit
         )
-
-        
 
         return self.Output(data=data[0], count=data[1], pages=math.ceil(data[1] / input.limit))
