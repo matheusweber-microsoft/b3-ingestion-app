@@ -7,8 +7,6 @@ from src.decorators.exceptions import AuthError
 from jose import jwt
 import logging
 
-ID_TOKEN = "Token retrived from response of MSAL"
-
 def requires_auth(f):
     @wraps(f)
     async def decorated(*args, **kwargs):
@@ -54,26 +52,33 @@ def requires_auth(f):
                     kwargs['roles'] = roles
                 except jwt.ExpiredSignatureError:
                     logging.error("Token is expired")
-                    raise AuthError({"code": "token_expired",
-                                    "description": "token is expired"}, 401)
+                    response = jsonify({"code": "token_expired"})
+                    response.status_code = 401
+                    return response
                 except jwt.JWTClaimsError:
                     logging.error("Incorrect claims")
-                    raise AuthError({"code": "invalid_claims",
+                    response = jsonify({"code": "invalid_claims",
                                     "description":
                                     "incorrect claims,"
-                                    "please check the audience and issuer"}, 401)
+                                    "please check the audience and issuer"})
+                    response.status_code = 401
+                    return response
                 except Exception:
                     logging.error("Unable to parse authentication token")
-                    raise AuthError({"code": "invalid_header",
+                    response = jsonify({"code": "invalid_header",
                                     "description":
                                     "Unable to parse authentication"
-                                    " token."}, 401)
+                                    " token."})
+                    response.status_code = 401
+                    return response
         else:
             logging.error("Unable to parse authentication token")
-            raise AuthError({"code": "invalid_header",
+            response = jsonify({"code": "invalid_header",
                             "description":
                             "Unable to parse authentication"
-                            " token."}, 401)
+                            " token."})
+            response.status_code = 401
+            return response
         
         return await f(*args, **kwargs)
     return decorated

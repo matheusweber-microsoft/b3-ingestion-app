@@ -48,8 +48,8 @@ export default function ViewDocument(props) {
                 themeName={document.themeName}
                 subtheme={document.subtheme}
                 subthemeName={document.subthemeName}
-                uploadedDate={getLocaleDate(document.uploadDate)}
-                expiryDate={getLocaleDate(document.expiryDate)}
+                uploadedDate={getLocaleDate(document.uploadDate, true)}
+                expiryDate={getLocaleDate(document.expiryDate, false)}
                 uploadedBy={document.uploadedBy}
               />
 

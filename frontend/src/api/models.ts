@@ -21,34 +21,37 @@ export type DocumentPage = { filePageName: string; indexCompletionDate: string; 
 
 export type ViewDocument = { documentPages: DocumentPage[]; documentTitle: string; expiryDate: string; fileName: string; id: string; subtheme: string; subthemeName: string; theme: string; themeName: string; uploadDate: string; uploadedBy: string; };
 
-export type DateType = {
-    dateString?: string;
-    dateObject?: {
-        $date: number;
-    };
-};
-
 export type Document = {
     documentTitle: string;
     expireStatus: number;
-    expiryDate: DateType;
+    expiryDate: string;
     fileName: string;
     id: string;
     subtheme: string;
     subthemeName: string;
     theme: string;
     themeName: string;
-    uploadDate: DateType;
+    uploadDate: string;
     uploadedBy: string;
     indexStatus: string;
 };
 
-export function convertGMTToLocal(gmtDate: string): string {
-    // Create a Date object from the GMT date string
+export function convertGMTToLocal(gmtDate: string, withHours: boolean = false): string {
     const date = new Date(gmtDate);
-    // Convert the Date object to a string using the user's local time zone
-    const localDate = date.toLocaleString();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+    const year = date.getFullYear();
+    let localDate = `${day}/${month}/${year}`;
+    if (withHours) {
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        localDate += ` ${hours}:${minutes}:${seconds}`;
+    }
     console.log("INVALID DATE: " + gmtDate + " CONVERTED TO: " + localDate);
+    if (isNaN(date.getDate())) {
+        return "";
+    }
     return localDate;
 }
 
@@ -61,19 +64,9 @@ export function convertTimestampToLocal(timestamp: number): string {
     return localDate;
 }
 
-export function getLocaleDate(date: DateType): string {
-    console.log(date);
+export function getLocaleDate(date: string, withHours: boolean = false): string {
     if (date === undefined) {
         return "";
     }
-
-    if (date["$date"]) { // Check if dateObject exists and has the key $date
-        console.log(convertTimestampToLocal(date["$date"]));
-        return convertTimestampToLocal(date["$date"]);
-    } else if (typeof date === 'string' && date !== '') {
-        console.log(date);
-        return convertGMTToLocal(date);
-    } else {
-        return "";
-    }
+    return convertGMTToLocal(date, withHours);
 }

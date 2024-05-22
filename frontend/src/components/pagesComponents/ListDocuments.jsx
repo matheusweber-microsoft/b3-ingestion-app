@@ -3,7 +3,6 @@ import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
 import { getLocaleDate } from "../../api/models.ts";
-import theme from '../../styles/theme.js';
 
 export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete}) {
   if(documents === null || documents === undefined) {
@@ -92,8 +91,8 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
                         <td className="border px-4 py-2">{document.fileName}</td>
                         <td className="border px-4 py-2">{document.themeName} / {document.subthemeName}</td>
                         <td className="border px-4 py-2">{getTranslatedIndexStatus(document.indexStatus)}</td>
-                        <td className="border px-4 py-2">{getLocaleDate(document.uploadDate)}</td>
-                        <td className="border px-4 py-2">{getLocaleDate(document.expiryDate)}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.uploadDate, true)}</td>
+                        <td className="border px-4 py-2">{getLocaleDate(document.expiryDate, false)}</td>
                         <td className="border px-4 py-2">{document.uploadedBy}</td>
                         
                         <td className="border px-4 py-2"><StatusView status={document.expireStatus}></StatusView></td>
@@ -126,12 +125,6 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
             >
                 Próximo
             </button>
-        </div>
-        <div className="flex mt-4">
-            <Link to="/upload">
-                <img src="menu-pdf.svg" style={{float: 'left'}}/>
-                <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Registrar um novo Documento</p>
-            </Link>
         </div>
     </div>
 );

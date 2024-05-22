@@ -53,7 +53,7 @@ const ListPDF = ({ documents }) => {
                         <tr key={document.documentURL}>
                             <td className="border px-4 py-2" style={{ textAlign: 'center' }}><a href={document.documentURL} target="_blank"><img src="../eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></a></td>
                             <td className="border px-4 py-2">{document.filePageName}</td>
-                            <td className="border px-4 py-2">{getLocaleDate(document.indexCompletionDate)}</td>
+                            <td className="border px-4 py-2">{getLocaleDate(document.indexCompletionDate, true)}</td>
                         </tr>
                     ))}
                 </tbody>

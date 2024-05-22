@@ -27,7 +27,14 @@ class DocumentRepository():
     def list(self, filters, page=1, limit=100) -> tuple[List[SingleDocumentOutput], int]:
         # sort=[("indexCompletionDate", -1), ("uploadDate", -1)]
         logging.info("Listing documents with filters: %s, page: %s, limit: %s", filters, page, limit)
-        documents = self.repository.list_all(self.collection_name, filters, {"fileName": 1, "documentTitle": 1, "theme": 1, "themeName": 1, "subthemeName": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "storageFilePath": 1, "uploadedBy": 1, "originalFileFormat": 1, "language": 1, "_id": 0}, page=page, limit=limit)
+        documents = self.repository.list_all(
+            self.collection_name,
+            filters,
+            {"fileName": 1, "documentTitle": 1, "theme": 1, "themeName": 1, "subthemeName": 1, "subtheme": 1, "indexStatus": 1, "id": 1, "uploadDate": 1, "expiryDate": 1, "storageFilePath": 1, "uploadedBy": 1, "originalFileFormat": 1, "language": 1, "_id": 0},
+            sort=[("uploadDate", -1)],
+            page=page,
+            limit=limit
+        )
         number_of_documents = self.repository.count(self.collection_name, filters)
 
         list_of_documents = []
