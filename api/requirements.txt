@@ -11,3 +11,4 @@ msal>=1.16.0,<2.0.0
 python-jose
 six
 azf-wsgi
+opencensus-ext-azure

@@ -6,15 +6,16 @@ from quart import jsonify, request
 import requests
 from src.decorators.exceptions import AuthError
 from jose import jwt
-import logging
+from src.core.log import Logger
 
 def requires_auth(f):
     @wraps(f)
     async def decorated(*args, **kwargs):
+        logging = Logger()
         auth_header = request.headers.get('Authorization', None)
-        logging.info(f"Starting authentication...")
+        logging.info(f"AU-1-RA - Starting authentication...")
         if auth_header:
-            logging.info("Authorization header found")
+            logging.info("AU-2-RA - Authorization header found")
             bearer_token = auth_header.split(' ')[1]
 
             # Get the public keys from Microsoft's JWKS endpoint
@@ -37,7 +38,7 @@ def requires_auth(f):
                     }
 
             if rsa_key:
-                logging.info("RSA Key found")
+                logging.info("AU-3-RA - RSA Key found")
                 try:
                     # Decode the token and verify its signature, issuer, and audience
                     payload = jwt.decode(
@@ -47,18 +48,18 @@ def requires_auth(f):
                         audience=os.getenv('MSAL_API_AUDIENCE'),
                         issuer=os.getenv('MSAL_ISSUER')
                     )
-                    logging.info("Token decoded successfully")
+                    logging.info("AU-4-RA - Token decoded successfully")
                     # Extract the scopes from the payload
                     roles = payload['roles']
                     kwargs['roles'] = roles
                     kwargs['user'] = User(payload)
                 except jwt.ExpiredSignatureError:
-                    logging.error("Token is expired")
+                    logging.error("AU-5-RA - Token is expired")
                     response = jsonify({"code": "token_expired"})
                     response.status_code = 401
                     return response
                 except jwt.JWTClaimsError:
-                    logging.error("Incorrect claims")
+                    logging.error("AU-6-RA - Incorrect claims")
                     response = jsonify({"code": "invalid_claims",
                                     "description":
                                     "incorrect claims,"
@@ -66,7 +67,7 @@ def requires_auth(f):
                     response.status_code = 401
                     return response
                 except Exception:
-                    logging.error("Unable to parse authentication token")
+                    logging.error("AU-7-RA - Unable to parse authentication token")
                     response = jsonify({"code": "invalid_header",
                                     "description":
                                     "Unable to parse authentication"
@@ -74,7 +75,7 @@ def requires_auth(f):
                     response.status_code = 401
                     return response
         else:
-            logging.error("Unable to parse authentication token")
+            logging.error("AU-1-RA - Unable to parse authentication token")
             response = jsonify({"code": "invalid_header",
                             "description":
                             "Unable to parse authentication"
@@ -89,18 +90,19 @@ def requires_role(roles):
     def decorator(f):
         @wraps(f)
         async def decorated(*args, **kwargs):
-            logging.info("Checking roles...")
+            logging = Logger()
+            logging.info("AU-1-RR - Checking roles...")
             if 'roles' in kwargs:
                 user_roles = kwargs['roles']
                 for role in roles:
                     if role in user_roles:
                         kwargs.pop('roles', [])
                         return await f(*args, **kwargs)
-                logging.error("Unauthorized role")
+                logging.error("AU-2-RR - Unauthorized role")
                 raise AuthError({"code": "unauthorized_role",
                                 "description": "Unauthorized role"}, 403)
             else:
-                logging.error("Roles not found")
+                logging.error("AU-3-RR - Roles not found")
                 raise AuthError({"code": "roles_not_found",
                                 "description": "Roles not found"}, 403)
         return decorated

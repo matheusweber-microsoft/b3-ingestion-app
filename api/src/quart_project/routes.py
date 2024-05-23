@@ -1,8 +1,7 @@
+from src.core.log import Logger
 from src.decorators.models.User import User
 from src.decorators.exceptions import AuthError
 from quart_cors import route_cors
-import logging
-
 from src.decorators.authentication import requires_auth, requires_role
 from src.core.theme.application.use_cases.list_themes import ListTheme
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
@@ -13,20 +12,20 @@ from src.core.document.application.use_cases.create_document import CreateDocume
 from src.core.document.application.use_cases.list_documents import ListDocuments
 from src.core.document.application.use_cases.get_document import GetDocument
 from src.core.document.application.use_cases.delete_document import DeleteDocument
-import logging
 
 def setup_routes(app, cosmos_repository, storage_container_repository):
     @app.post("/api/v1/document")
     @requires_auth
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def create_document(user: User):
-        logging.info("Received request to create document")
+        logging = Logger()
+        logging.info("RO-SR-1-CD - Received request to create document")
         data = await request.form
         files = await request.files
         use_case = CreateDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
         
         if files == None:
-            logging.error("No file was sent in the request")
+            logging.error("RO-SR-2-CD - No file was sent in the request")
             return jsonify({'error': "Nenhum arquivo foi enviado."}), 400
         
         try:
@@ -41,34 +40,36 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
                 uploadedBy=user.username,
                 language=data["language"]
             ))
-            logging.info("Document created successfully")
+            logging.info("RO-SR-3-CD - Document created successfully")
             return jsonify({'id': str(response.id)}), 201
         except Exception as e:
-            logging.error(f"Error creating document: {str(e)}")
+            logging.error(f"RO-SR-4-CD - Error creating document: {str(e)}")
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/themes")
     @requires_auth
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_themes(user: User):
-        logging.info("Received request to get themes")
+        logging = Logger()
+        logging.info("RO-SR-1-GT - Received request to get themes")
         data = await request.form
         use_case = ListTheme(ThemeRepository(cosmos_repository))
 
         try:
             response = use_case.execute()
             themes_json = [theme.to_dict() for theme in response.data]
-            logging.info("Themes retrieved successfully")
+            logging.info("RO-SR-2-GT - Themes retrieved successfully")
             return themes_json, 200
         except Exception as e:
-            logging.error(f"Error getting themes: {str(e)}")
+            logging.error(f"RO-SR-3-GT - Error getting themes: {str(e)}")
             return jsonify({'error': str(e)}), 400
     
     @app.get("/api/v1/documents")
     @requires_auth
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_documents(user: User):
-        logging.info("Received request to get documents")
+        logging = Logger()
+        logging.info("RO-SR-1-GTH - Received request to get documents")
         data = await request.json
 
         documentTitle = request.args.get("documentTitle")
@@ -92,43 +93,46 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
 
         try:
             response = use_case.execute(input)
-            logging.info("Documents retrieved successfully")
+            logging.info("RO-SR-2-GTH - Documents retrieved successfully")
             return response.toDict(), 200
         except Exception as e:
-            logging.error(f"Error getting documents: {str(e)}")
+            logging.error(f"RO-SR-3-GTH - Error getting documents: {str(e)}")
             return jsonify({'error': str(e)}), 400
         
     @app.get("/api/v1/documents/<id>")
     @requires_auth
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def get_document(id, user: User):
-        logging.info(f"Received request to get document with id: {id}")
+        logging = Logger()
+        logging.info(f"RO-SR-1-DO - Received request to get document with id: {id}")
         use_case = GetDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
 
         try:
             response = use_case.execute(GetDocument.Input(id))
-            logging.info("Document retrieved successfully")
+            logging.info("RO-SR-2-DO - Document retrieved successfully")
             return (response.data.to_dict(), 200)
         except Exception as e:
-            logging.error(f"Error getting document: {str(e)}")
+            logging.error(f"RO-SR-3-DO - Error getting document: {str(e)}")
             return jsonify({'error': str(e)}), 400
         
     @app.delete("/api/v1/documents/<id>")
     @requires_auth
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def delete_document(id, user: User):
-        logging.info(f"Received request to delete document with id: {id}")
+        logging = Logger()
+        logging.info(f"RO-SR-1-DD - Received request to delete document with id: {id}")
         use_case = DeleteDocument(user, DocumentRepository(cosmos_repository))
 
         try:
             response = use_case.execute(DeleteDocument.Input(id))
-            logging.info("Document deleted successfully")
+            logging.info("RO-SR-2-DD - Document deleted successfully")
             return (response.to_dict(), 200)
         except Exception as e:
-            logging.error(f"Error getting document: {str(e)}")
+            logging.error(f"RO-SR-3-DD - Error getting document: {str(e)}")
             return jsonify({'error': str(e)}), 400
         
     @app.get("/")
     async def hello_world():
-        logging.info("Received request for hello world")
+        logging = Logger()
+        logging.info("RO-SR-1-HW - Received request for hello world")
         return jsonify({'message': "Hello world!"}), 200

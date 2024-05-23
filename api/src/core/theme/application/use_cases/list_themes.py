@@ -3,7 +3,7 @@ from uuid import UUID
 
 from src.core.theme.domain.theme import SubTheme
 from src.core.theme.domain.theme_repository import ThemeRepository
-import logging
+from src.core.log import Logger
 
 @dataclass
 class ThemeOutput:
@@ -23,6 +23,7 @@ class ThemeOutput:
 
 class ListTheme:
     def __init__(self, repository: ThemeRepository):
+        self.logging = Logger()
         self.repository = repository
 
     @dataclass
@@ -34,7 +35,7 @@ class ListTheme:
         data: list[ThemeOutput]
 
     def execute(self) -> Output:
-        logging.info("Executing ListTheme use case")
+        self.logging.info("Executing ListTheme use case")
 
         themes = self.repository.list()
         data = [

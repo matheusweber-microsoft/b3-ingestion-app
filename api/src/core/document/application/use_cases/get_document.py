@@ -7,10 +7,11 @@ from src.core.document.application.use_cases.exceptions import DocumentNotFound
 from src.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from src.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
-import logging
+from src.core.log import Logger
 
 class GetDocument:
     def __init__(self, repository: DocumentRepository, storageRepository: StorageDocumentRepository):
+        self.logging = Logger()
         self.repository = repository
         self.storageRepository = storageRepository
 
@@ -30,10 +31,10 @@ class GetDocument:
         data: SingleDocumentOutput
 
     def execute(self, input: Input) -> Output:
-        logging.info("Executing GetDocument use case")
+        self.logging.info("GD-EX-1 - Executing GetDocument use case")
         document = self.repository.get_by_id(UUID(input.id))
         if document == None:
-            logging.error("Document not found")
+            self.logging.error("GD-EX-2 - Document not found")
             raise DocumentNotFound("Document not found")
         for page in document.documentPages:
             page.documentURL = self.storageRepository.get_document_url("documentpages/"+page.storageFilePath)
