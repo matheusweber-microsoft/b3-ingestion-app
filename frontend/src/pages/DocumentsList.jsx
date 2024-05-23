@@ -30,6 +30,7 @@ export default function DocumentsList(props) {
     searchFilteredDocuments(filters);
 
     if (activeAccount && activeAccount.idTokenClaims['roles']) {
+      console.log(activeAccount.idTokenClaims['roles']);
       let role = appRoles.Admin;
       let roles = activeAccount.idTokenClaims['roles'];
       setIsAdmin(roles.includes(role));
@@ -120,7 +121,7 @@ export default function DocumentsList(props) {
           onPageChange={handlePageChange}
           onDelete={handleDeleteClicked}
           username={activeAccount.username}
-          isAdmin={activeAccount.role === 'admin'}
+          isAdmin={isAdmin}
         />
       </div>
     </main>
