@@ -1,9 +1,10 @@
 import ListDocuments from "../components/pagesComponents/ListDocuments";
 import DocumentListFilter from "../components/pagesComponents/DocumentListFilter";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import lightTheme from "../styles/theme.js";
 import { fetchThemes, fetchDocuments, deleteDocument } from "../api/api.ts";
 import { useMsal } from "@azure/msal-react";
+import { appRoles } from '../authConfig';
 
 export default function DocumentsList(props) {
   const [themes, setThemes] = useState([]);
@@ -12,8 +13,9 @@ export default function DocumentsList(props) {
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({});
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const { onLoading, instance } = props;
+  const listDocumentsRef = useRef();
 
   let activeAccount;
 
@@ -26,6 +28,13 @@ export default function DocumentsList(props) {
     setFilters(filters);
 
     searchFilteredDocuments(filters);
+
+    if (activeAccount && activeAccount.idTokenClaims['roles']) {
+      console.log(activeAccount.idTokenClaims['roles']);
+      let role = appRoles.Admin;
+      let roles = activeAccount.idTokenClaims['roles'];
+      setIsAdmin(roles.includes(role));
+    }
   }, [currentPage]);
 
   const handlePageChange = (pageNumber) => {
@@ -75,7 +84,7 @@ export default function DocumentsList(props) {
       Object.entries(fields).filter(([key, value]) => value !== undefined && value !== "default")
     );
     setFilters(filteredFields);
-    setCurrentPage(1);
+    listDocumentsRef.current.setPage(1);
     searchFilteredDocuments(filteredFields);
   };
 
@@ -96,15 +105,24 @@ export default function DocumentsList(props) {
 
   return (
     <main
-    className="relative"
+      className="relative"
       style={{
         backgroundColor: lightTheme.colors.background,
       }}
     >
       <DocumentListFilter themes={themes} onFilter={handleFilter} />
 
-      <div style={{marginTop: "20px", float:"left", width:"100%"}}>
-        <ListDocuments documents={listDocuments.documents} totalCount={listDocuments.count} totalPages={listDocuments.pages}  onPageChange={handlePageChange} onDelete={handleDeleteClicked} username={activeAccount.username}/>
+      <div style={{ marginTop: "20px", float: "left", width: "100%" }}>
+        <ListDocuments
+          ref={listDocumentsRef}
+          documents={listDocuments.documents}
+          totalCount={listDocuments.count}
+          totalPages={listDocuments.pages}
+          onPageChange={handlePageChange}
+          onDelete={handleDeleteClicked}
+          username={activeAccount.username}
+          isAdmin={isAdmin}
+        />
       </div>
     </main>
   );

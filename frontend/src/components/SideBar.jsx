@@ -13,7 +13,7 @@ export default function SideBar() {
           <div className="flex flex-row items-center ml-5">
               <div className="flex items-center">
                 <Link to="/upload">
-                    <img src="menu-pdf.svg" style={{float: 'left'}}/>
+                    <img src="plus-ic.svg" style={{float: 'left'}}/>
                     <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Ingestão de Documentos</p>
                 </Link>
               </div>

@@ -71,7 +71,6 @@ export async function uploadDocument(
     formData.append('subthemeName', subthemeName);
     formData.append('expiryDate', expiryDate);
     formData.append('documentFile', documentFile);
-    formData.append('uploadedBy', uploadedBy);
     formData.append('language', language);
 
     try {

@@ -17,7 +17,7 @@ const DocumentListFilter = (props) => {
     const uploadedDateOptions = [
         { value: '0', label: 'Hoje' },
         { value: '3', label: 'Últimos 3 dias' },
-        { value: '7', label: 'Últimoa semana' },
+        { value: '7', label: 'Último semana' },
         { value: '30', label: 'Último mês' },
     ];
 
@@ -25,7 +25,7 @@ const DocumentListFilter = (props) => {
         if (selectedTheme) {
             const theme = themes.find(theme => theme.themeId === selectedTheme);
             if (theme) {
-            setSubthemes(theme.subThemes);
+                setSubthemes(theme.subThemes);
             } else {
             setSubthemes([]);
             }
@@ -102,13 +102,16 @@ const DocumentListFilter = (props) => {
                         </div>
                     </div>
                 </form>
-            <div style={{ borderTop: '1px solid black', marginTop: '40px', width: '100%', float:"left" }}></div>
-            <div className="flex mt-4">
-                <Link to="/upload">
-                    <img src="menu-pdf.svg" style={{float: 'left'}}/>
-                    <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Registrar um novo Documento</p>
-                </Link>
+            <div style={{ borderTop: '1px solid black', marginTop: '40px', width: '100%', float:"left" }}>
+                <div className="flex mt-4">
+                    <Link to="/upload">
+                        <img src="plus-ic.svg" style={{float: 'left'}}/>
+                        <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Registrar um novo Documento</p>
+                    </Link>
+                </div>
+
             </div>
+            
         </main>
     );
 };

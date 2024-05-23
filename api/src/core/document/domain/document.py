@@ -206,11 +206,11 @@ class SingleDocumentOutput:
 
         expiry_date = data.get("expiryDate", None)
         if expiry_date and isinstance(expiry_date, int):
-            today = datetime.now().date()
-            expiry_date = datetime.fromtimestamp(expiry_date / 1000).date()
+            today = datetime.now(timezone.utc).date()
+            expiry_date = datetime.fromtimestamp(expiry_date / 1000, timezone.utc).date()
             if expiry_date < today:
                 self.expireStatus = 2
-            elif expiry_date < today + timedelta(days=7):
+            elif expiry_date <= (today + timedelta(days=7)):
                 self.expireStatus = 1
             else:
                 self.expireStatus = 0

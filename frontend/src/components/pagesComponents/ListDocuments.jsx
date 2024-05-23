@@ -3,15 +3,22 @@ import './ListPDF.css';
 import StatusView from "../StatusView";
 import { Link } from "react-router-dom";
 import { getLocaleDate } from "../../api/models.ts";
+import React from 'react';
 
-export default function ListDocuments({documents, onPageChange, totalCount, totalPages, onDelete, username}) {
+const ListDocuments = React.forwardRef(({ documents, totalCount, totalPages, onPageChange, onDelete, username, isAdmin }, ref) => {
   if(documents === null || documents === undefined) {
     documents = [];
   }
 
   const [currentPage, setCurrentPage] = useState(1);
   const documentsPerPage = 10;
+  const setPage = (page) => {
+    setCurrentPage(page);
+  };
 
+  React.useImperativeHandle(ref, () => ({
+    setPage,
+  }));
   // Get current documents
   const indexOfLastDocument = currentPage * documentsPerPage;
   const indexOfFirstDocument = indexOfLastDocument - documentsPerPage;
@@ -78,7 +85,8 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
                     <tr key={document.id}  style={{ height: '50px' }}>
                         <td className="border px-4 py-2">
                           <div className="flex flex-row">
-                            {document.indexStatus === 'Indexed' && document.uploadedBy === username && 
+                            {/* administrator */}
+                            {document.indexStatus === 'Indexed' && (document.uploadedBy === username || isAdmin === true) && 
                               <div className="flex flex-col space-x-4  flex-grow">
                                 <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
                               </div>
@@ -128,5 +136,7 @@ export default function ListDocuments({documents, onPageChange, totalCount, tota
             </button>
         </div>
     </div>
-);
-}
+  );
+});
+
+export default ListDocuments;
