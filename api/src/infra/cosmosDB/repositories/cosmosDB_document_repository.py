@@ -13,7 +13,7 @@ class DocumentRepository():
         self.repository = repository
 
     def save(self, document: Document) -> None:
-        self.logging.info("CDB-DR-1-SA - Saving document: %s", document)
+        self.logging.info("CDB-DR-1-SA - Saving document: {document}")
         self.repository.save(self.collection_name, document.to_dict())
  
     def verify_duplicity(self, document: Document):
@@ -22,7 +22,7 @@ class DocumentRepository():
             "subtheme": document.subtheme,
             "fileName": document.documentFile.filename
         }
-        self.logging.info("CDB-DR-1-VD - Verifying duplicity for document: %s", document)
+        self.logging.info("CDB-DR-1-VD - Verifying duplicity for document: {document}")
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 
     def list(self, filters, page=1, limit=100) -> tuple[List[SingleDocumentOutput], int]:
@@ -48,25 +48,25 @@ class DocumentRepository():
         return [list_of_documents, number_of_documents]
     
     def get_by_id(self, id: UUID) -> SingleDocumentOutput:
-        self.logging.info("CDB-DR-1-GBI - Getting document by id: %s", id)
+        self.logging.info("CDB-DR-1-GBI - Getting document by id: {id}")
         try:
             document = SingleDocumentOutput(self.repository.get_by_id(self.collection_name, str(id)))
         except:
-            self.logging.error("CDB-DR-2-GBI - Unable to create object with this document id: %s", id)
+            self.logging.error("CDB-DR-2-GBI - Unable to create object with this document id: {id}")
             return None
 
         if document == None:
-            self.logging.error("CDB-DR-3-GBI - Document not found with id: %s", id)
+            self.logging.error("CDB-DR-3-GBI - Document not found with id: {id}")
             raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
             
         return document
     
     def update(self, id: UUID, updated_data: dict) -> None:
-        self.logging.info("CDB-DR-1-UP - Updating document with id: %s", id)
+        self.logging.info("CDB-DR-1-UP - Updating document with id: {id}")
         existing_document = self.repository.get_by_id(self.collection_name, str(id))
 
         if existing_document is None:
-            self.logging.error("CDB-DR-2-UP - Document not found with id: %s", id)
+            self.logging.error("CDB-DR-2-UP - Document not found with id: {id}")
             raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
 
         self.repository.update(self.collection_name, str(id), updated_data)
