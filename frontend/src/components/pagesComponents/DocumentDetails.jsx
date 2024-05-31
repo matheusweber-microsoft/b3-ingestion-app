@@ -1,11 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import Title from "../Title";
 import CustomInput from "../CustomInput";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 
 function DocumentDetails({documentTitle, fileName, theme, themeName, subtheme, subthemeName, uploadedDate, expiryDate, uploadedBy}) {
-    const fileInputRef = useRef();
     return (
         <main className="relative" style={{ padding: '10px' }}>
             <Title title={"Detalhes do documento: " + documentTitle}/>

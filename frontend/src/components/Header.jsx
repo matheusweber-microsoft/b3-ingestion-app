@@ -3,6 +3,7 @@ import theme from "../styles/theme.js";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 
 export default function Header() {
+  var imageBasePath = window.location.protocol + "//" + window.location.host + "/";
   const { instance } = useMsal();
 
   let activeAccount;
@@ -22,7 +23,7 @@ export default function Header() {
   return (
     <header className="flex justify-between px-8 py-2" style={{background: theme.colors.menuBackground, boxShadow: `0 0px 10px -10px ${theme.colors.shadow}`}}>
       <div className="flex">
-        <img src="home-header.svg" />
+        <img src={imageBasePath + "home-header.svg"} alt="Home" />
         <p className="font-bold m-4" style={{color: theme.colors.title}}>HOME</p>
       </div>
       <div className="flex items-center">

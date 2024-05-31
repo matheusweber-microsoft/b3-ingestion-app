@@ -11,7 +11,11 @@ class StorageContainerRepository:
 
     def __init__(self, connection_string):
         self.logging = Logger()
-        self.blob_service_client = BlobServiceClient(account_url=os.getenv('AZURE_STORAGE_ACCOUNT_URL'), credential=DefaultAzureCredential())    
+        run_local = os.getenv('RUN_LOCAL', False)
+        if run_local:
+            self.blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        else:
+            self.blob_service_client = BlobServiceClient(account_url=os.getenv('AZURE_STORAGE_ACCOUNT_URL'), credential=DefaultAzureCredential())
 
     def upload_blob(self, container_name, blob_name, data):
         container_client = self.blob_service_client.get_container_client(container_name)

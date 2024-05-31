@@ -7,7 +7,12 @@ const CustomFileInput = forwardRef(({ placeholder, name, required }, ref) => {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        setFileName(file.name);
+        
+        if (file) {
+            setFileName(file.name);
+        } else {
+            setFileName("")
+        }
     };
 
     const handleClick = () => {

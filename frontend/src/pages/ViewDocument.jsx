@@ -8,9 +8,10 @@ import DocumentDetails from "../components/pagesComponents/DocumentDetails.jsx";
 import { getLocaleDate } from "../api/models.ts";
 
 export default function ViewDocument(props) {
-  const [document, setDocument] = useState([]);
+  const [document, setDocument] = useState(null);
   const { id } = useParams();
   const { onLoading, instance } = props;
+  const { error, setError} = useState(false);
 
   useEffect(() => {
     onLoading(true);
@@ -23,8 +24,9 @@ export default function ViewDocument(props) {
       .catch((error) => {
         // Handle the error
         onLoading(false);
+        setError(true);
       });
-  }, []);
+  }, [error]);
 
   return (
     <main
@@ -61,7 +63,7 @@ export default function ViewDocument(props) {
               </div>
             </div>
           ) : (
-            <div>Error: Documento não encontrado.</div>
+            error && <div>Error: Documento não encontrado.</div>
           )}
         </div>
     </main>
