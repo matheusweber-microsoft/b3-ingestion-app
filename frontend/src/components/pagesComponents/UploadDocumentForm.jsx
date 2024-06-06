@@ -11,7 +11,7 @@ import CustomDateField from '../CustomDateField.jsx';
 import { useMsal } from "@azure/msal-react";
 
 const UploadDocumentForm = (props) => {
-  const VITE_DOCUMENTS_LANGUEAGE = import.meta.env.VITE_DOCUMENTS_LANGUEAGE || "port";
+  const VITE_DOCUMENTS_LANGUAGE = import.meta.env.VITE_DOCUMENTS_LANGUAGE || "port";
 
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [selectedSubtheme, setSelectedSubtheme] = useState(null); 
