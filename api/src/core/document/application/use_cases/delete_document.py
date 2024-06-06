@@ -51,7 +51,7 @@ class DeleteDocument:
             self.logging.error("DD-EX-3 - User is not authorized to delete the document")
             raise DocumentNotDeleted("Usuário não autorizado a deletar o documento")
         
-        self.logging.info("DD-EX-4 - Updating document with id: %s", input.id)
+        self.logging.info("DD-EX-4 - Updating document with id: " + input.id)
         self.repository.update(UUID(input.id), {"indexStatus": "Deleting"})
 
         self.logging.info("DD-EX-5 - Sending message to the queue to delete the document")

@@ -21,7 +21,7 @@ export const msalConfig = {
         clientId: VITE_MSAL_CLIENT_ID,
         authority: VITE_MSAL_AUTHORITY,
         redirectUri: VITE_MSAL_REDIRECT_URI,
-        postLogoutRedirectUri: '/',
+        postLogoutRedirectUri: '/ingestion/',
         clientCapabilities: ['CP1'],
     },
     cache: {

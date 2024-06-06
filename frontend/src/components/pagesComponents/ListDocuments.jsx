@@ -6,6 +6,7 @@ import { getLocaleDate } from "../../api/models.ts";
 import React from 'react';
 
 const ListDocuments = React.forwardRef(({ documents, totalCount, totalPages, onPageChange, onDelete, username, isAdmin }, ref) => {
+  var imageBasePath = window.location.protocol + "//" + window.location.host + "/ingestion/";
   if(documents === null || documents === undefined) {
     documents = [];
   }
@@ -88,11 +89,11 @@ const ListDocuments = React.forwardRef(({ documents, totalCount, totalPages, onP
                             {/* administrator */}
                             {document.indexStatus === 'Indexed' && (document.uploadedBy === username || isAdmin === true) && 
                               <div className="flex flex-col space-x-4  flex-grow">
-                                <button onClick={() => onDelete(document.id)}><img src="delete-ic.svg" alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
+                                <button onClick={() => onDelete(document.id)}><img src={imageBasePath+"delete-ic.svg"} alt="Delete Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></button>
                               </div>
                             }
                             <div className="flex flex-col space-x-4  flex-grow">
-                              <Link to={`/document/${document.id}`}><img src="eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></Link>
+                              <Link to={`/ingestion/document/${document.id}`}><img src={imageBasePath+"eye-ic.svg"} alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></Link>
                             </div>  
                           </div>
                         </td>

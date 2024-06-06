@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import theme from '../styles/theme.js';
 
 export default function SideBar() {
-  var imageBasePath = window.location.protocol + "//" + window.location.host + "/";
+  var imageBasePath = window.location.protocol + "//" + window.location.host + "/ingestion/";
 
   return (
     <div className="min-h-screen w-[272px] shadow-md" style={{background: theme.colors.menuBackground}}>
@@ -14,7 +14,7 @@ export default function SideBar() {
       <div className="flex flex-col justify-center" style={{width: "100%", float:"left"}} >
           <div className="flex flex-row items-center ml-5">
               <div className="flex items-center">
-                <Link to="/upload">
+                <Link to="/ingestion/upload">
                     <img src={imageBasePath+"plus-ic.svg"} alt="Plus Icon" style={{float: 'left'}}/>
                     <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Ingestão de Documentos</p>
                 </Link>
@@ -22,7 +22,7 @@ export default function SideBar() {
           </div>
           <div className="flex flex-row items-center ml-5 mt-5">
               <div className="flex items-center">
-                <Link to="/">
+                <Link to="/ingestion/">
                     <img src={imageBasePath+"menu-ic.svg"} alt="Menu Icon" style={{float: 'left'}}/>
                     <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Visualizar Documentos</p>
                 </Link>

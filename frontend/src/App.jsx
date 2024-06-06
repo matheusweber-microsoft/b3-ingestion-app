@@ -18,7 +18,7 @@ const Pages = ({ instance, loading }) => {
     <Routes>
       <Route 
         exact
-        path="/" 
+        path="/ingestion/" 
         element={
           <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <DocumentsList onLoading={loading} instance={instance} />
@@ -27,7 +27,7 @@ const Pages = ({ instance, loading }) => {
       />
       <Route 
         exact
-        path="/upload" 
+        path="/ingestion/upload" 
         element={
           <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <UploadDocument onLoading={loading} instance={instance} />
@@ -36,7 +36,7 @@ const Pages = ({ instance, loading }) => {
       />
       <Route 
         exact
-        path="/document/:id" 
+        path="/ingestion/document/:id" 
         element={
           <RouteGuard roles={[appRoles.Admin, appRoles.User]}>
             <ViewDocument onLoading={loading} instance={instance}  />
