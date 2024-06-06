@@ -92,7 +92,7 @@ const UploadDocumentForm = (props) => {
 
         <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'block' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
-          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`/document/${response.id}`} id="successMessage" /> }
+          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`/ingestion/document/${response.id}`} id="successMessage" /> }
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">
