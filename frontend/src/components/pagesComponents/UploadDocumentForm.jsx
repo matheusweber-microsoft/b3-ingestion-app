@@ -126,7 +126,7 @@ const UploadDocumentForm = (props) => {
           <CustomButton buttonText="Enviar" />
         </form>
       </div>
-    </main>c
+    </main>
   );
 }
 
