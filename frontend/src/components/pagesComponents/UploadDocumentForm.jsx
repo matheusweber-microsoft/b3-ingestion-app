@@ -11,7 +11,7 @@ import CustomDateField from '../CustomDateField.jsx';
 import { useMsal } from "@azure/msal-react";
 
 const UploadDocumentForm = (props) => {
-  const VITE_DOCUMENTS_LANGUEAGE = import.meta.env.VITE_DOCUMENTS_LANGUEAGE || "port";
+  const VITE_DOCUMENTS_LANGUAGE = import.meta.env.VITE_DOCUMENTS_LANGUAGE || "port";
 
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [selectedSubtheme, setSelectedSubtheme] = useState(null); 
@@ -92,7 +92,7 @@ const UploadDocumentForm = (props) => {
 
         <div className="flex flex-col space-y-4 mt-5" id="messages" style={{ display: 'block' }}>
           { showErrorMessage && <ErrorMessage message={errorMessage} id="errorMessage" /> }
-          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`/document/${response.id}`} id="successMessage" /> }
+          { showSuccessMessage && <SuccessMessage message={`Cadastro de documento foi um sucesso!`} link={`/ingestion/document/${response.id}`} id="successMessage" /> }
         </div>
         <form className="flex flex-col space-y-4" style={{ marginTop: '15px', paddingRight: '15px', paddingLeft: '15px' }} onSubmit={handleSubmit}>
           <div className="flex flex-row space-x-4">
@@ -116,7 +116,7 @@ const UploadDocumentForm = (props) => {
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
               <CustomDateField name="expiryDate" required={true} />
             </div>
-            <input type="hidden" id="language" name="language" value={VITE_DOCUMENTS_LANGUEAGE} />
+            <input type="hidden" id="language" name="language" value={VITE_DOCUMENTS_LANGUAGE} />
           </div>
           <div className="flex flex-col">
           <label htmlFor="field1" className="text-xs font-bold" style={{ paddingBottom: '10px'  }} >File:</label>
