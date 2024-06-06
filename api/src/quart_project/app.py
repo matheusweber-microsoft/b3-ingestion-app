@@ -1,3 +1,4 @@
+from src.infra.keyVault.keyVault import KeyVault
 from src.decorators.exceptions import AuthError
 from src.infra.storageContainer.storageContainerRepository import StorageContainerRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
@@ -18,8 +19,8 @@ def run():
 
 def create_app():
     load_dotenv()
-    cosmos_repository = CosmosRepository(connection_string=os.getenv(
-        'CONNECTION_STRING_COSMOS_DB'), database_name=os.getenv('DATABASE_NAME'))
+    keyVault = KeyVault()
+    cosmos_repository = CosmosRepository(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_COSMOS_DB_NAME')), database_name=os.getenv('DATABASE_NAME'))
     storage_container_repository = StorageContainerRepository(
         connection_string=os.getenv('CONNECTION_STRING_STORAGE_CONTAINER'))
 

@@ -12,3 +12,5 @@ python-jose
 six
 azf-wsgi
 opencensus-ext-azure
+azure-identity
+azure-keyvault-secrets

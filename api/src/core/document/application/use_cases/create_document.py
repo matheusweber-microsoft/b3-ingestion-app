@@ -28,7 +28,7 @@ class CreateDocumentResponse:
     id: UUID
 
 
-class CreateDocument:    
+class CreateDocument:
     def __init__(self, repository: DocumentRepository, storageRepository: StorageDocumentRepository):
         self.logging = Logger()
         self.repository = repository
@@ -50,7 +50,7 @@ class CreateDocument:
                 language=request.language
             )
         except ValueError as err:
-            self.logging.error('CR-EX-2 - InvalidDocument: %s', err)
+            self.logging.error('CR-EX-2 - InvalidDocument: ' + err)
             raise InvalidDocument(err)
                 
         if self.repository.verify_duplicity(document=document):
@@ -64,7 +64,7 @@ class CreateDocument:
                 self.logging.warning('CR-EX-4 - DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
                 raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
             else:
-                self.logging.error('GenericErrorUploadFile: %s', e)
+                self.logging.error('GenericErrorUploadFile: ' + e)
                 raise GenericErrorUploadFile(e) 
 
         self.repository.save(document)
