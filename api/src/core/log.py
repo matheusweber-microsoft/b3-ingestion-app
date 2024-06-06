@@ -11,10 +11,17 @@ class Logger:
         if not self.logger.handlers:
             log_level = os.getenv('LOG_LEVEL', 'INFO')
             self.logger.setLevel(getattr(logging, log_level))
-            handler = AzureLogHandler(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_APPLICATION_INSIGHTS_NAME')))
+            
+            # Azure log handler
+            azure_handler = AzureLogHandler(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_APPLICATION_INSIGHTS_NAME')))
             formatter = logging.Formatter('%(filename)s - %(levelname)s - %(message)s')
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
+            azure_handler.setFormatter(formatter)
+            self.logger.addHandler(azure_handler)
+
+            # Stream handler
+            stream_handler = logging.StreamHandler()
+            stream_handler.setFormatter(formatter)
+            self.logger.addHandler(stream_handler)
 
     def info(self, message):
         self.logger.info(message)

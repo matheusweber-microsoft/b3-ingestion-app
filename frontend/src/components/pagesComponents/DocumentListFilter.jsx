@@ -8,6 +8,7 @@ import theme from '../../styles/theme.js';
 import { Link } from "react-router-dom";
 
 const DocumentListFilter = (props) => {
+    var imageBasePath = window.location.protocol + "//" + window.location.host + "/";
     const [selectedTheme, setSelectedTheme] = useState(null);
     const [selectedSubtheme, setSelectedSubtheme] = useState(null); 
     const [subthemes, setSubthemes] = useState([]);
@@ -105,7 +106,7 @@ const DocumentListFilter = (props) => {
             <div style={{ borderTop: '1px solid black', marginTop: '40px', width: '100%', float:"left" }}>
                 <div className="flex mt-4">
                     <Link to="/upload">
-                        <img src="plus-ic.svg" style={{float: 'left'}}/>
+                        <img src={imageBasePath+"plus-ic.svg"} style={{float: 'left'}}/>
                         <p className="pl-2" style={{color: theme.colors.title, float: 'left'}}>Registrar um novo Documento</p>
                     </Link>
                 </div>
