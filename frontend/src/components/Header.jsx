@@ -3,7 +3,7 @@ import theme from "../styles/theme.js";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 
 export default function Header() {
-  var imageBasePath = window.location.protocol + "//" + window.location.host + "/";
+  var imageBasePath = window.location.protocol + "//" + window.location.host + "/ingestion/";
   const { instance } = useMsal();
 
   let activeAccount;

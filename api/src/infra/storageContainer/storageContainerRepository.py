@@ -1,6 +1,6 @@
 import os
 from src.infra.storageContainer.exceptions import FileNotUploaded
-from azure.storage.blob import generate_blob_sas, BlobSasPermissions, BlobClient, BlobServiceClient
+from azure.storage.blob import generate_blob_sas, BlobSasPermissions, BlobClient, BlobServiceClient, generate_blob_sas
 from werkzeug.datastructures import FileStorage
 from datetime import datetime, timedelta
 from src.core.log import Logger
@@ -9,13 +9,9 @@ from azure.identity import DefaultAzureCredential
 class StorageContainerRepository:
     container_name = "originaldocuments"
 
-    def __init__(self, connection_string):
+    def __init__(self):
         self.logging = Logger()
-        run_local = os.getenv('RUN_LOCAL', False)
-        if run_local:
-            self.blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-        else:
-            self.blob_service_client = BlobServiceClient(account_url=os.getenv('AZURE_STORAGE_ACCOUNT_URL'), credential=DefaultAzureCredential())
+        self.blob_service_client = BlobServiceClient(account_url=os.getenv('AZURE_STORAGE_ACCOUNT_URL'), credential=DefaultAzureCredential())
 
     def upload_blob(self, container_name, blob_name, data):
         container_client = self.blob_service_client.get_container_client(container_name)
@@ -57,17 +53,20 @@ class StorageContainerRepository:
     def get_document_url(self, container_path: str) -> str:
         container_name, blob_name = os.path.split(container_path)
         blob_client = self.blob_service_client.get_blob_client(container_name, blob_name)
-
-        # Generate SAS token
+        user_delegation_key = self.blob_service_client.get_user_delegation_key(datetime.utcnow() - timedelta(minutes=2), 
+                                                                               datetime.utcnow() + timedelta(hours=1))
+        # Define the SAS token parameters
         sas_token = generate_blob_sas(
             account_name=blob_client.account_name,
             container_name=blob_client.container_name,
             blob_name=blob_client.blob_name,
-            account_key=self.blob_service_client.credential.account_key,
+            account_key=None,  # Not used with user delegation key
+            user_delegation_key=user_delegation_key,
             permission=BlobSasPermissions(read=True),
-            expiry=datetime.utcnow() + timedelta(hours=1)  # Token valid for 1 hour
-        )
-        # Append the SAS token to the blob URL
+            expiry=datetime.utcnow() + timedelta(minutes=30),
+            start=datetime.utcnow() - timedelta(minutes=2)
+        )  
+        
         blob_url = blob_client.url + "?" + sas_token
         self.logging.info(f"SCR-1-GDU - Generated URL for blob '{blob_name}' in container '{container_name}'")
         return blob_url

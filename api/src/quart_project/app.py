@@ -20,9 +20,8 @@ def run():
 def create_app():
     load_dotenv()
     keyVault = KeyVault()
-    cosmos_repository = CosmosRepository(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_COSMOS_DB_NAME')), database_name=os.getenv('DATABASE_NAME'))
-    storage_container_repository = StorageContainerRepository(
-        connection_string=os.getenv('CONNECTION_STRING_STORAGE_CONTAINER'))
+    cosmos_repository = CosmosRepository(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_COSMOS_DB_CONN_NAME')), database_name=os.getenv('DATABASE_NAME'))
+    storage_container_repository = StorageContainerRepository()
 
     setup_routes(app, cosmos_repository, storage_container_repository)
     return app

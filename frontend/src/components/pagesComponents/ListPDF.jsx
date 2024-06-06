@@ -4,6 +4,8 @@ import './ListPDF.css';
 import { getLocaleDate } from "../../api/models.ts";
 
 const ListPDF = ({ documents }) => {
+    var imageBasePath = window.location.protocol + "//" + window.location.host + "/ingestion/";
+
     if(documents === null || documents === undefined) {
         documents = [];
     }
@@ -51,7 +53,7 @@ const ListPDF = ({ documents }) => {
                 <tbody>
                     {currentDocuments.map((document) => (
                         <tr key={document.documentURL}>
-                            <td className="border px-4 py-2" style={{ textAlign: 'center' }}><a href={document.documentURL} target="_blank"><img src="../eye-ic.svg" alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></a></td>
+                            <td className="border px-4 py-2" style={{ textAlign: 'center' }}><a href={document.documentURL} target="_blank"><img src={imageBasePath+"eye-ic.svg"} alt="See Icon" style={{ width: '24px', height: '24px', display: 'block', margin: '0 auto' }} /></a></td>
                             <td className="border px-4 py-2">{document.filePageName}</td>
                             <td className="border px-4 py-2">{getLocaleDate(parseInt(document.indexCompletionDate), true)}</td>
                         </tr>
