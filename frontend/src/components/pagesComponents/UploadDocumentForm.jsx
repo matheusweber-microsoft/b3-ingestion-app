@@ -116,7 +116,7 @@ const UploadDocumentForm = (props) => {
               <label htmlFor="field1" className="text-xs font-bold">Data de validade:</label>
               <CustomDateField name="expiryDate" required={true} />
             </div>
-            <input type="hidden" id="language" name="language" value={VITE_DOCUMENTS_LANGUEAGE} />
+            <input type="hidden" id="language" name="language" value={VITE_DOCUMENTS_LANGUAGE} />
           </div>
           <div className="flex flex-col">
           <label htmlFor="field1" className="text-xs font-bold" style={{ paddingBottom: '10px'  }} >File:</label>
