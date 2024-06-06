@@ -4,12 +4,13 @@ from uuid import UUID
 
 from src.core.document.domain.document import SingleDocumentOutput
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
-import logging
 import math
 from datetime import datetime, timedelta, timezone
+from src.core.log import Logger
 
 class ListDocuments:
     def __init__(self, repository: DocumentRepository):
+        self.logging = Logger()
         self.repository = repository
 
     @dataclass
@@ -65,7 +66,7 @@ class ListDocuments:
             }
 
     def execute(self, input: Input) -> Output:
-        logging.info("Executing ListDocuments use case")
+        self.logging.info("LE-EX-1 - Executing ListDocuments use case")
         data = self.repository.list(
             filters=input.toQuery(),
             page=input.page,

@@ -3,16 +3,17 @@ from uuid import UUID
 from src.core.document.application.use_cases.exceptions import DocumentNotFound, DocumentWithWrongFormat
 from src.core.document.domain.document import Document, DocumentOutput, SingleDocumentOutput
 from src.infra.cosmosDB.cosmosRepository import CosmosRepository
-import logging
+from src.core.log import Logger
 
 class DocumentRepository():
     collection_name = "documentskb"
 
     def __init__(self, repository: CosmosRepository):
+        self.logging = Logger()
         self.repository = repository
 
     def save(self, document: Document) -> None:
-        logging.info("Saving document: %s", document)
+        self.logging.info("CDB-DR-1-SA - Saving document: %s", document)
         self.repository.save(self.collection_name, document.to_dict())
  
     def verify_duplicity(self, document: Document):
@@ -21,12 +22,12 @@ class DocumentRepository():
             "subtheme": document.subtheme,
             "fileName": document.documentFile.filename
         }
-        logging.debug("Verifying duplicity for document: %s", document)
+        self.logging.info("CDB-DR-1-VD - Verifying duplicity for document: %s", document)
         return self.repository.verify_by_query(collectionName=self.collection_name, query=query)
 
     def list(self, filters, page=1, limit=100) -> tuple[List[SingleDocumentOutput], int]:
         # sort=[("indexCompletionDate", -1), ("uploadDate", -1)]
-        logging.info("Listing documents with filters: %s, page: %s, limit: %s", filters, page, limit)
+        self.logging.info(f"CDB-DR-1-LI - Listing documents with filters: {filters}, page: {page}, limit: {limit}")
         documents = self.repository.list_all(
             self.collection_name,
             filters,
@@ -47,25 +48,25 @@ class DocumentRepository():
         return [list_of_documents, number_of_documents]
     
     def get_by_id(self, id: UUID) -> SingleDocumentOutput:
-        logging.info("Getting document by id: %s", id)
+        self.logging.info("CDB-DR-1-GBI - Getting document by id: %s", id)
         try:
             document = SingleDocumentOutput(self.repository.get_by_id(self.collection_name, str(id)))
         except:
-            logging.error("Unable to create object with this document id: %s", id)
+            self.logging.error("CDB-DR-2-GBI - Unable to create object with this document id: %s", id)
             return None
 
         if document == None:
-            logging.error("Document not found with id: %s", id)
+            self.logging.error("CDB-DR-3-GBI - Document not found with id: %s", id)
             raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
             
         return document
     
     def update(self, id: UUID, updated_data: dict) -> None:
-        logging.info("Updating document with id: %s", id)
+        self.logging.info("CDB-DR-1-UP - Updating document with id: %s", id)
         existing_document = self.repository.get_by_id(self.collection_name, str(id))
 
         if existing_document is None:
-            logging.error("Document not found with id: %s", id)
+            self.logging.error("CDB-DR-2-UP - Document not found with id: %s", id)
             raise DocumentNotFound("Nenhum documento com esse id foi encontrado.")
 
         self.repository.update(self.collection_name, str(id), updated_data)

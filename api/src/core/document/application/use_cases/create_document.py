@@ -2,13 +2,14 @@ from dataclasses import dataclass
 from uuid import UUID
 import datetime
 
+from src.core.log import Logger
+
 from src.core.document.domain.document import Document
 from src.core.document.application.use_cases.exceptions import DocumentAlreadyExists, InvalidDocument, GenericErrorUploadFile
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from src.infra.storageContainer.repositories.storage_container_document_repository import StorageDocumentRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
 import os
-import logging
 
 @dataclass
 class CreateDocumentRequest:
@@ -27,14 +28,15 @@ class CreateDocumentResponse:
     id: UUID
 
 
-class CreateDocument:
+class CreateDocument:    
     def __init__(self, repository: DocumentRepository, storageRepository: StorageDocumentRepository):
+        self.logging = Logger()
         self.repository = repository
         self.storageRepository = storageRepository
         self.queueService = StorageQueueService(os.getenv('DOCUMENTS_QUEUE'))
 
     def execute(self, request: CreateDocumentRequest) -> CreateDocumentResponse:
-        logging.info('Executing CreateDocument...')
+        self.logging.info('CR-EX-1 - Executing CreateDocument...')
         try:
             document = Document(
                 documentTitle=request.documentTitle,
@@ -48,21 +50,21 @@ class CreateDocument:
                 language=request.language
             )
         except ValueError as err:
-            logging.error('InvalidDocument: %s', err)
+            self.logging.error('CR-EX-2 - InvalidDocument: %s', err)
             raise InvalidDocument(err)
                 
         if self.repository.verify_duplicity(document=document):
-            logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
+            self.logging.warning('CR-EX-3 - DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
             raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
                 
         try:
             self.storageRepository.upload_file(document)
         except Exception as e:
             if e.error_code == "BlobAlreadyExists":
-                logging.warning('DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
+                self.logging.warning('CR-EX-4 - DocumentAlreadyExists: Já existe um documento com o mesmo nome, tema e subtema.')
                 raise DocumentAlreadyExists("Já existe um documento com o mesmo nome, tema e subtema.")
             else:
-                logging.error('GenericErrorUploadFile: %s', e)
+                self.logging.error('GenericErrorUploadFile: %s', e)
                 raise GenericErrorUploadFile(e) 
 
         self.repository.save(document)
@@ -71,7 +73,7 @@ class CreateDocument:
             message_dict=self.generate_message_from_document(document)
         )
 
-        logging.info('Document created successfully.')
+        self.logging.info('CR-EX-5 - Document created successfully.')
         
         return CreateDocumentResponse(id=document.id)
     

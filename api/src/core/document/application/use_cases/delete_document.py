@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 from uuid import UUID
 
+from src.core.log import Logger
 from src.decorators.models.User import User
 
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
@@ -11,10 +12,9 @@ from src.core.document.domain.document import Document, DocumentOutput, SingleDo
 from src.infra.cosmosDB.repositories.cosmosDB_document_repository import DocumentRepository
 from src.core.document.application.use_cases.exceptions import DocumentNotDeleted, DocumentNotIndexedDelete
 
-import logging
-
-class DeleteDocument:
+class DeleteDocument:    
     def __init__(self, user: User, repository: DocumentRepository):
+        self.logging = Logger()
         self.repository = repository
         self.queueService = StorageQueueService(os.getenv('DOCUMENTS_QUEUE'))
         self.user = user
@@ -40,21 +40,21 @@ class DeleteDocument:
             }
 
     def execute(self, input: Input) -> Output:
-        logging.info("Executing DeleteDocument use case")
+        self.logging.info("DD-EX-1 - Executing DeleteDocument use case")
         document = self.repository.get_by_id(UUID(input.id))
         
         if document.indexStatus != "Indexed":
-            logging.error("Document is not in indexed status")
+            self.logging.error("DD-EX-2 - Document is not in indexed status")
             raise DocumentNotIndexedDelete("Documento não está indexado. Não é possível deletar.")
         
         if not self.user.isAdmin() and document.uploadedBy != self.user.username:
-            logging.error("User is not authorized to delete the document")
+            self.logging.error("DD-EX-3 - User is not authorized to delete the document")
             raise DocumentNotDeleted("Usuário não autorizado a deletar o documento")
         
-        logging.info("Updating document with id: %s", input.id)
+        self.logging.info("DD-EX-4 - Updating document with id: %s", input.id)
         self.repository.update(UUID(input.id), {"indexStatus": "Deleting"})
 
-        logging.info("Sending message to the queue to delete the document")
+        self.logging.info("DD-EX-5 - Sending message to the queue to delete the document")
         self.queueService.send_message(
             message_dict=self.generate_message_from_document(document)
         )
