@@ -4,14 +4,14 @@ from azure.storage.blob import generate_blob_sas, BlobSasPermissions, BlobClient
 from werkzeug.datastructures import FileStorage
 from datetime import datetime, timedelta
 from src.core.log import Logger
-from azure.identity import DefaultAzureCredential
 
 class StorageContainerRepository:
     container_name = "originaldocuments"
 
     def __init__(self):
         self.logging = Logger()
-        self.blob_service_client = BlobServiceClient(account_url=os.getenv('AZURE_STORAGE_ACCOUNT_URL'), credential=DefaultAzureCredential())
+        azure_storage_connection_string = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
+        self.blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
 
     def upload_blob(self, container_name, blob_name, data):
         container_client = self.blob_service_client.get_container_client(container_name)

@@ -1,4 +1,3 @@
-from src.infra.keyVault.keyVault import KeyVault
 from src.decorators.exceptions import AuthError
 from src.infra.storageContainer.storageContainerRepository import StorageContainerRepository
 from src.infra.storageQueue.StorageQueueService import StorageQueueService
@@ -19,8 +18,9 @@ def run():
 
 def create_app():
     load_dotenv()
-    keyVault = KeyVault()
-    cosmos_repository = CosmosRepository(connection_string=keyVault.get_secret(os.getenv('KEY_VAULT_COSMOS_DB_CONN_NAME')), database_name=os.getenv('DATABASE_NAME'))
+    cosmos_repository_connection_string = os.getenv('MONGODB-CONN-STRING')
+    cosmos_database_name = os.getenv('DATABASE_NAME')
+    cosmos_repository = CosmosRepository(connection_string=cosmos_repository_connection_string, database_name=cosmos_database_name)
     storage_container_repository = StorageContainerRepository()
 
     setup_routes(app, cosmos_repository, storage_container_repository)

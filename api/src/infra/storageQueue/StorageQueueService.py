@@ -1,10 +1,8 @@
-from azure.storage.queue import QueueClient
-from azure.identity import DefaultAzureCredential
-from azure.storage.queue import QueueServiceClient
 import json
 import base64
 import os
 from src.core.log import Logger
+from azure.storage.queue import QueueServiceClient
 
 class StorageQueueService:
     def __init__(self, queue_name):
@@ -13,8 +11,9 @@ class StorageQueueService:
         self.queue_client = self.get_queue_client(queue_name)
 
     def get_queue_client(self, queue_name):
-        credential = DefaultAzureCredential()
-        queue_service_client = QueueServiceClient(account_url=os.getenv('AZURE_QUEUE_ACCOUNT_URL'), credential=credential)
+        azure_storage_connection_string = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
+        credential = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
+        queue_service_client = QueueServiceClient.from_connection_string(credential)
         return queue_service_client.get_queue_client(queue_name)
     
     def send_message(self, message_dict):
