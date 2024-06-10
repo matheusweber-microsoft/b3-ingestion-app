@@ -10,7 +10,7 @@ class StorageContainerRepository:
 
     def __init__(self):
         self.logging = Logger()
-        azure_storage_connection_string = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
+        azure_storage_connection_string = os.getenv('AZURE_STORAGE_ACCOUNT_CONN_STRING')
         self.blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
 
     def upload_blob(self, container_name, blob_name, data):
@@ -53,18 +53,15 @@ class StorageContainerRepository:
     def get_document_url(self, container_path: str) -> str:
         container_name, blob_name = os.path.split(container_path)
         blob_client = self.blob_service_client.get_blob_client(container_name, blob_name)
-        user_delegation_key = self.blob_service_client.get_user_delegation_key(datetime.utcnow() - timedelta(minutes=2), 
-                                                                               datetime.utcnow() + timedelta(hours=1))
-        # Define the SAS token parameters
+ 
+        # Generate SAS token
         sas_token = generate_blob_sas(
             account_name=blob_client.account_name,
             container_name=blob_client.container_name,
             blob_name=blob_client.blob_name,
-            account_key=None,  # Not used with user delegation key
-            user_delegation_key=user_delegation_key,
+            account_key=self.blob_service_client.credential.account_key,
             permission=BlobSasPermissions(read=True),
-            expiry=datetime.utcnow() + timedelta(minutes=30),
-            start=datetime.utcnow() - timedelta(minutes=2)
+            expiry=datetime.utcnow() + timedelta(minutes=30)  # Token valid for 30 mins
         )  
         
         blob_url = blob_client.url + "?" + sas_token
