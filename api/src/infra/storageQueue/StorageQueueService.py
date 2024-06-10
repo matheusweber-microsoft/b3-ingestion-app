@@ -11,9 +11,8 @@ class StorageQueueService:
         self.queue_client = self.get_queue_client(queue_name)
 
     def get_queue_client(self, queue_name):
-        azure_storage_connection_string = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
-        credential = os.getenv('AZURE-STORAGE-ACCOUNT-CONN-STRING')
-        queue_service_client = QueueServiceClient.from_connection_string(credential)
+        azure_storage_connection_string = os.getenv('AZURE_STORAGE_ACCOUNT_CONN_STRING')
+        queue_service_client = QueueServiceClient.from_connection_string(azure_storage_connection_string)
         return queue_service_client.get_queue_client(queue_name)
     
     def send_message(self, message_dict):

@@ -18,7 +18,7 @@ def run():
 
 def create_app():
     load_dotenv()
-    cosmos_repository_connection_string = os.getenv('MONGODB-CONN-STRING')
+    cosmos_repository_connection_string = os.getenv('MONGODB_CONN_STRING')
     cosmos_database_name = os.getenv('DATABASE_NAME')
     cosmos_repository = CosmosRepository(connection_string=cosmos_repository_connection_string, database_name=cosmos_database_name)
     storage_container_repository = StorageContainerRepository()

@@ -10,7 +10,7 @@ class Logger:
             self.logger.setLevel(getattr(logging, log_level))
             
             # Azure log handler
-            azure_log_handler_connection_string = os.getenv('APP-INSIGHTS-CONN-STRING')
+            azure_log_handler_connection_string = os.getenv('APP_INSIGHTS_CONN_STRING')
             azure_handler = AzureLogHandler(connection_string=azure_log_handler_connection_string)
             formatter = logging.Formatter('%(filename)s - %(levelname)s - %(message)s')
             azure_handler.setFormatter(formatter)
