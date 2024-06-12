@@ -14,7 +14,7 @@ class Logger:
             self.logger.setLevel(getattr(logging, log_level))
             
             # Azure log handler
-            azure_log_handler_connection_string = os.getenv('APP_INSIGHTS_CONN_STRING')
+            azure_log_handler_connection_string = os.getenv('APPLICATIONINSIGHTS_CONNECTION_STRING')
             exporter = AzureMonitorTraceExporter.from_connection_string(
                 conn_str=azure_log_handler_connection_string
             )
