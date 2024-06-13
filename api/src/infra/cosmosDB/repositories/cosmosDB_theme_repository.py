@@ -21,7 +21,7 @@ class ThemeRepository():
     
     def get_theme_by_id(self, theme_id: UUID) -> Theme:
         self.logging.info("CDB-TR-1-GTI - Getting theme by id")
-        theme = self.repository.get_by_id(self.collection_name, theme_id, {"active": True})
+        theme = self.repository.get_by_id(self.collection_name, theme_id)
         theme = Theme(theme)
         
         return theme
