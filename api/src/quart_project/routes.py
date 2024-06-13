@@ -19,7 +19,7 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def create_document(user: User):
         logging = Logger()
-        logging.info("RO-SR-1-CD - Received request to create document aaaaa")
+        logging.info("RO-SR-1-CD - Received request to create document")
         data = await request.form
         files = await request.files
         use_case = CreateDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
