@@ -83,7 +83,7 @@ class CreateDocument:
     
         if not allowed:
             self.logging.error("CR-EX-4 - User doesnt have permission to create document on this subtheme.")
-            raise PermissionError("Usuário não tem permissão para criar documento neste subtema.")
+            raise PermissionError("Usuário não tem permissão para criar documento no subtema "+selectedSubTheme.subthemeName+".")
                 
         try:
             self.storageRepository.upload_file(document)
