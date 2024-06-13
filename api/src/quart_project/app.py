@@ -18,6 +18,7 @@ def run():
 
 def create_app():
     load_dotenv()
+    app.config['MAX_CONTENT_LENGTH'] = os.getenv("MAX_CONTENT_LENGTH", 100 * 1024 * 1024)
     cosmos_repository_connection_string = os.getenv('MONGODB_CONN_STRING')
     cosmos_database_name = os.getenv('DATABASE_NAME')
     cosmos_repository = CosmosRepository(connection_string=cosmos_repository_connection_string, database_name=cosmos_database_name)

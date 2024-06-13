@@ -19,11 +19,12 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
     @requires_role(['DocumentsManager.User', 'DocumentsManager.Admin'])
     async def create_document(user: User):
         logging = Logger()
-        logging.info("RO-SR-1-CD - Received request to create document")
+        logging.info("RO-SR-1-CD - Received request to create document aaaaa")
         data = await request.form
         files = await request.files
         use_case = CreateDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
-        
+        logging.info(f"RO-SR-1-CD - Received request to create document with data: {data}")
+        logging.info(f"RO-SR-1-CD - Received request to create document with data: {data}")
         if files == None:
             logging.error("RO-SR-2-CD - No file was sent in the request")
             return jsonify({'error': "Nenhum arquivo foi enviado."}), 400
