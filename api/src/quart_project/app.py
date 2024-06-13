@@ -21,6 +21,7 @@ def run():
 def create_app():
     load_dotenv()
     os.environ["OTEL_SERVICE_NAME"] = "ingestion-api"
+
     configure_azure_monitor(
 	    enable_live_metrics=True
     )
