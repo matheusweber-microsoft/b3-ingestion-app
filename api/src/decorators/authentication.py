@@ -51,6 +51,7 @@ def requires_auth(f):
                     logging.info("AU-4-RA - Token decoded successfully")
                     # Extract the scopes from the payload
                     roles = payload['roles']
+                    logging.info(f"AU-5-RA - groups: {payload}")
                     kwargs['roles'] = roles
                     kwargs['user'] = User(payload)
                 except jwt.ExpiredSignatureError:

@@ -14,7 +14,14 @@ class ThemeRepository():
 
     def list(self) -> List[Theme]:
         self.logging.info("CDB-TR-1-LI - Listing themes")
-        documents = self.repository.list_all(self.collection_name, {"active": True}, {"language": 1, "subThemes": 1, "themeId": 1, "themeName": 1, "_id": 0})
+        documents = self.repository.list_all(self.collection_name, {"active": True}, {"language": 1, "subThemes": 1, "themeId": 1, "themeName": 1, "active": 1, "_id": 0})
         list_of_themes = [Theme(theme) for theme in documents]
         
         return list_of_themes
+    
+    def get_theme_by_id(self, theme_id: UUID) -> Theme:
+        self.logging.info("CDB-TR-1-GTI - Getting theme by id")
+        theme = self.repository.get_by_id(self.collection_name, theme_id, {"active": True})
+        theme = Theme(theme)
+        
+        return theme

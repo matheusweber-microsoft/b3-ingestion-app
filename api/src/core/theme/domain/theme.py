@@ -38,4 +38,5 @@ class Theme:
         self.themeName = theme["themeName"]
         self.themeId = theme["themeId"]
         self.language = theme["language"]
+        self.active = theme["active"]
         self.subThemes = [SubTheme(subtheme) for subtheme in theme["subThemes"]]

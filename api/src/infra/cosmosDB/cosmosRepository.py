@@ -60,6 +60,11 @@ class CosmosRepository:
         item = collection.find_one({"id": item_id})
         return item
     
+    def get_by_id(self, collectionName, item_id, filter):
+        collection = self.db.get_collection(collectionName)
+        item = collection.find_one({"id": item_id})
+        return item
+    
     def update(self, collectionName, item_id, updated_data):
         collection = self.db.get_collection(collectionName)
         result = collection.update_one({"id": item_id}, {"$set": updated_data})
