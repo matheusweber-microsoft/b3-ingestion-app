@@ -23,7 +23,6 @@ def setup_routes(app, cosmos_repository, storage_container_repository):
         data = await request.form
         files = await request.files
         use_case = CreateDocument(DocumentRepository(cosmos_repository), StorageDocumentRepository(storage_container_repository))
-        
         if files == None:
             logging.error("RO-SR-2-CD - No file was sent in the request")
             return jsonify({'error': "Nenhum arquivo foi enviado."}), 400

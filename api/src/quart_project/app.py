@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import os
 from quart_cors import cors
 from jose.exceptions import ExpiredSignatureError
+from azure.monitor.opentelemetry import configure_azure_monitor
+from opentelemetry import trace
 
 app = Quart(__name__)
 app = cors(app, allow_origin="*")
@@ -18,10 +20,17 @@ def run():
 
 def create_app():
     load_dotenv()
+    os.environ["OTEL_SERVICE_NAME"] = "ingestion-api"
+
+    configure_azure_monitor(
+	    enable_live_metrics=True
+    )
+    
+    app.config['MAX_CONTENT_LENGTH'] = os.getenv("MAX_CONTENT_LENGTH", 100 * 1024 * 1024)
     cosmos_repository_connection_string = os.getenv('MONGODB_CONN_STRING')
     cosmos_database_name = os.getenv('DATABASE_NAME')
     cosmos_repository = CosmosRepository(connection_string=cosmos_repository_connection_string, database_name=cosmos_database_name)
     storage_container_repository = StorageContainerRepository()
-
     setup_routes(app, cosmos_repository, storage_container_repository)
+    
     return app
